@@ -20,6 +20,7 @@ import {
   getColorTag,
   getShortDescription,
 } from '~/lib/productCopy';
+import {getProductVideo} from '~/lib/productVideo';
 
 export const meta: Route.MetaFunction = ({data}) => {
   return [
@@ -102,11 +103,12 @@ export default function Product() {
   const colorTag = getColorTag(product.tags);
   const shortDescription = getShortDescription(product.productType, colorTag);
   const displayTitle = product.title.split('·').pop()?.trim() ?? product.title;
+  const video = getProductVideo(product.productType, anima?.handle);
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-10 sm:py-16">
       <div className="grid grid-cols-1 items-start gap-10 sm:grid-cols-2 sm:gap-16">
-        <ProductGallery images={product.images.nodes} />
+        <ProductGallery images={product.images.nodes} video={video} />
 
         <div>
           {anima && (
