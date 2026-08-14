@@ -31,11 +31,19 @@ export function ProductGallery({
   const [activeId, setActiveId] = useState(slides[0]?.id);
   const active = slides.find((s) => s.id === activeId) ?? slides[0];
 
-  if (!active) return <div className="aspect-square bg-nero/5" />;
+  if (!active) return <div className="aspect-[2/3] bg-nero/5" />;
+
+  const activeAspectRatio =
+    active.kind === 'image' && active.image.width && active.image.height
+      ? `${active.image.width} / ${active.image.height}`
+      : '2 / 3';
 
   return (
     <div className="flex flex-col items-start gap-3 sm:flex-row-reverse">
-      <div className="aspect-square min-w-0 flex-1 bg-nero/5">
+      <div
+        className="min-w-0 flex-1 bg-nero/5"
+        style={{aspectRatio: activeAspectRatio}}
+      >
         {active.kind === 'video' ? (
           <video
             key={active.id}
@@ -50,7 +58,6 @@ export function ProductGallery({
           <Image
             data={active.image}
             key={active.id}
-            aspectRatio="1/1"
             sizes="(min-width: 45em) 50vw, 100vw"
             className="h-full w-full object-contain"
           />
@@ -85,7 +92,6 @@ export function ProductGallery({
               ) : (
                 <Image
                   data={slide.image}
-                  aspectRatio="1/1"
                   sizes="80px"
                   className="h-full w-full object-contain"
                 />
