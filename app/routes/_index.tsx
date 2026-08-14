@@ -6,6 +6,7 @@ import type {RecommendedProductsQuery} from 'storefrontapi.generated';
 import {ProductItem} from '~/components/ProductItem';
 import {MockShopNotice} from '~/components/MockShopNotice';
 import {ANIME, type AnimaKey} from '~/lib/animas';
+import heroAllModels from '~/assets/images/hero-allmodels.webp';
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -67,6 +68,12 @@ export default function Homepage() {
 function Hero() {
   return (
     <section className="relative isolate flex min-h-[86vh] flex-col items-center justify-center overflow-hidden bg-nero px-6 text-center text-paper">
+      <img
+        src={heroAllModels}
+        alt="Le Anime di Anyma Beauty"
+        className="absolute inset-0 -z-10 h-full w-full object-cover object-top"
+      />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-nero via-nero/70 to-nero/30" />
       <p className="mb-6 text-xs uppercase tracking-[0.5em] text-gold">
         Anyma Beauty
       </p>
