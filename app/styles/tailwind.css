@@ -6,6 +6,18 @@
 @import 'tailwindcss';
 
 /**
+ * Artezy Light — single weight only (Brand Book v25). Use tracking + caps
+ * for presence, never synthetic bold.
+ */
+@font-face {
+  font-family: 'Artezy Light';
+  src: url('~/assets/fonts/artezy-light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/**
  * ANYMA BEAUTY — brand tokens (Brand Book v25)
  */
 :root {
