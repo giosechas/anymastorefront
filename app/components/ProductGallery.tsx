@@ -20,7 +20,7 @@ export function ProductGallery({
           key={active.id}
           aspectRatio="1/1"
           sizes="(min-width: 45em) 50vw, 100vw"
-          className="h-full w-full object-cover"
+          className="h-full w-full object-contain"
         />
       </div>
       {images.length > 1 && (
@@ -40,7 +40,7 @@ export function ProductGallery({
                 data={img}
                 aspectRatio="1/1"
                 sizes="80px"
-                className="h-full w-full object-cover"
+                className="h-full w-full object-contain"
               />
             </button>
           ))}
