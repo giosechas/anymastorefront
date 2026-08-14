@@ -13,6 +13,8 @@ import heroImage4 from '~/assets/images/hero/hero-4.webp';
 import heroImage5 from '~/assets/images/hero/hero-5.webp';
 import sealPositive from '~/assets/images/seal-y-positive.png';
 import sealNegative from '~/assets/images/seal-y-negative.png';
+import philosophyTruth from '~/assets/images/philosophy/truth.webp';
+import philosophyIdentity from '~/assets/images/philosophy/identity.webp';
 
 const HERO_IMAGES = [heroImage1, heroImage2, heroImage3, heroImage4, heroImage5];
 const HERO_ROTATE_MS = 5000;
@@ -69,6 +71,7 @@ export default function Homepage() {
       <AnimeGrid
         collections={data.animeCollections as Record<AnimaKey, any>}
       />
+      <PhilosophySection />
       <BrandStoryTeaser />
       <SealDivider bg="light" />
       <RecommendedProducts products={data.recommendedProducts} />
@@ -117,13 +120,13 @@ function Hero() {
       <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
         <a
           href="#anime"
-          className="border border-gold px-8 py-3 text-xs uppercase tracking-[0.2em] text-paper transition-colors hover:bg-gold hover:text-nero"
+          className="border border-gold px-8 py-3 text-xs uppercase tracking-[0.2em] text-white transition-colors hover:bg-gold hover:text-nero"
         >
           Scopri le tue Anime
         </a>
         <Link
           to="/pages/about"
-          className="px-8 py-3 text-xs uppercase tracking-[0.2em] text-paper/70 underline underline-offset-4 transition-colors hover:text-paper"
+          className="px-8 py-3 text-xs uppercase tracking-[0.2em] text-white underline underline-offset-4 transition-colors hover:text-gold"
         >
           La nostra storia
         </Link>
@@ -174,9 +177,8 @@ function AnimeGrid({
         <h2 className="font-display text-3xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
           Scegli la tua Anima
         </h2>
-        <p className="mx-auto mt-4 max-w-lg text-sm text-nero/70">
-          Ogni Anima ha la sua estetica. Il pack che scegli non è un
-          contenitore: è un simbolo.
+        <p className="mx-auto mt-4 whitespace-nowrap text-base text-nero/70">
+          Ogni Anima ha la sua estetica. Il pack che scegli non è un contenitore: è un simbolo.
         </p>
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -208,6 +210,53 @@ function AnimeGrid({
         })}
       </div>
     </section>
+  );
+}
+
+function PhilosophySection() {
+  return (
+    <section className="bg-paper">
+      <PhilosophyBlock
+        image={philosophyTruth}
+        quote="La bellezza non è coerenza."
+        subquote="È verità."
+      />
+      <PhilosophyBlock
+        image={philosophyIdentity}
+        quote="La personalità"
+        subquote="non ha colore."
+        reverse
+      />
+    </section>
+  );
+}
+
+function PhilosophyBlock({
+  image,
+  quote,
+  subquote,
+  reverse,
+}: {
+  image: string;
+  quote: string;
+  subquote: string;
+  reverse?: boolean;
+}) {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2">
+      <div
+        className={`aspect-[4/5] sm:aspect-auto ${reverse ? 'sm:order-2' : ''}`}
+      >
+        <img src={image} alt="" className="h-full w-full object-cover" />
+      </div>
+      <div className="flex flex-col items-center justify-center px-8 py-16 text-center sm:px-16">
+        <p className="font-display max-w-md text-balance text-3xl uppercase leading-[1.15] tracking-[0.02em] text-nero sm:text-4xl lg:text-5xl">
+          {quote}
+          <br />
+          <span className="text-gold">{subquote}</span>
+        </p>
+      </div>
+    </div>
   );
 }
 
@@ -250,10 +299,15 @@ function RecommendedProducts({
       <Suspense fallback={<div className="text-center text-sm">Loading...</div>}>
         <Await resolve={products}>
           {(response) => (
-            <div className="recommended-products-grid">
+            <div className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 sm:mx-0 sm:px-0">
               {response
                 ? response.products.nodes.map((product) => (
-                    <ProductItem key={product.id} product={product} />
+                    <div
+                      key={product.id}
+                      className="w-[62%] shrink-0 snap-start sm:w-[38%] lg:w-[23%]"
+                    >
+                      <ProductItem product={product} />
+                    </div>
                   ))
                 : null}
             </div>
@@ -305,6 +359,12 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
       altText
       width
       height
+    }
+    variants(first: 1) {
+      nodes {
+        id
+        availableForSale
+      }
     }
   }
   query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
