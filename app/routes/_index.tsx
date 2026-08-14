@@ -1,14 +1,21 @@
 import {Await, useLoaderData, Link} from 'react-router';
 import type {Route} from './+types/_index';
-import {Suspense} from 'react';
+import {Suspense, useEffect, useState} from 'react';
 import {Image} from '@shopify/hydrogen';
 import type {RecommendedProductsQuery} from 'storefrontapi.generated';
 import {ProductItem} from '~/components/ProductItem';
 import {MockShopNotice} from '~/components/MockShopNotice';
 import {ANIME, type AnimaKey} from '~/lib/animas';
-import heroAllModels from '~/assets/images/hero-allmodels.webp';
+import heroImage1 from '~/assets/images/hero/hero-1.webp';
+import heroImage2 from '~/assets/images/hero/hero-2.webp';
+import heroImage3 from '~/assets/images/hero/hero-3.webp';
+import heroImage4 from '~/assets/images/hero/hero-4.webp';
+import heroImage5 from '~/assets/images/hero/hero-5.webp';
 import sealPositive from '~/assets/images/seal-y-positive.png';
 import sealNegative from '~/assets/images/seal-y-negative.png';
+
+const HERO_IMAGES = [heroImage1, heroImage2, heroImage3, heroImage4, heroImage5];
+const HERO_ROTATE_MS = 5000;
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -70,14 +77,29 @@ export default function Homepage() {
 }
 
 function Hero() {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setActiveIndex((i) => (i + 1) % HERO_IMAGES.length);
+    }, HERO_ROTATE_MS);
+    return () => clearInterval(id);
+  }, []);
+
   return (
     <section className="relative isolate flex min-h-[86vh] flex-col items-center justify-center overflow-hidden bg-nero px-6 text-center text-paper">
-      <img
-        src={heroAllModels}
-        alt="Le Anime di Anyma Beauty"
-        className="absolute inset-0 -z-10 h-full w-full object-cover object-top"
-      />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-nero via-nero/70 to-nero/30" />
+      {HERO_IMAGES.map((src, i) => (
+        <img
+          key={src}
+          src={src}
+          alt="Le Anime di Anyma Beauty"
+          className={`absolute inset-0 -z-10 h-full w-full object-cover object-top transition-opacity duration-1000 ${
+            i === activeIndex ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      ))}
+      <div className="absolute inset-0 -z-10 bg-nero/55" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-nero/70 via-transparent to-nero/20" />
       <p className="mb-6 text-xs uppercase tracking-[0.5em] text-gold">
         Anyma Beauty
       </p>
@@ -105,6 +127,19 @@ function Hero() {
         >
           La nostra storia
         </Link>
+      </div>
+      <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 gap-2">
+        {HERO_IMAGES.map((src, i) => (
+          <button
+            key={src}
+            type="button"
+            aria-label={`Immagine ${i + 1}`}
+            onClick={() => setActiveIndex(i)}
+            className={`h-1.5 rounded-full transition-all ${
+              i === activeIndex ? 'w-6 bg-gold' : 'w-1.5 bg-paper/40 hover:bg-paper/70'
+            }`}
+          />
+        ))}
       </div>
     </section>
   );
