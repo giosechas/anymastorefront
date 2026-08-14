@@ -1,4 +1,4 @@
-import {redirect, useLoaderData} from 'react-router';
+import {Link, useLoaderData} from 'react-router';
 import type {Route} from './+types/products.$handle';
 import {
   getSelectedProductOptions,
@@ -9,13 +9,21 @@ import {
   useSelectedOptionInUrlParam,
 } from '@shopify/hydrogen';
 import {ProductPrice} from '~/components/ProductPrice';
-import {ProductImage} from '~/components/ProductImage';
+import {ProductGallery} from '~/components/ProductGallery';
 import {ProductForm} from '~/components/ProductForm';
+import {YRating} from '~/components/YRating';
+import {ProductVideos} from '~/components/ProductVideos';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
+import {ANIME, findAnimaByCollectionHandle} from '~/lib/animas';
+import {
+  COLOR_SWATCH_HEX,
+  getColorTag,
+  getShortDescription,
+} from '~/lib/productCopy';
 
 export const meta: Route.MetaFunction = ({data}) => {
   return [
-    {title: `Hydrogen | ${data?.product.title ?? ''}`},
+    {title: `Anyma Beauty | ${data?.product.title ?? ''}`},
     {
       rel: 'canonical',
       href: `/products/${data?.product.handle}`,
@@ -24,19 +32,12 @@ export const meta: Route.MetaFunction = ({data}) => {
 };
 
 export async function loader(args: Route.LoaderArgs) {
-  // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
-
-  // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
   return {...deferredData, ...criticalData};
 }
 
-/**
- * Load data necessary for rendering content above the fold. This is the critical data
- * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
- */
 async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
   const {handle} = params;
   const {storefront} = context;
@@ -49,77 +50,139 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
     storefront.query(PRODUCT_QUERY, {
       variables: {handle, selectedOptions: getSelectedProductOptions(request)},
     }),
-    // Add other queries here, so that they are loaded in parallel
   ]);
 
   if (!product?.id) {
     throw new Response(null, {status: 404});
   }
 
-  // The API handle might be localized, so redirect to the localized handle
   redirectIfHandleIsLocalized(request, {handle, data: product});
+
+  const anima = findAnimaByCollectionHandle(
+    product.collections.nodes.find((c) => c.handle.startsWith('anima-'))
+      ?.handle,
+  );
+
+  let siblings: {title: string; handle: string; tags: string[]}[] = [];
+  if (anima) {
+    const {products} = await storefront.query(ANIMA_SIBLINGS_QUERY, {
+      variables: {
+        searchQuery: `tag:"${anima.tag}" AND product_type:"${product.productType}"`,
+      },
+    });
+    siblings = products.nodes;
+  }
 
   return {
     product,
+    anima,
+    siblings,
   };
 }
 
-/**
- * Load data for rendering content below the fold. This data is deferred and will be
- * fetched after the initial page load. If it's unavailable, the page should still 200.
- * Make sure to not throw any errors here, as it will cause the page to 500.
- */
 function loadDeferredData({context, params}: Route.LoaderArgs) {
-  // Put any API calls that is not critical to be available on first page render
-  // For example: product reviews, product recommendations, social feeds.
-
   return {};
 }
 
 export default function Product() {
-  const {product} = useLoaderData<typeof loader>();
+  const {product, anima, siblings} = useLoaderData<typeof loader>();
 
-  // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
     product.selectedOrFirstAvailableVariant,
     getAdjacentAndFirstAvailableVariants(product),
   );
 
-  // Sets the search param to the selected variant without navigation
-  // only when no search params are set in the url
   useSelectedOptionInUrlParam(selectedVariant.selectedOptions);
 
-  // Get the product options array
   const productOptions = getProductOptions({
     ...product,
     selectedOrFirstAvailableVariant: selectedVariant,
   });
 
-  const {title, descriptionHtml} = product;
+  const colorTag = getColorTag(product.tags);
+  const shortDescription = getShortDescription(product.productType, colorTag);
+  const displayTitle = product.title.split('·').pop()?.trim() ?? product.title;
 
   return (
-    <div className="product">
-      <ProductImage image={selectedVariant?.image} />
-      <div className="product-main">
-        <h1>{title}</h1>
-        <ProductPrice
-          price={selectedVariant?.price}
-          compareAtPrice={selectedVariant?.compareAtPrice}
-        />
-        <br />
-        <ProductForm
-          productOptions={productOptions}
-          selectedVariant={selectedVariant}
-        />
-        <br />
-        <br />
-        <p>
-          <strong>Description</strong>
-        </p>
-        <br />
-        <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
-        <br />
+    <div className="mx-auto max-w-6xl px-6 py-10 sm:py-16">
+      <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-16">
+        <ProductGallery images={product.images.nodes} />
+
+        <div>
+          {anima && (
+            <Link
+              to={`/collections/${anima.handle}`}
+              className="mb-4 inline-block border border-gold px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-gold transition-colors hover:bg-gold hover:text-nero"
+            >
+              Anima {anima.name}
+            </Link>
+          )}
+
+          <h1 className="font-display text-3xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
+            {displayTitle}
+          </h1>
+
+          <div className="mt-3">
+            <ProductPrice
+              price={selectedVariant?.price}
+              compareAtPrice={selectedVariant?.compareAtPrice}
+            />
+          </div>
+
+          <p className="mt-5 max-w-md text-sm leading-relaxed text-nero/80">
+            {shortDescription ?? product.description}
+          </p>
+
+          {siblings.length > 1 && (
+            <div className="mt-8">
+              <p className="mb-2 text-xs uppercase tracking-[0.15em] text-nero/60">
+                Altri colori · Anima {anima?.name}
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {siblings.map((sibling) => {
+                  const siblingColor = getColorTag(sibling.tags);
+                  const isCurrent = sibling.handle === product.handle;
+                  return (
+                    <Link
+                      key={sibling.handle}
+                      to={`/products/${sibling.handle}`}
+                      aria-label={sibling.title}
+                      aria-current={isCurrent}
+                      className={`h-8 w-8 rounded-full border-2 transition-transform hover:scale-110 ${
+                        isCurrent
+                          ? 'border-nero'
+                          : 'border-transparent hover:border-nero/30'
+                      }`}
+                      style={{
+                        backgroundColor: siblingColor
+                          ? COLOR_SWATCH_HEX[siblingColor]
+                          : '#ccc',
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          <div className="mt-8">
+            <YRating />
+          </div>
+
+          <div className="mt-4">
+            <ProductForm
+              productOptions={productOptions}
+              selectedVariant={selectedVariant}
+              buttonClassName="w-full border border-nero bg-nero px-8 py-4 text-xs uppercase tracking-[0.2em] text-paper transition-colors hover:bg-transparent hover:text-nero disabled:cursor-not-allowed disabled:opacity-40"
+            />
+          </div>
+
+          <div className="mt-12">
+            <ProductVideos />
+          </div>
+        </div>
       </div>
+
       <Analytics.ProductView
         data={{
           products: [
@@ -184,8 +247,25 @@ const PRODUCT_FRAGMENT = `#graphql
     handle
     descriptionHtml
     description
+    tags
+    productType
     encodedVariantExistence
     encodedVariantAvailability
+    collections(first: 5) {
+      nodes {
+        handle
+        title
+      }
+    }
+    images(first: 6) {
+      nodes {
+        id
+        url
+        altText
+        width
+        height
+      }
+    }
     options {
       name
       optionValues {
@@ -229,4 +309,17 @@ const PRODUCT_QUERY = `#graphql
     }
   }
   ${PRODUCT_FRAGMENT}
+` as const;
+
+const ANIMA_SIBLINGS_QUERY = `#graphql
+  query AnimaSiblings($searchQuery: String!, $country: CountryCode, $language: LanguageCode)
+    @inContext(country: $country, language: $language) {
+    products(first: 10, query: $searchQuery) {
+      nodes {
+        title
+        handle
+        tags
+      }
+    }
+  }
 ` as const;

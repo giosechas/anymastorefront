@@ -12,6 +12,8 @@ export interface AnimaDefinition {
   name: string;
   tagline: string;
   swatch: string;
+  /** Exact Shopify product tag used to group this anima's products. */
+  tag: string;
 }
 
 export const ANIME: AnimaDefinition[] = [
@@ -21,6 +23,7 @@ export const ANIME: AnimaDefinition[] = [
     name: 'Leopard',
     tagline: 'Per i giorni di energia feroce.',
     swatch: 'anima-tile-leopard',
+    tag: 'LEOPARD',
   },
   {
     key: 'panther',
@@ -28,6 +31,7 @@ export const ANIME: AnimaDefinition[] = [
     name: 'Panther',
     tagline: 'Per i momenti di profondità affilata.',
     swatch: 'anima-tile-panther',
+    tag: 'PANTHER',
   },
   {
     key: 'candyRosa',
@@ -35,6 +39,7 @@ export const ANIME: AnimaDefinition[] = [
     name: 'Candy Rosa',
     tagline: 'Per le giornate di intensità dolce.',
     swatch: 'anima-tile-candy-rosa',
+    tag: 'CANDY ROSA',
   },
   {
     key: 'candyTiffany',
@@ -42,6 +47,7 @@ export const ANIME: AnimaDefinition[] = [
     name: 'Candy Tiffany',
     tagline: 'Per la leggerezza che sorprende.',
     swatch: 'anima-tile-candy-tiffany',
+    tag: 'CANDY TIFFANY',
   },
   {
     key: 'street',
@@ -49,6 +55,7 @@ export const ANIME: AnimaDefinition[] = [
     name: 'Street',
     tagline: 'Per la libertà autentica.',
     swatch: 'anima-tile-street',
+    tag: 'STREET',
   },
   {
     key: 'urban',
@@ -56,5 +63,12 @@ export const ANIME: AnimaDefinition[] = [
     name: 'Urban',
     tagline: 'Per le notti intense.',
     swatch: 'anima-tile-urban',
+    tag: 'URBAN',
   },
 ];
+
+export function findAnimaByCollectionHandle(
+  handle: string | undefined | null,
+): AnimaDefinition | undefined {
+  return ANIME.find((a) => a.handle === handle);
+}

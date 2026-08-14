@@ -11,9 +11,11 @@ import type {ProductFragment} from 'storefrontapi.generated';
 export function ProductForm({
   productOptions,
   selectedVariant,
+  buttonClassName,
 }: {
   productOptions: MappedProductOptions[];
   selectedVariant: ProductFragment['selectedOrFirstAvailableVariant'];
+  buttonClassName?: string;
 }) {
   const navigate = useNavigate();
   const {open} = useAside();
@@ -102,6 +104,7 @@ export function ProductForm({
         );
       })}
       <AddToCartButton
+        className={buttonClassName}
         disabled={!selectedVariant || !selectedVariant.availableForSale}
         onClick={() => {
           open('cart');
