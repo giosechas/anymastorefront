@@ -1,6 +1,7 @@
 import {Suspense} from 'react';
 import {Await, NavLink} from 'react-router';
 import type {FooterQuery, HeaderQuery} from 'storefrontapi.generated';
+import logoNegative from '~/assets/anyma-logo-negative.svg';
 
 interface FooterProps {
   footer: Promise<FooterQuery | null>;
@@ -18,13 +19,22 @@ export function Footer({
       <Await resolve={footerPromise}>
         {(footer) => (
           <footer className="footer">
-            {footer?.menu && header.shop.primaryDomain?.url && (
-              <FooterMenu
-                menu={footer.menu}
-                primaryDomainUrl={header.shop.primaryDomain.url}
-                publicStoreDomain={publicStoreDomain}
-              />
-            )}
+            <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-6 py-14 text-center">
+              <img src={logoNegative} alt="Anyma Beauty" className="h-9 w-auto" />
+              <p className="font-display text-sm uppercase tracking-[0.25em] text-paper/80">
+                Rivela chi sei
+              </p>
+              {footer?.menu && header.shop.primaryDomain?.url && (
+                <FooterMenu
+                  menu={footer.menu}
+                  primaryDomainUrl={header.shop.primaryDomain.url}
+                  publicStoreDomain={publicStoreDomain}
+                />
+              )}
+              <p className="text-xs uppercase tracking-widest text-paper/50">
+                © {new Date().getFullYear()} Anyma Beauty
+              </p>
+            </div>
           </footer>
         )}
       </Await>

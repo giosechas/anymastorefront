@@ -52,8 +52,10 @@ export async function createHydrogenRouterContext(
       cache,
       waitUntil,
       session,
-      // Or detect from URL path based on locale subpath, cookies, or any other strategy
-      i18n: {language: 'EN', country: 'US'},
+      // Italy is the primary market (Brand Book v25). Markets are set to
+      // `none` in this scaffold — wire up Shopify Markets subfolders/domains
+      // here once EN/ES locales are ready.
+      i18n: {language: 'IT', country: 'IT'},
       cart: {
         queryFragment: CART_QUERY_FRAGMENT,
       },

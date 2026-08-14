@@ -7,6 +7,7 @@ import {
 } from '@shopify/hydrogen';
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
+import logoPositive from '~/assets/anyma-logo-positive.svg';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -26,8 +27,8 @@ export function Header({
   const {shop, menu} = header;
   return (
     <header className="header">
-      <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong>{shop.name}</strong>
+      <NavLink prefetch="intent" to="/" end aria-label={shop.name}>
+        <img src={logoPositive} alt={shop.name} className="h-6 w-auto md:h-7" />
       </NavLink>
       <HeaderMenu
         menu={menu}
@@ -226,6 +227,6 @@ function activeLinkStyle({
 }) {
   return {
     fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : 'black',
+    color: isPending ? 'grey' : 'var(--nero)',
   };
 }

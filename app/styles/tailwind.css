@@ -4,3 +4,35 @@
  */
 
 @import 'tailwindcss';
+
+/**
+ * ANYMA BEAUTY — brand tokens (Brand Book v25)
+ */
+:root {
+  --nero: #231f20; /* Primary — from logo artwork, NOT #1A1A1A */
+  --gold: #c8a96e; /* Goldrose — identity accent */
+  --paper: #faf9f7; /* Background */
+  --fuchsia: #ff5fa0; /* Impact only — never in UI/nav */
+
+  /* Themes the logo SVGs (fill: var(--anyma-ink) / var(--anyma-paper)) */
+  --anyma-ink: var(--nero);
+  --anyma-paper: var(--paper);
+
+  --font-display: 'Artezy Light', 'Georgia', serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+@theme inline {
+  --color-nero: var(--nero);
+  --color-gold: var(--gold);
+  --color-paper: var(--paper);
+  --color-fuchsia: var(--fuchsia);
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+}
+
+body {
+  background-color: var(--paper);
+  color: var(--nero);
+  font-family: var(--font-sans);
+}

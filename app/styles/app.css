@@ -3,9 +3,9 @@
   --cart-aside-summary-height-with-discount: 300px;
   --cart-aside-summary-height: 250px;
   --grid-item-width: 355px;
-  --header-height: 64px;
-  --color-dark: #000;
-  --color-light: #fff;
+  --header-height: 72px;
+  --color-dark: var(--nero);
+  --color-light: var(--paper);
 }
 
 img {
@@ -227,13 +227,22 @@ button.reset:hover:not(:has(> *)) {
 */
 .header {
   align-items: center;
-  background: #fff;
+  background: var(--paper);
+  border-bottom: 1px solid rgb(35 31 32 / 8%);
   display: flex;
   height: var(--header-height);
-  padding: 0 1rem;
+  padding: 0 1.5rem;
   position: sticky;
   top: 0;
   z-index: 1;
+}
+
+.header-menu-desktop,
+.header-menu-mobile,
+.header-ctas {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.8rem;
 }
 
 .header-menu-mobile-toggle {
@@ -409,6 +418,54 @@ button.reset:hover:not(:has(> *)) {
   flex: row;
   align-items: center;
   gap: 1rem;
+}
+
+/*
+* --------------------------------------------------
+* Anima tiles (home page) — placeholder textures until
+* real collection photography is imported via CSV
+* --------------------------------------------------
+*/
+.anima-tile-leopard {
+  background:
+    radial-gradient(circle at 20% 30%, rgb(35 31 32 / 55%) 0 6%, transparent 7%),
+    radial-gradient(circle at 55% 65%, rgb(35 31 32 / 55%) 0 8%, transparent 9%),
+    radial-gradient(circle at 80% 25%, rgb(35 31 32 / 55%) 0 5%, transparent 6%),
+    radial-gradient(circle at 35% 85%, rgb(35 31 32 / 55%) 0 7%, transparent 8%),
+    radial-gradient(circle at 90% 80%, rgb(35 31 32 / 55%) 0 6%, transparent 7%),
+    linear-gradient(135deg, #c8a96e, #8a6a3c);
+}
+
+.anima-tile-panther {
+  background: linear-gradient(160deg, #3a3536 0%, var(--nero) 55%, #000 100%);
+}
+
+.anima-tile-candy-rosa {
+  background: linear-gradient(160deg, #ffe3ef 0%, var(--fuchsia) 130%);
+}
+
+.anima-tile-candy-tiffany {
+  background: linear-gradient(160deg, #e3fbf6 0%, #6fcfc0 130%);
+}
+
+.anima-tile-street {
+  background:
+    repeating-linear-gradient(
+      115deg,
+      rgb(255 255 255 / 8%) 0 2px,
+      transparent 2px 10px
+    ),
+    linear-gradient(160deg, #6f88ad 0%, #33455e 100%);
+}
+
+.anima-tile-urban {
+  background:
+    repeating-linear-gradient(
+      115deg,
+      rgb(255 255 255 / 6%) 0 2px,
+      transparent 2px 10px
+    ),
+    linear-gradient(160deg, #2a3244 0%, #10131c 100%);
 }
 
 /*
