@@ -105,7 +105,7 @@ export default function Product() {
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-10 sm:py-16">
-      <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-16">
+      <div className="grid grid-cols-1 items-start gap-10 sm:grid-cols-2 sm:gap-16">
         <ProductGallery images={product.images.nodes} />
 
         <div>

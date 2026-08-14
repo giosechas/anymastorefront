@@ -13,7 +13,7 @@ export function ProductGallery({
   if (!active) return <div className="aspect-square bg-nero/5" />;
 
   return (
-    <div className="flex flex-col gap-3 sm:flex-row-reverse">
+    <div className="flex flex-col items-start gap-3 sm:flex-row-reverse">
       <div className="aspect-square min-w-0 flex-1 bg-nero/5">
         <Image
           data={active}
