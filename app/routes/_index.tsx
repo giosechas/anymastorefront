@@ -7,6 +7,8 @@ import {ProductItem} from '~/components/ProductItem';
 import {MockShopNotice} from '~/components/MockShopNotice';
 import {ANIME, type AnimaKey} from '~/lib/animas';
 import heroAllModels from '~/assets/images/hero-allmodels.webp';
+import sealPositive from '~/assets/images/seal-y-positive.png';
+import sealNegative from '~/assets/images/seal-y-negative.png';
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -56,10 +58,12 @@ export default function Homepage() {
     <div className="home">
       {data.isShopLinked ? null : <MockShopNotice />}
       <Hero />
+      <SealDivider bg="light" />
       <AnimeGrid
         collections={data.animeCollections as Record<AnimaKey, any>}
       />
       <BrandStoryTeaser />
+      <SealDivider bg="light" />
       <RecommendedProducts products={data.recommendedProducts} />
     </div>
   );
@@ -103,6 +107,21 @@ function Hero() {
         </Link>
       </div>
     </section>
+  );
+}
+
+function SealDivider({bg}: {bg: 'light' | 'dark'}) {
+  const seal = bg === 'light' ? sealPositive : sealNegative;
+  const line = bg === 'light' ? 'bg-nero/15' : 'bg-paper/25';
+  const container = bg === 'light' ? 'bg-paper' : 'bg-nero';
+  return (
+    <div
+      className={`flex items-center justify-center gap-6 px-6 py-10 ${container}`}
+    >
+      <span className={`h-px w-16 sm:w-24 ${line}`} />
+      <img src={seal} alt="" aria-hidden="true" className="h-8 w-auto sm:h-10" />
+      <span className={`h-px w-16 sm:w-24 ${line}`} />
+    </div>
   );
 }
 
@@ -159,7 +178,7 @@ function AnimeGrid({
 
 function BrandStoryTeaser() {
   return (
-    <section className="border-y border-nero/10 bg-paper px-6 py-20 text-center sm:py-28">
+    <section className="bg-paper px-6 py-20 text-center sm:py-28">
       <blockquote className="font-display mx-auto max-w-2xl text-2xl uppercase tracking-[0.03em] text-nero sm:text-3xl">
         &ldquo;Non esiste una sola te.&rdquo;
       </blockquote>
