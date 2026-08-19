@@ -7,7 +7,18 @@ import {
 } from '@shopify/hydrogen';
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
+import {ANIME} from '~/lib/animas';
 import logoPositive from '~/assets/anyma-logo-positive.svg';
+import sealY from '~/assets/images/seal-y-positive.png';
+
+const MARQUEE_ITEMS = [
+  {icon: '🎁', text: 'Sconto esclusivo per chi si iscrive'},
+  {icon: '🚚', text: 'Spedizione in 48h'},
+];
+
+// Shopify menu titles hidden from the header nav — "Home" is redundant
+// with the logo (which links home) and "Catalogo" is off for now.
+const HIDDEN_MENU_TITLES = ['home', 'catalogo'];
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -26,18 +37,46 @@ export function Header({
 }: HeaderProps) {
   const {shop, menu} = header;
   return (
-    <header className="header">
-      <NavLink prefetch="intent" to="/" end aria-label={shop.name}>
-        <img src={logoPositive} alt={shop.name} className="h-6 w-auto md:h-7" />
-      </NavLink>
-      <HeaderMenu
-        menu={menu}
-        viewport="desktop"
-        primaryDomainUrl={header.shop.primaryDomain.url}
-        publicStoreDomain={publicStoreDomain}
-      />
-      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
-    </header>
+    <div className="header-wrap">
+      <header className="header">
+        <NavLink prefetch="intent" to="/" end aria-label={shop.name}>
+          <img
+            src={logoPositive}
+            alt={shop.name}
+            className="h-8 w-auto md:h-10"
+          />
+        </NavLink>
+        <HeaderMenu
+          menu={menu}
+          viewport="desktop"
+          primaryDomainUrl={header.shop.primaryDomain.url}
+          publicStoreDomain={publicStoreDomain}
+        />
+        <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+      </header>
+      <MarqueeBar />
+    </div>
+  );
+}
+
+function MarqueeBar() {
+  const items = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS, ...MARQUEE_ITEMS];
+  return (
+    <div className="marquee-bar" aria-hidden="true">
+      <div className="marquee-bar-track">
+        {[0, 1].map((rep) => (
+          <div className="marquee-bar-track-group" key={rep}>
+            {items.map((item, i) => (
+              <span className="marquee-bar-item" key={`${rep}-${i}`}>
+                <span>{item.icon}</span>
+                <span>{item.text}</span>
+                <img src={sealY} alt="" className="marquee-bar-sep" />
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -55,20 +94,94 @@ export function HeaderMenu({
   const className = `header-menu-${viewport}`;
   const {close} = useAside();
 
+  const visibleItems = (menu || FALLBACK_HEADER_MENU).items.filter(
+    (item) => !HIDDEN_MENU_TITLES.includes(item.title.trim().toLowerCase()),
+  );
+
   return (
     <nav className={className} role="navigation">
-      {viewport === 'mobile' && (
-        <NavLink
-          end
-          onClick={close}
-          prefetch="intent"
-          style={activeLinkStyle}
-          to="/"
-        >
-          Home
-        </NavLink>
+      {viewport === 'desktop' ? (
+        <div className="header-menu-item header-menu-anime">
+          <span>Le Anyme</span>
+          <div className="header-menu-anime-panel">
+            <NavLink
+              className="header-menu-anime-all"
+              onClick={close}
+              prefetch="intent"
+              to="/collections/all"
+            >
+              Tutte le Anyme
+            </NavLink>
+            {ANIME.map((anima) => (
+              <NavLink
+                key={anima.key}
+                onClick={close}
+                prefetch="intent"
+                to={`/collections/${anima.handle}`}
+              >
+                {anima.name}
+              </NavLink>
+            ))}
+            <p className="header-menu-anime-label">Pack per Anyma</p>
+            {ANIME.map((anima) => (
+              <NavLink
+                key={`pack-${anima.key}`}
+                onClick={close}
+                prefetch="intent"
+                to={`/pack/${anima.handle}`}
+              >
+                {anima.name}
+              </NavLink>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="header-menu-item">
+          <span>Le Anyme</span>
+          <div className="header-menu-anime-mobile">
+            <NavLink
+              className="header-menu-anime-all"
+              onClick={close}
+              prefetch="intent"
+              to="/collections/all"
+            >
+              Tutte le Anyme
+            </NavLink>
+            {ANIME.map((anima) => (
+              <NavLink
+                key={anima.key}
+                onClick={close}
+                prefetch="intent"
+                to={`/collections/${anima.handle}`}
+              >
+                {anima.name}
+              </NavLink>
+            ))}
+            <p className="header-menu-anime-label">Pack per Anyma</p>
+            {ANIME.map((anima) => (
+              <NavLink
+                key={`pack-${anima.key}`}
+                onClick={close}
+                prefetch="intent"
+                to={`/pack/${anima.handle}`}
+              >
+                {anima.name}
+              </NavLink>
+            ))}
+          </div>
+        </div>
       )}
-      {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
+      <NavLink
+        className="header-menu-item"
+        end
+        onClick={close}
+        prefetch="intent"
+        style={activeLinkStyle}
+        to="/about"
+      >
+        La nostra storia
+      </NavLink>
+      {visibleItems.map((item) => {
         if (!item.url) return null;
 
         // if the url is internal, we strip the domain
@@ -92,16 +205,6 @@ export function HeaderMenu({
           </NavLink>
         );
       })}
-      <NavLink
-        className="header-menu-item"
-        end
-        onClick={close}
-        prefetch="intent"
-        style={activeLinkStyle}
-        to="/pages/about"
-      >
-        La nostra storia
-      </NavLink>
     </nav>
   );
 }

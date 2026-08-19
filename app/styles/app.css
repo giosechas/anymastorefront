@@ -239,9 +239,6 @@ button.reset:hover:not(:has(> *)) {
   display: flex;
   height: var(--header-height);
   padding: 0 1.5rem;
-  position: sticky;
-  top: 0;
-  z-index: 1;
 }
 
 .header-menu-desktop,
@@ -287,6 +284,155 @@ button.reset:hover:not(:has(> *)) {
 
 .header-ctas > * {
   min-width: fit-content;
+}
+
+.header-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.header-menu-anime {
+  position: relative;
+}
+
+.header-menu-anime-panel {
+  background: var(--paper);
+  border: 1px solid rgb(35 31 32 / 10%);
+  box-shadow: 0 12px 24px rgb(35 31 32 / 8%);
+  display: none;
+  flex-direction: column;
+  left: 0;
+  min-width: 220px;
+  padding: 0.75rem 0;
+  position: absolute;
+  top: 100%;
+  z-index: 2;
+}
+
+.header-menu-anime:hover .header-menu-anime-panel,
+.header-menu-anime:focus-within .header-menu-anime-panel {
+  display: flex;
+}
+
+.header-menu-anime-panel a {
+  color: var(--nero);
+  padding: 0.5rem 1.25rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: 0.85rem;
+}
+
+.header-menu-anime-panel a:hover {
+  background: rgb(200 169 110 / 12%);
+}
+
+.header-menu-anime-all {
+  border-bottom: 1px solid rgb(35 31 32 / 10%);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  padding-bottom: 0.75rem;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  font-size: 0.75rem !important;
+}
+
+.header-menu-anime-label {
+  border-top: 1px solid rgb(35 31 32 / 10%);
+  color: var(--gold);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  margin: 0.5rem 0 0.25rem;
+  padding: 0.75rem 1.25rem 0.25rem;
+  text-transform: uppercase;
+}
+
+.header-menu-anime-mobile {
+  display: flex;
+  flex-direction: column;
+  grid-gap: 0.6rem;
+  padding-left: 1rem;
+}
+
+.header-menu-anime-mobile a {
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.header-menu-anime-mobile .header-menu-anime-all {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  opacity: 1;
+}
+
+.header-menu-anime-mobile .header-menu-anime-label {
+  border-top: none;
+  padding: 0.25rem 0 0;
+  margin: 0.25rem 0 0;
+}
+
+/*
+* --------------------------------------------------
+* components/MarqueeBar
+* --------------------------------------------------
+*/
+.marquee-bar {
+  background: var(--gold);
+  border-top: 1px solid rgb(35 31 32 / 12%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee-bar-track {
+  animation: marquee-scroll 28s linear infinite;
+  display: inline-flex;
+  width: max-content;
+}
+
+.marquee-bar-track-group {
+  display: inline-flex;
+}
+
+.marquee-bar:hover .marquee-bar-track {
+  animation-play-state: paused;
+}
+
+.marquee-bar-item {
+  align-items: center;
+  color: var(--nero);
+  display: inline-flex;
+  font-size: 0.72rem;
+  font-weight: 600;
+  gap: 0.5rem;
+  letter-spacing: 0.12em;
+  padding: 0.5rem 1.5rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.marquee-bar-sep {
+  align-self: center;
+  height: 0.85rem;
+  opacity: 0.8;
+  width: auto;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-bar-track {
+    animation: none;
+  }
 }
 
 /*
