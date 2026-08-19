@@ -36,7 +36,7 @@ export function YRating({
     <div
       className="flex items-center gap-3"
       role="img"
-      aria-label={`${rating} su 5 Anime`}
+      aria-label={`${rating} su 5 Anyme`}
     >
       <div className="flex gap-1">
         {Array.from({length: 5}).map((_, i) => (

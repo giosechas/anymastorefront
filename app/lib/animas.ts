@@ -88,3 +88,8 @@ export function findAnimaByCollectionHandle(
 ): AnimaDefinition | undefined {
   return ANIME.find((a) => a.handle === handle);
 }
+
+/** /pack/$handle expects the slug without the "anima-" prefix. */
+export function getPackPath(anima: AnimaDefinition): string {
+  return `/pack/${anima.handle.replace(/^anima-/, '')}`;
+}

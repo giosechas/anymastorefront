@@ -26,7 +26,7 @@ export async function loader({context, params}: Route.LoaderArgs) {
   const anima = findAnimaByCollectionHandle(animaHandle);
 
   if (!anima) {
-    throw new Response('Anima non trovata', {status: 404});
+    throw new Response('Anyma non trovata', {status: 404});
   }
 
   const {storefront} = context;
@@ -87,14 +87,14 @@ export default function Pack() {
         to={`/collections/${anima.handle}`}
         className="text-xs uppercase tracking-[0.15em] text-nero/50 hover:text-nero"
       >
-        ← Anima {anima.name}
+        ← Anyma {anima.name}
       </Link>
 
       <h1 className="font-display mt-4 text-3xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
         Componi il tuo Pack
       </h1>
       <p className="mt-2 text-sm text-nero/70">
-        Un rossetto, un gloss, un mascara — la tua Anima {anima.name} in una
+        Un rossetto, un gloss, un mascara — la tua Anyma {anima.name} in una
         sola scatola.
       </p>
 

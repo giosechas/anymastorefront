@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import {useParallaxOffset} from '~/hooks/useParallaxOffset';
 
 /**
  * Moves the image vertically inside its (overflow-hidden) container as the
@@ -18,41 +18,10 @@ export function ParallaxImage({
   strength?: number;
   objectPosition?: string;
 }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [offset, setOffset] = useState(0);
-
-  useEffect(() => {
-    let ticking = false;
-
-    const update = () => {
-      ticking = false;
-      const el = containerRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight || 1;
-      const center = rect.top + rect.height / 2;
-      const progress = (center - vh / 2) / (vh / 2 + rect.height / 2);
-      setOffset(Math.max(-1, Math.min(1, progress)) * strength);
-    };
-
-    const onScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        window.requestAnimationFrame(update);
-      }
-    };
-
-    update();
-    window.addEventListener('scroll', onScroll, {passive: true});
-    window.addEventListener('resize', onScroll);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-    };
-  }, [strength]);
+  const {ref, offset} = useParallaxOffset<HTMLDivElement>(strength);
 
   return (
-    <div ref={containerRef} className={`relative overflow-hidden ${className}`}>
+    <div ref={ref} className={`relative overflow-hidden ${className}`}>
       <img
         src={src}
         alt={alt}

@@ -4,7 +4,14 @@ import {Suspense, useEffect, useState} from 'react';
 import type {RecommendedProductsQuery} from 'storefrontapi.generated';
 import {ProductItem} from '~/components/ProductItem';
 import {MockShopNotice} from '~/components/MockShopNotice';
-import {ANIME, getAnimaGalleryImages, type AnimaDefinition} from '~/lib/animas';
+import {ScrollReveal} from '~/components/ScrollReveal';
+import {useParallaxOffset} from '~/hooks/useParallaxOffset';
+import {
+  ANIME,
+  getAnimaGalleryImages,
+  getPackPath,
+  type AnimaDefinition,
+} from '~/lib/animas';
 import heroImage1 from '~/assets/images/hero/hero-1.webp';
 import heroImage2 from '~/assets/images/hero/hero-2.webp';
 import heroImage3 from '~/assets/images/hero/hero-3.webp';
@@ -54,7 +61,7 @@ export const meta: Route.MetaFunction = () => {
     {
       name: 'description',
       content:
-        'Anyma Beauty — il make-up con personalità. Scegli la tua Anima, poi il colore.',
+        'Anyma Beauty — il make-up con personalità. Scegli la tua Anyma, poi il colore.',
     },
   ];
 };
@@ -104,6 +111,7 @@ export default function Homepage() {
 
 function Hero() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const {ref: parallaxRef, offset} = useParallaxOffset<HTMLDivElement>(50);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -114,16 +122,23 @@ function Hero() {
 
   return (
     <section className="relative isolate flex min-h-[70vh] flex-col items-center justify-center overflow-hidden bg-nero px-6 py-20 text-center text-paper sm:min-h-[86vh] sm:py-6">
-      {HERO_IMAGES.map((src, i) => (
-        <img
-          key={src}
-          src={src}
-          alt="Le Anime di Anyma Beauty"
-          className={`absolute inset-0 -z-10 h-full w-full object-cover object-center transition-opacity duration-1000 ${
-            i === activeIndex ? 'opacity-100' : 'opacity-0'
-          }`}
-        />
-      ))}
+      <div
+        ref={parallaxRef}
+        className="absolute inset-0 -z-10 h-full w-full overflow-hidden will-change-transform"
+        style={{transform: `translateY(${offset}px)`}}
+      >
+        {HERO_IMAGES.map((src, i) => (
+          <img
+            key={src}
+            src={src}
+            alt="Le Anyme di Anyma Beauty"
+            className={`absolute inset-0 h-[130%] w-full object-cover object-center transition-opacity duration-1000 ${
+              i === activeIndex ? 'opacity-100' : 'opacity-0'
+            }`}
+            style={{top: '-15%'}}
+          />
+        ))}
+      </div>
       <div className="absolute inset-0 -z-10 bg-nero/55" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-t from-nero/70 via-transparent to-nero/20" />
       <p className="mb-6 text-xs uppercase tracking-[0.5em] text-gold">
@@ -145,7 +160,7 @@ function Hero() {
           href="#anime"
           className="border border-gold px-8 py-3 text-xs uppercase tracking-[0.2em] text-white transition-colors hover:bg-gold hover:text-nero"
         >
-          Scopri le tue Anime
+          Scopri le tue Anyme
         </a>
       </div>
       <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 gap-2">
@@ -170,13 +185,14 @@ function SealDivider({bg}: {bg: 'light' | 'dark'}) {
   const line = bg === 'light' ? 'bg-nero/15' : 'bg-paper/25';
   const container = bg === 'light' ? 'bg-paper' : 'bg-nero';
   return (
-    <div
+    <ScrollReveal
+      direction="up"
       className={`flex items-center justify-center gap-6 px-6 py-10 ${container}`}
     >
       <span className={`h-px w-16 sm:w-24 ${line}`} />
       <img src={seal} alt="" aria-hidden="true" className="h-8 w-auto sm:h-10" />
       <span className={`h-px w-16 sm:w-24 ${line}`} />
-    </div>
+    </ScrollReveal>
   );
 }
 
@@ -185,13 +201,13 @@ function AnimeGrid() {
     <section id="anime" className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
       <div className="mb-12 text-center">
         <p className="mb-3 text-xs uppercase tracking-[0.4em] text-gold">
-          Le 6 Anime
+          Le 6 Anyme
         </p>
         <h2 className="font-display text-3xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
-          Scegli la tua Anima
+          Scegli la tua Anyma
         </h2>
         <p className="mx-auto mt-4 whitespace-nowrap text-base text-nero/70">
-          Ogni Anima ha la sua estetica. Il pack che scegli non è un contenitore: è un simbolo.
+          Ogni Anyma ha la sua estetica. Il pack che scegli non è un contenitore: è un simbolo.
         </p>
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -260,7 +276,7 @@ function AnimaTile({anima}: {anima: AnimaDefinition}) {
       </Link>
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-nero/0 opacity-0 transition-all duration-200 group-hover:bg-nero/40 group-hover:opacity-100">
         <Link
-          to={`/pack/${anima.handle.replace(/^anima-/, '')}`}
+          to={getPackPath(anima)}
           className="pointer-events-auto border border-white bg-nero/80 px-6 py-3 text-xs uppercase tracking-[0.15em] text-white transition-colors hover:bg-nero"
         >
           Compra il Pack
@@ -323,6 +339,7 @@ function PhilosophyBlock({
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [initialDelay] = useState(() => Math.random() * PHILOSOPHY_ROTATE_MS);
+  const {ref: parallaxRef, offset} = useParallaxOffset<HTMLDivElement>(40);
 
   useEffect(() => {
     if (slides.length < 2) return;
@@ -342,33 +359,39 @@ function PhilosophyBlock({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2">
       <div
+        ref={parallaxRef}
         className={`relative aspect-[3/4] overflow-hidden sm:aspect-auto ${reverse ? 'sm:order-2' : ''}`}
       >
-        {slides.map((slide, i) =>
-          slide.kind === 'video' ? (
-            <video
-              key={slide.src}
-              src={slide.src}
-              poster={slide.poster}
-              autoPlay
-              muted
-              loop
-              playsInline
-              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-                i === activeIndex ? 'opacity-100' : 'opacity-0'
-              }`}
-            />
-          ) : (
-            <img
-              key={slide.src}
-              src={slide.src}
-              alt=""
-              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-                i === activeIndex ? 'opacity-100' : 'opacity-0'
-              }`}
-            />
-          ),
-        )}
+        <div
+          className="absolute inset-0 h-[130%] w-full will-change-transform"
+          style={{top: '-15%', transform: `translateY(${offset}px)`}}
+        >
+          {slides.map((slide, i) =>
+            slide.kind === 'video' ? (
+              <video
+                key={slide.src}
+                src={slide.src}
+                poster={slide.poster}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+                  i === activeIndex ? 'opacity-100' : 'opacity-0'
+                }`}
+              />
+            ) : (
+              <img
+                key={slide.src}
+                src={slide.src}
+                alt=""
+                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+                  i === activeIndex ? 'opacity-100' : 'opacity-0'
+                }`}
+              />
+            ),
+          )}
+        </div>
       </div>
       <div className="flex flex-col items-center justify-center px-8 py-16 text-center sm:px-12">
         <p className="font-display max-w-xl text-balance text-5xl uppercase leading-[1.05] tracking-[0.02em] text-nero sm:text-7xl lg:text-8xl">
@@ -384,19 +407,21 @@ function PhilosophyBlock({
 function BrandStoryTeaser() {
   return (
     <section className="bg-paper px-6 py-20 text-center sm:py-28">
-      <blockquote className="font-display mx-auto max-w-2xl text-2xl uppercase tracking-[0.03em] text-nero sm:text-3xl">
-        &ldquo;Non esiste una sola te.&rdquo;
-      </blockquote>
-      <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-nero/70">
-        Riveliamo le anime attraverso il make-up. Non vendiamo rossetti.
-        Creiamo gli oggetti con cui le persone si raccontano ogni giorno.
-      </p>
-      <Link
-        to="/pages/about"
-        className="mt-8 inline-block border-b border-nero pb-1 text-xs uppercase tracking-[0.2em] text-nero hover:text-gold hover:border-gold"
-      >
-        Scopri la nostra storia
-      </Link>
+      <ScrollReveal direction="up">
+        <blockquote className="font-display mx-auto max-w-2xl text-2xl uppercase tracking-[0.03em] text-nero sm:text-3xl">
+          &ldquo;Non esiste una sola te.&rdquo;
+        </blockquote>
+        <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-nero/70">
+          Riveliamo le anyme attraverso il make-up. Non vendiamo rossetti.
+          Creiamo gli oggetti con cui le persone si raccontano ogni giorno.
+        </p>
+        <Link
+          to="/about"
+          className="mt-8 inline-block border-b border-nero pb-1 text-xs uppercase tracking-[0.2em] text-nero hover:text-gold hover:border-gold"
+        >
+          Scopri la nostra storia
+        </Link>
+      </ScrollReveal>
     </section>
   );
 }
@@ -411,12 +436,14 @@ function RecommendedProducts({
       className="mx-auto max-w-6xl px-6 pb-24"
       aria-labelledby="recommended-products"
     >
-      <h2
-        id="recommended-products"
-        className="font-display mb-8 text-center text-2xl uppercase tracking-[0.03em] text-nero"
-      >
-        Prodotti in evidenza
-      </h2>
+      <ScrollReveal direction="up">
+        <h2
+          id="recommended-products"
+          className="font-display mb-8 text-center text-2xl uppercase tracking-[0.03em] text-nero"
+        >
+          Prodotti in evidenza
+        </h2>
+      </ScrollReveal>
       <Suspense fallback={<div className="text-center text-sm">Loading...</div>}>
         <Await resolve={products}>
           {(response) => (
@@ -442,22 +469,22 @@ function RecommendedProducts({
 function FoundersSection() {
   return (
     <section className="relative overflow-hidden bg-nero px-6 py-20 text-paper sm:py-28">
-      <div className="mx-auto max-w-3xl text-center">
+      <ScrollReveal direction="up" className="mx-auto max-w-3xl text-center">
         <p className="mb-4 text-xs uppercase tracking-[0.4em] text-gold">
           Solo per le prime 800 fondatrici
         </p>
         <h2 className="font-display text-4xl uppercase tracking-[0.03em] sm:text-5xl">
-          Diventa Anima Prima
+          Diventa Anyma Prima
         </h2>
         <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-paper/80">
-          Chi scegli oggi non è chi sceglierai domani — ma le prime 800 anime
+          Chi scegli oggi non è chi sceglierai domani — ma le prime 800 anyme
           che entrano nell'universo ANYMA ricevono privilegi che restano per
           sempre.
         </p>
-      </div>
+      </ScrollReveal>
 
       <div className="mx-auto mt-14 grid max-w-4xl grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-16">
-        <div className="text-center sm:text-left">
+        <ScrollReveal direction="left" className="text-center sm:text-left">
           <p className="mb-5 text-xs uppercase tracking-[0.2em] text-gold">
             I privilegi delle fondatrici
           </p>
@@ -475,13 +502,13 @@ function FoundersSection() {
                 Tessera d'acciaio numerata
               </span>
               <span className="text-paper/70">
-                il tuo posto tra le prime 800 anime.
+                il tuo posto tra le prime 800 anyme.
               </span>
             </li>
           </ul>
-        </div>
+        </ScrollReveal>
 
-        <div className="text-center sm:text-left">
+        <ScrollReveal direction="right" className="text-center sm:text-left">
           <p className="mb-5 text-xs uppercase tracking-[0.2em] text-gold">
             Al tuo primo acquisto
           </p>
@@ -497,7 +524,7 @@ function FoundersSection() {
                 Spedizione gratuita
               </span>
               <span className="text-paper/70">
-                sul trittico della tua Anima.
+                sul trittico della tua Anyma.
               </span>
             </li>
             <li className="flex flex-col sm:flex-row sm:items-baseline sm:gap-2">
@@ -507,7 +534,7 @@ function FoundersSection() {
               <span className="text-paper/70">con ogni trittico.</span>
             </li>
           </ul>
-        </div>
+        </ScrollReveal>
       </div>
 
       <div className="mt-14 text-center">
@@ -515,7 +542,7 @@ function FoundersSection() {
           to="/account/login"
           className="inline-block border border-gold px-10 py-4 text-xs uppercase tracking-[0.2em] text-white transition-colors hover:bg-gold hover:text-nero"
         >
-          Registrati e rivela la tua Anima
+          Registrati e rivela la tua Anyma
         </Link>
       </div>
     </section>

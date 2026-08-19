@@ -286,13 +286,13 @@ function StorySectionClosing() {
         className="relative z-10 px-6 pb-16 sm:px-12 sm:pb-24"
       >
         <h2 className="font-display text-4xl uppercase leading-[1.05] tracking-[0.02em] text-white sm:text-6xl">
-          Benvenuta tra le Anime
+          Benvenuta tra le Anyme
         </h2>
         <p className="mt-6 max-w-xl text-sm leading-relaxed text-white">
           Chi entra nell&rsquo;universo di ANYMA BEAUTY non diventa cliente:
           entra a far parte di un sistema narrativo. Non ti chiameremo mai
           &ldquo;cara cliente&rdquo; o &ldquo;consumatrice&rdquo;. Tu sei
-          un&rsquo;Anyma della nostra crew. E le anime non si contano.
+          un&rsquo;Anyma della nostra crew. E le anyme non si contano.
           Crescono.
         </p>
         <h3 className="font-display mt-6 text-2xl uppercase leading-tight tracking-[0.02em] text-gold sm:text-3xl">
@@ -304,7 +304,7 @@ function StorySectionClosing() {
           href="/#anime"
           className="mt-8 inline-block border border-white bg-[rgba(35,31,32,0.7)] px-8 py-3 text-xs uppercase tracking-[0.2em] text-white transition-colors hover:bg-white hover:text-nero"
         >
-          Scopri le tue Anime
+          Scopri le tue Anyme
         </a>
       </ScrollReveal>
     </section>

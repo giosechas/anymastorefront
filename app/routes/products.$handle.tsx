@@ -116,7 +116,7 @@ export default function Product() {
               to={`/collections/${anima.handle}`}
               className="mb-4 inline-block border border-gold px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-gold transition-colors hover:bg-gold hover:text-nero"
             >
-              Anima {anima.name}
+              Anyma {anima.name}
             </Link>
           )}
 
@@ -138,7 +138,7 @@ export default function Product() {
           {siblings.length > 1 && (
             <div className="mt-8">
               <p className="mb-2 text-xs uppercase tracking-[0.15em] text-nero/60">
-                Altri colori · Anima {anima?.name}
+                Altri colori · Anyma {anima?.name}
               </p>
               <div className="flex flex-wrap gap-3">
                 {siblings.map((sibling) => {

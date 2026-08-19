@@ -7,7 +7,7 @@ import {
 } from '@shopify/hydrogen';
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
-import {ANIME} from '~/lib/animas';
+import {ANIME, getPackPath} from '~/lib/animas';
 import logoPositive from '~/assets/anyma-logo-positive.svg';
 import sealY from '~/assets/images/seal-y-positive.png';
 
@@ -122,13 +122,13 @@ export function HeaderMenu({
                 {anima.name}
               </NavLink>
             ))}
-            <p className="header-menu-anime-label">Pack per Anyma</p>
+            <p className="header-menu-anime-label">Pack per Anyme</p>
             {ANIME.map((anima) => (
               <NavLink
                 key={`pack-${anima.key}`}
                 onClick={close}
                 prefetch="intent"
-                to={`/pack/${anima.handle}`}
+                to={getPackPath(anima)}
               >
                 {anima.name}
               </NavLink>
@@ -157,13 +157,13 @@ export function HeaderMenu({
                 {anima.name}
               </NavLink>
             ))}
-            <p className="header-menu-anime-label">Pack per Anyma</p>
+            <p className="header-menu-anime-label">Pack per Anyme</p>
             {ANIME.map((anima) => (
               <NavLink
                 key={`pack-${anima.key}`}
                 onClick={close}
                 prefetch="intent"
-                to={`/pack/${anima.handle}`}
+                to={getPackPath(anima)}
               >
                 {anima.name}
               </NavLink>
