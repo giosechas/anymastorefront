@@ -141,6 +141,7 @@ function Hero() {
       </div>
       <div className="absolute inset-0 -z-10 bg-nero/55" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-t from-nero/70 via-transparent to-nero/20" />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_20%,rgba(255,95,160,0.28),transparent_55%)]" />
       <p className="mb-6 text-xs uppercase tracking-[0.5em] text-gold">
         Anyma Beauty
       </p>
@@ -320,6 +321,7 @@ function PhilosophySection() {
         ]}
         quote="La personalità"
         subquote="non ha colore."
+        accent="fuchsia"
         reverse
       />
     </section>
@@ -330,11 +332,13 @@ function PhilosophyBlock({
   slides,
   quote,
   subquote,
+  accent = 'gold',
   reverse,
 }: {
   slides: PhilosophySlide[];
   quote: string;
   subquote: string;
+  accent?: 'gold' | 'fuchsia';
   reverse?: boolean;
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -397,7 +401,9 @@ function PhilosophyBlock({
         <p className="font-display max-w-xl text-balance text-5xl uppercase leading-[1.05] tracking-[0.02em] text-nero sm:text-7xl lg:text-8xl">
           {quote}
           <br />
-          <span className="text-gold">{subquote}</span>
+          <span className={accent === 'fuchsia' ? 'text-fuchsia' : 'text-gold'}>
+            {subquote}
+          </span>
         </p>
       </div>
     </div>
@@ -409,7 +415,8 @@ function BrandStoryTeaser() {
     <section className="bg-paper px-6 py-20 text-center sm:py-28">
       <ScrollReveal direction="up">
         <blockquote className="font-display mx-auto max-w-2xl text-2xl uppercase tracking-[0.03em] text-nero sm:text-3xl">
-          &ldquo;Non esiste una sola te.&rdquo;
+          <span className="text-fuchsia">&ldquo;</span>Non esiste una sola te.
+          <span className="text-fuchsia">&rdquo;</span>
         </blockquote>
         <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-nero/70">
           Riveliamo le anyme attraverso il make-up. Non vendiamo rossetti.
@@ -469,6 +476,7 @@ function RecommendedProducts({
 function FoundersSection() {
   return (
     <section className="relative overflow-hidden bg-nero px-6 py-20 text-paper sm:py-28">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_85%_0%,rgba(255,95,160,0.18),transparent_50%)]" />
       <ScrollReveal direction="up" className="mx-auto max-w-3xl text-center">
         <p className="mb-4 text-xs uppercase tracking-[0.4em] text-gold">
           Solo per le prime 800 fondatrici

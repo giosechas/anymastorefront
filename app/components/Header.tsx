@@ -8,7 +8,7 @@ import {
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
 import {ANIME, getPackPath} from '~/lib/animas';
-import logoPositive from '~/assets/anyma-logo-positive.svg';
+import logoPositive from '~/assets/anyma-logo-wordmark.png';
 import sealY from '~/assets/images/seal-y-positive.png';
 
 const MARQUEE_ITEMS = [
@@ -43,7 +43,7 @@ export function Header({
           <img
             src={logoPositive}
             alt={shop.name}
-            className="h-8 w-auto md:h-10"
+            className="h-11 w-auto md:h-14"
           />
         </NavLink>
         <HeaderMenu
