@@ -1,3 +1,9 @@
+/**
+ * Wrapped in Tailwind's `base` layer so its plain-element selectors
+ * (e.g. `a { color: #000 }`) don't win over Tailwind utility classes —
+ * unlayered CSS always beats layered CSS regardless of specificity.
+ */
+@layer base {
 body {
   font-family:
     system-ui,
@@ -136,4 +142,5 @@ code {
   border-radius: 4px;
   font-family: monospace;
   padding: 0.25rem;
+}
 }

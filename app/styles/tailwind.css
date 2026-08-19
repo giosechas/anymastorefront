@@ -18,6 +18,20 @@
 }
 
 /**
+ * Self-hosted so it isn't blocked by Hydrogen's default CSP (which doesn't
+ * allow fonts.googleapis.com) — the Google Fonts <link> was silently
+ * failing and every page was falling back to the system sans the whole
+ * time.
+ */
+@font-face {
+  font-family: 'Inter';
+  src: url('~/assets/fonts/inter-latin.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/**
  * ANYMA BEAUTY — brand tokens (Brand Book v25)
  */
 :root {
@@ -39,6 +53,11 @@
   --color-gold: var(--gold);
   --color-paper: var(--paper);
   --color-fuchsia: var(--fuchsia);
+  /* `@theme inline` replaces the default color palette instead of
+     extending it, so white/black (and every text-red-500 etc. utility)
+     silently generated no CSS. Restore the two we actually use. */
+  --color-white: #ffffff;
+  --color-black: #000000;
   --font-display: var(--font-display);
   --font-sans: var(--font-sans);
 }

@@ -1,3 +1,10 @@
+/**
+ * Wrapped in Tailwind's `components` layer so these named component
+ * classes don't win over Tailwind utility classes applied on the same
+ * element — unlayered CSS always beats layered CSS regardless of
+ * specificity (see reset.css for the bug this caused).
+ */
+@layer components {
 :root {
   --aside-width: 400px;
   --cart-aside-summary-height-with-discount: 300px;
@@ -699,4 +706,76 @@ button.reset:hover:not(:has(> *)) {
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
+}
+
+/*
+* --------------------------------------------------
+* routes/pages.$handle.tsx — Shopify Page rich text
+* --------------------------------------------------
+*/
+.brand-page-content {
+  color: var(--nero);
+  line-height: 1.7;
+}
+
+.brand-page-content h1,
+.brand-page-content h2 {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--nero);
+  font-size: 1.5rem;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  line-height: 1.25;
+}
+
+.brand-page-content h3 {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--gold);
+  font-size: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.brand-page-content p {
+  margin-bottom: 1.25rem;
+  font-size: 0.95rem;
+}
+
+.brand-page-content strong {
+  color: var(--nero);
+}
+
+.brand-page-content ul {
+  list-style: none;
+  margin: 0 0 1.25rem;
+  padding: 0;
+}
+
+.brand-page-content li {
+  padding-left: 1.25rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.brand-page-content li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+}
+
+.brand-page-content a {
+  color: var(--nero);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.brand-page-content a:hover {
+  color: var(--gold);
+}
 }

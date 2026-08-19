@@ -1,22 +1,51 @@
 import {Await, useLoaderData, Link} from 'react-router';
 import type {Route} from './+types/_index';
 import {Suspense, useEffect, useState} from 'react';
-import {Image} from '@shopify/hydrogen';
 import type {RecommendedProductsQuery} from 'storefrontapi.generated';
 import {ProductItem} from '~/components/ProductItem';
 import {MockShopNotice} from '~/components/MockShopNotice';
-import {ANIME, type AnimaKey} from '~/lib/animas';
+import {ANIME, getAnimaGalleryImages, type AnimaDefinition} from '~/lib/animas';
 import heroImage1 from '~/assets/images/hero/hero-1.webp';
 import heroImage2 from '~/assets/images/hero/hero-2.webp';
 import heroImage3 from '~/assets/images/hero/hero-3.webp';
 import heroImage4 from '~/assets/images/hero/hero-4.webp';
 import heroImage5 from '~/assets/images/hero/hero-5.webp';
+import heroImage6 from '~/assets/images/hero/hero-6.webp';
+import heroImage7 from '~/assets/images/hero/hero-7.webp';
+import heroImage8 from '~/assets/images/hero/hero-8.webp';
 import sealPositive from '~/assets/images/seal-y-positive.png';
 import sealNegative from '~/assets/images/seal-y-negative.png';
-import philosophyTruth from '~/assets/images/philosophy/truth.webp';
-import philosophyIdentity from '~/assets/images/philosophy/identity.webp';
+import philosophyTruth1 from '~/assets/images/philosophy/pool/truth1.webp';
+import philosophyTruth2 from '~/assets/images/philosophy/pool/truth2.webp';
+import philosophyTruth3 from '~/assets/images/philosophy/pool/truth3.webp';
+import philosophyTruth4 from '~/assets/images/philosophy/pool/truth4.webp';
+import philosophyIdentity1 from '~/assets/images/philosophy/pool/identity1.webp';
+import philosophyIdentity2 from '~/assets/images/philosophy/pool/identity2.webp';
+import philosophyIdentity3 from '~/assets/images/philosophy/pool/identity3.webp';
 
-const HERO_IMAGES = [heroImage1, heroImage2, heroImage3, heroImage4, heroImage5];
+const PHILOSOPHY_TRUTH_IMAGES = [
+  philosophyTruth1,
+  philosophyTruth2,
+  philosophyTruth3,
+  philosophyTruth4,
+];
+const PHILOSOPHY_IDENTITY_IMAGES = [
+  philosophyIdentity1,
+  philosophyIdentity2,
+  philosophyIdentity3,
+];
+const PHILOSOPHY_ROTATE_MS = 4000;
+
+const HERO_IMAGES = [
+  heroImage1,
+  heroImage2,
+  heroImage3,
+  heroImage4,
+  heroImage5,
+  heroImage6,
+  heroImage7,
+  heroImage8,
+];
 const HERO_ROTATE_MS = 5000;
 
 export const meta: Route.MetaFunction = () => {
@@ -38,13 +67,8 @@ export async function loader(args: Route.LoaderArgs) {
 }
 
 async function loadCriticalData({context}: Route.LoaderArgs) {
-  const animeCollections = await context.storefront.query(
-    ANIME_COLLECTIONS_QUERY,
-  );
-
   return {
     isShopLinked: Boolean(context.env.PUBLIC_STORE_DOMAIN),
-    animeCollections,
   };
 }
 
@@ -68,13 +92,12 @@ export default function Homepage() {
       {data.isShopLinked ? null : <MockShopNotice />}
       <Hero />
       <SealDivider bg="light" />
-      <AnimeGrid
-        collections={data.animeCollections as Record<AnimaKey, any>}
-      />
+      <AnimeGrid />
       <PhilosophySection />
       <BrandStoryTeaser />
       <SealDivider bg="light" />
       <RecommendedProducts products={data.recommendedProducts} />
+      <FoundersSection />
     </div>
   );
 }
@@ -90,13 +113,13 @@ function Hero() {
   }, []);
 
   return (
-    <section className="relative isolate flex min-h-[86vh] flex-col items-center justify-center overflow-hidden bg-nero px-6 text-center text-paper">
+    <section className="relative isolate flex min-h-[70vh] flex-col items-center justify-center overflow-hidden bg-nero px-6 py-20 text-center text-paper sm:min-h-[86vh] sm:py-6">
       {HERO_IMAGES.map((src, i) => (
         <img
           key={src}
           src={src}
           alt="Le Anime di Anyma Beauty"
-          className={`absolute inset-0 -z-10 h-full w-full object-cover object-top transition-opacity duration-1000 ${
+          className={`absolute inset-0 -z-10 h-full w-full object-cover object-center transition-opacity duration-1000 ${
             i === activeIndex ? 'opacity-100' : 'opacity-0'
           }`}
         />
@@ -124,12 +147,6 @@ function Hero() {
         >
           Scopri le tue Anime
         </a>
-        <Link
-          to="/pages/about"
-          className="px-8 py-3 text-xs uppercase tracking-[0.2em] text-white underline underline-offset-4 transition-colors hover:text-gold"
-        >
-          La nostra storia
-        </Link>
       </div>
       <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 gap-2">
         {HERO_IMAGES.map((src, i) => (
@@ -163,11 +180,7 @@ function SealDivider({bg}: {bg: 'light' | 'dark'}) {
   );
 }
 
-function AnimeGrid({
-  collections,
-}: {
-  collections: Record<AnimaKey, {handle: string; image: any} | null>;
-}) {
+function AnimeGrid() {
   return (
     <section id="anime" className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
       <div className="mb-12 text-center">
@@ -182,47 +195,113 @@ function AnimeGrid({
         </p>
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {ANIME.map((anima) => {
-          const collection = collections?.[anima.key];
-          const image = collection?.image;
-          return (
-            <Link
-              key={anima.key}
-              to={`/collections/${anima.handle}`}
-              className={`group relative flex aspect-[4/5] flex-col justify-end overflow-hidden p-6 ${anima.swatch}`}
-            >
-              {image && (
-                <Image
-                  data={image}
-                  aspectRatio="4/5"
-                  sizes="(min-width: 64em) 33vw, (min-width: 40em) 50vw, 100vw"
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              )}
-              <div className="relative">
-                <h3 className="font-display text-2xl uppercase tracking-[0.05em] text-paper">
-                  {anima.name}
-                </h3>
-                <p className="mt-1 text-xs text-paper/80">{anima.tagline}</p>
-              </div>
-            </Link>
-          );
-        })}
+        {ANIME.map((anima) => (
+          <AnimaTile key={anima.key} anima={anima} />
+        ))}
       </div>
     </section>
   );
 }
 
+const ANIMA_TILE_ROTATE_MS = 5000;
+
+function AnimaTile({anima}: {anima: AnimaDefinition}) {
+  const images = getAnimaGalleryImages(anima);
+  const [activeIndex, setActiveIndex] = useState(0);
+  // Randomized per-tile so the 6 tiles don't all flip in sync.
+  const [initialDelay] = useState(() => Math.random() * ANIMA_TILE_ROTATE_MS);
+
+  useEffect(() => {
+    if (images.length < 2) return;
+    let intervalId: ReturnType<typeof setInterval>;
+    const nextRandomIndex = (current: number) => {
+      if (images.length < 3) return (current + 1) % images.length;
+      let next = current;
+      while (next === current) next = Math.floor(Math.random() * images.length);
+      return next;
+    };
+    const timeoutId = setTimeout(() => {
+      setActiveIndex((i) => nextRandomIndex(i));
+      intervalId = setInterval(() => {
+        setActiveIndex((i) => nextRandomIndex(i));
+      }, ANIMA_TILE_ROTATE_MS);
+    }, initialDelay);
+    return () => {
+      clearTimeout(timeoutId);
+      clearInterval(intervalId);
+    };
+  }, [images.length, initialDelay]);
+
+  return (
+    <div
+      className={`group relative aspect-[4/5] overflow-hidden ${anima.swatch}`}
+    >
+      <Link
+        to={`/collections/${anima.handle}`}
+        className="absolute inset-0 flex flex-col justify-end p-6"
+      >
+        {images.map((src, i) => (
+          <img
+            key={src}
+            src={src}
+            alt=""
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+              i === activeIndex ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+        ))}
+        <div className="absolute inset-0 bg-gradient-to-t from-nero/70 via-nero/5 to-transparent" />
+        <div className="relative">
+          <h3 className="font-display text-2xl uppercase tracking-[0.05em] text-paper">
+            {anima.name}
+          </h3>
+          <p className="mt-1 text-xs text-paper/80">{anima.tagline}</p>
+        </div>
+      </Link>
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-nero/0 opacity-0 transition-all duration-200 group-hover:bg-nero/40 group-hover:opacity-100">
+        <Link
+          to={`/pack/${anima.handle.replace(/^anima-/, '')}`}
+          className="pointer-events-auto border border-white bg-nero/80 px-6 py-3 text-xs uppercase tracking-[0.15em] text-white transition-colors hover:bg-nero"
+        >
+          Compra il Pack
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+type PhilosophySlide =
+  | {kind: 'image'; src: string}
+  | {kind: 'video'; src: string; poster: string};
+
 function PhilosophySection() {
   return (
     <section className="bg-paper">
       <PhilosophyBlock
-        image={philosophyTruth}
+        slides={[
+          ...PHILOSOPHY_TRUTH_IMAGES.map(
+            (src): PhilosophySlide => ({kind: 'image', src}),
+          ),
+          {
+            kind: 'video',
+            src: '/videos/philosophy/truth-beach.mp4',
+            poster: '/videos/philosophy/posters/truth-beach.jpg',
+          },
+        ]}
         quote="La bellezza non è coerenza."
         subquote="È verità."
       />
       <PhilosophyBlock
-        image={philosophyIdentity}
+        slides={[
+          ...PHILOSOPHY_IDENTITY_IMAGES.map(
+            (src): PhilosophySlide => ({kind: 'image', src}),
+          ),
+          {
+            kind: 'video',
+            src: '/videos/philosophy/identity-hand.mp4',
+            poster: '/videos/philosophy/posters/identity-hand.jpg',
+          },
+        ]}
         quote="La personalità"
         subquote="non ha colore."
         reverse
@@ -232,25 +311,67 @@ function PhilosophySection() {
 }
 
 function PhilosophyBlock({
-  image,
+  slides,
   quote,
   subquote,
   reverse,
 }: {
-  image: string;
+  slides: PhilosophySlide[];
   quote: string;
   subquote: string;
   reverse?: boolean;
 }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [initialDelay] = useState(() => Math.random() * PHILOSOPHY_ROTATE_MS);
+
+  useEffect(() => {
+    if (slides.length < 2) return;
+    let intervalId: ReturnType<typeof setInterval>;
+    const timeoutId = setTimeout(() => {
+      setActiveIndex((i) => (i + 1) % slides.length);
+      intervalId = setInterval(() => {
+        setActiveIndex((i) => (i + 1) % slides.length);
+      }, PHILOSOPHY_ROTATE_MS);
+    }, initialDelay);
+    return () => {
+      clearTimeout(timeoutId);
+      clearInterval(intervalId);
+    };
+  }, [slides.length, initialDelay]);
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2">
       <div
-        className={`aspect-[4/5] sm:aspect-auto ${reverse ? 'sm:order-2' : ''}`}
+        className={`relative aspect-[3/4] overflow-hidden sm:aspect-auto ${reverse ? 'sm:order-2' : ''}`}
       >
-        <img src={image} alt="" className="h-full w-full object-cover" />
+        {slides.map((slide, i) =>
+          slide.kind === 'video' ? (
+            <video
+              key={slide.src}
+              src={slide.src}
+              poster={slide.poster}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+                i === activeIndex ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+          ) : (
+            <img
+              key={slide.src}
+              src={slide.src}
+              alt=""
+              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+                i === activeIndex ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+          ),
+        )}
       </div>
-      <div className="flex flex-col items-center justify-center px-8 py-16 text-center sm:px-16">
-        <p className="font-display max-w-md text-balance text-3xl uppercase leading-[1.15] tracking-[0.02em] text-nero sm:text-4xl lg:text-5xl">
+      <div className="flex flex-col items-center justify-center px-8 py-16 text-center sm:px-12">
+        <p className="font-display max-w-xl text-balance text-5xl uppercase leading-[1.05] tracking-[0.02em] text-nero sm:text-7xl lg:text-8xl">
           {quote}
           <br />
           <span className="text-gold">{subquote}</span>
@@ -318,29 +439,88 @@ function RecommendedProducts({
   );
 }
 
-const ANIME_COLLECTIONS_QUERY = `#graphql
-  fragment AnimaCollection on Collection {
-    id
-    handle
-    title
-    image {
-      id
-      url
-      altText
-      width
-      height
-    }
-  }
-  query AnimeCollections($country: CountryCode, $language: LanguageCode)
-    @inContext(country: $country, language: $language) {
-    leopard: collection(handle: "anima-leopard") { ...AnimaCollection }
-    panther: collection(handle: "anima-panther") { ...AnimaCollection }
-    candyRosa: collection(handle: "anima-candy-rosa") { ...AnimaCollection }
-    candyTiffany: collection(handle: "anima-candy-tiffany") { ...AnimaCollection }
-    street: collection(handle: "anima-street") { ...AnimaCollection }
-    urban: collection(handle: "anima-urban") { ...AnimaCollection }
-  }
-` as const;
+function FoundersSection() {
+  return (
+    <section className="relative overflow-hidden bg-nero px-6 py-20 text-paper sm:py-28">
+      <div className="mx-auto max-w-3xl text-center">
+        <p className="mb-4 text-xs uppercase tracking-[0.4em] text-gold">
+          Solo per le prime 800 fondatrici
+        </p>
+        <h2 className="font-display text-4xl uppercase tracking-[0.03em] sm:text-5xl">
+          Diventa Anima Prima
+        </h2>
+        <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-paper/80">
+          Chi scegli oggi non è chi sceglierai domani — ma le prime 800 anime
+          che entrano nell'universo ANYMA ricevono privilegi che restano per
+          sempre.
+        </p>
+      </div>
+
+      <div className="mx-auto mt-14 grid max-w-4xl grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-16">
+        <div className="text-center sm:text-left">
+          <p className="mb-5 text-xs uppercase tracking-[0.2em] text-gold">
+            I privilegi delle fondatrici
+          </p>
+          <ul className="space-y-4 text-sm leading-relaxed text-paper/90">
+            <li className="flex flex-col sm:flex-row sm:items-baseline sm:gap-2">
+              <span className="font-display text-base uppercase tracking-[0.02em] text-paper">
+                Spedizione gratuita a vita
+              </span>
+              <span className="text-paper/70">
+                su ogni ordine, senza eccezioni.
+              </span>
+            </li>
+            <li className="flex flex-col sm:flex-row sm:items-baseline sm:gap-2">
+              <span className="font-display text-base uppercase tracking-[0.02em] text-paper">
+                Tessera d'acciaio numerata
+              </span>
+              <span className="text-paper/70">
+                il tuo posto tra le prime 800 anime.
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <div className="text-center sm:text-left">
+          <p className="mb-5 text-xs uppercase tracking-[0.2em] text-gold">
+            Al tuo primo acquisto
+          </p>
+          <ul className="space-y-4 text-sm leading-relaxed text-paper/90">
+            <li className="flex flex-col sm:flex-row sm:items-baseline sm:gap-2">
+              <span className="font-display text-base uppercase tracking-[0.02em] text-paper">
+                15% di benvenuto
+              </span>
+              <span className="text-paper/70">quando ti registri.</span>
+            </li>
+            <li className="flex flex-col sm:flex-row sm:items-baseline sm:gap-2">
+              <span className="font-display text-base uppercase tracking-[0.02em] text-paper">
+                Spedizione gratuita
+              </span>
+              <span className="text-paper/70">
+                sul trittico della tua Anima.
+              </span>
+            </li>
+            <li className="flex flex-col sm:flex-row sm:items-baseline sm:gap-2">
+              <span className="font-display text-base uppercase tracking-[0.02em] text-paper">
+                Tote Bag in omaggio
+              </span>
+              <span className="text-paper/70">con ogni trittico.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="mt-14 text-center">
+        <Link
+          to="/account/login"
+          className="inline-block border border-gold px-10 py-4 text-xs uppercase tracking-[0.2em] text-white transition-colors hover:bg-gold hover:text-nero"
+        >
+          Registrati e rivela la tua Anima
+        </Link>
+      </div>
+    </section>
+  );
+}
 
 const RECOMMENDED_PRODUCTS_QUERY = `#graphql
   fragment RecommendedProduct on Product {
