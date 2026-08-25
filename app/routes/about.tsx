@@ -45,7 +45,7 @@ function StoryHero() {
       </div>
       <ParallaxImage
         src={lipsHero}
-        strength={50}
+        strength={100}
         objectPosition="top"
         className="aspect-[4/5] sm:aspect-auto sm:h-full"
       />
@@ -61,21 +61,21 @@ function StorySectionOrigin() {
           direction="left"
           className="aspect-[3/4] w-full overflow-hidden rounded"
         >
-          <ParallaxImage src={sketchDesk} strength={22} className="h-full" />
+          <ParallaxImage src={sketchDesk} strength={45} className="h-full" />
         </ScrollReveal>
         <ScrollReveal
           direction="right"
           delay={120}
           className="mt-8 aspect-[3/4] w-full overflow-hidden rounded"
         >
-          <ParallaxImage src={sketchHand} strength={22} className="h-full" />
+          <ParallaxImage src={sketchHand} strength={45} className="h-full" />
         </ScrollReveal>
         <ScrollReveal
           direction="up"
           delay={240}
           className="col-span-2 aspect-[16/10] w-full overflow-hidden rounded"
         >
-          <ParallaxImage src={render3d} strength={30} className="h-full" />
+          <ParallaxImage src={render3d} strength={65} className="h-full" />
         </ScrollReveal>
       </div>
       <div className="flex flex-col justify-center">
@@ -100,7 +100,8 @@ function StorySectionOrigin() {
         <ScrollReveal direction="up" delay={150}>
           <p className="font-display mt-6 text-2xl uppercase leading-snug tracking-[0.01em] text-nero">
             La vera rivoluzione è la verità.
-            <br />È l&rsquo;identità.
+            <br />
+            <span className="text-fuchsia">È l&rsquo;identità.</span>
           </p>
         </ScrollReveal>
         <ScrollReveal direction="up" delay={200}>
@@ -150,7 +151,10 @@ function StorySectionVoid() {
         </p>
         <p className="font-display mt-8 text-2xl uppercase leading-snug tracking-[0.01em] text-gold">
           Noi abbiamo visto questo vuoto.
-          <br />E abbiamo deciso di restituirti il tuo momento.
+          <br />
+          <span className="text-fuchsia">
+            E abbiamo deciso di restituirti il tuo momento.
+          </span>
         </p>
       </ScrollReveal>
     </section>
@@ -209,7 +213,7 @@ function StorySectionTruth() {
         direction="right"
         className="order-1 relative aspect-[4/3] overflow-hidden sm:order-2 sm:aspect-auto"
       >
-        <ParallaxImage src={diversity} strength={26} className="h-full" />
+        <ParallaxImage src={diversity} strength={55} className="h-full" />
       </ScrollReveal>
     </section>
   );
@@ -252,21 +256,21 @@ function StorySectionCraft() {
           direction="up"
           className="aspect-[3/4] w-full overflow-hidden rounded"
         >
-          <ParallaxImage src={productMacro} strength={24} className="h-full" />
+          <ParallaxImage src={productMacro} strength={50} className="h-full" />
         </ScrollReveal>
         <ScrollReveal
           direction="down"
           delay={120}
           className="aspect-[3/4] w-full overflow-hidden rounded"
         >
-          <ParallaxImage src={flatlay} strength={24} className="h-full" />
+          <ParallaxImage src={flatlay} strength={50} className="h-full" />
         </ScrollReveal>
         <ScrollReveal
           direction="up"
           delay={240}
           className="col-span-2 aspect-[16/9] w-full overflow-hidden rounded sm:col-span-1 sm:aspect-[3/4]"
         >
-          <ParallaxImage src={lineup} strength={24} className="h-full" />
+          <ParallaxImage src={lineup} strength={50} className="h-full" />
         </ScrollReveal>
       </div>
     </section>
@@ -277,7 +281,7 @@ function StorySectionClosing() {
   return (
     <section className="relative flex min-h-[70vh] items-end overflow-hidden sm:min-h-[86vh]">
       <div className="absolute inset-0 h-full w-full overflow-hidden">
-        <ParallaxImage src={lifestyleMilano} strength={60} className="h-full" />
+        <ParallaxImage src={lifestyleMilano} strength={120} className="h-full" />
       </div>
       <div className="absolute inset-0 bg-[rgba(35,31,32,0.45)]" />
       <div className="absolute inset-0 bg-gradient-to-t from-nero/90 via-nero/40 to-transparent" />

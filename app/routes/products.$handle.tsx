@@ -14,7 +14,11 @@ import {ProductForm} from '~/components/ProductForm';
 import {YRating} from '~/components/YRating';
 import {ProductVideos} from '~/components/ProductVideos';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
-import {ANIME, findAnimaByCollectionHandle} from '~/lib/animas';
+import {
+  ANIME,
+  findAnimaByCollectionHandle,
+  type AnimaDefinition,
+} from '~/lib/animas';
 import {
   COLOR_SWATCH_HEX,
   getColorTag,
@@ -74,10 +78,36 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
     siblings = products.nodes;
   }
 
+  // Same product (category + color), across every anima — lets the
+  // customer switch soul without losing the color they picked.
+  const colorTag = getColorTag(product.tags);
+  let animaVariants: {anima: AnimaDefinition; handle: string}[] = [];
+  if (colorTag) {
+    const {products} = await storefront.query(ANIMA_VARIANTS_QUERY, {
+      variables: {
+        searchQuery: `tag:"${colorTag}" AND product_type:"${product.productType}"`,
+      },
+    });
+    animaVariants = products.nodes
+      .map((node: {handle: string; collections: {nodes: {handle: string}[]}}) => {
+        const collectionHandle = node.collections.nodes.find(
+          (c: {handle: string}) => c.handle.startsWith('anima-'),
+        )?.handle;
+        const nodeAnima = findAnimaByCollectionHandle(collectionHandle);
+        return nodeAnima ? {anima: nodeAnima, handle: node.handle} : null;
+      })
+      .filter(
+        (
+          entry: {anima: AnimaDefinition; handle: string} | null,
+        ): entry is {anima: AnimaDefinition; handle: string} => Boolean(entry),
+      );
+  }
+
   return {
     product,
     anima,
     siblings,
+    animaVariants,
   };
 }
 
@@ -86,7 +116,11 @@ function loadDeferredData({context, params}: Route.LoaderArgs) {
 }
 
 export default function Product() {
-  const {product, anima, siblings} = useLoaderData<typeof loader>();
+  const {product, anima, siblings, animaVariants} = useLoaderData<typeof loader>();
+
+  const orderedAnimaVariants = ANIME.map((a) =>
+    animaVariants.find((v) => v.anima.key === a.key),
+  ).filter((v): v is {anima: AnimaDefinition; handle: string} => Boolean(v));
 
   const selectedVariant = useOptimisticVariant(
     product.selectedOrFirstAvailableVariant,
@@ -114,10 +148,40 @@ export default function Product() {
           {anima && (
             <Link
               to={`/collections/${anima.handle}`}
-              className="mb-4 inline-block border border-gold px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-gold transition-colors hover:bg-gold hover:text-nero"
+              className="mb-2 inline-block border border-gold px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-gold transition-colors hover:bg-gold hover:text-nero"
             >
               Anyma {anima.name}
             </Link>
+          )}
+
+          {orderedAnimaVariants.length > 1 && (
+            <div className="mb-4">
+              <p className="mb-1.5 text-[10px] uppercase tracking-[0.15em] text-nero/50">
+                Cambia Anyma, stesso colore
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {orderedAnimaVariants.map(({anima: variantAnima, handle}) => {
+                  const isCurrent = variantAnima.key === anima?.key;
+                  return isCurrent ? (
+                    <span
+                      key={variantAnima.key}
+                      aria-current="true"
+                      className="border border-nero px-3 py-1 text-[10px] uppercase tracking-[0.15em] text-nero"
+                    >
+                      {variantAnima.name}
+                    </span>
+                  ) : (
+                    <Link
+                      key={variantAnima.key}
+                      to={`/products/${handle}`}
+                      className="border border-nero/20 px-3 py-1 text-[10px] uppercase tracking-[0.15em] text-nero/60 transition-colors hover:border-nero hover:text-nero"
+                    >
+                      {variantAnima.name}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
           )}
 
           <h1 className="font-display text-3xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
@@ -321,6 +385,22 @@ const ANIMA_SIBLINGS_QUERY = `#graphql
         title
         handle
         tags
+      }
+    }
+  }
+` as const;
+
+const ANIMA_VARIANTS_QUERY = `#graphql
+  query AnimaVariants($searchQuery: String!, $country: CountryCode, $language: LanguageCode)
+    @inContext(country: $country, language: $language) {
+    products(first: 10, query: $searchQuery) {
+      nodes {
+        handle
+        collections(first: 5) {
+          nodes {
+            handle
+          }
+        }
       }
     }
   }

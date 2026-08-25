@@ -5,6 +5,8 @@ import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {ProductItem} from '~/components/ProductItem';
 import type {ProductItemFragment} from 'storefrontapi.generated';
+import {findAnimaByCollectionHandle} from '~/lib/animas';
+import {getAnimaAnimalVideo} from '~/lib/animaVideo';
 
 export const meta: Route.MetaFunction = ({data}) => {
   return [{title: `Hydrogen | ${data?.collection.title ?? ''} Collection`}];
@@ -67,23 +69,76 @@ function loadDeferredData({context}: Route.LoaderArgs) {
 
 export default function Collection() {
   const {collection} = useLoaderData<typeof loader>();
+  const anima = findAnimaByCollectionHandle(collection.handle);
+  const animalVideo = anima ? getAnimaAnimalVideo(anima.key) : undefined;
 
   return (
-    <div className="collection">
-      <h1>{collection.title}</h1>
-      <p className="collection-description">{collection.description}</p>
-      <PaginatedResourceSection<ProductItemFragment>
-        connection={collection.products}
-        resourcesClassName="products-grid"
-      >
-        {({node: product, index}) => (
-          <ProductItem
-            key={product.id}
-            product={product}
-            loading={index < 8 ? 'eager' : undefined}
-          />
+    <div className="bg-paper">
+      <header className="mx-auto max-w-3xl px-6 pb-6 pt-16 text-center sm:pt-24">
+        <p className="mb-4 text-xs uppercase tracking-[0.4em] text-gold">
+          Anyma Beauty
+        </p>
+        <h1 className="font-display text-4xl uppercase tracking-[0.03em] text-nero sm:text-5xl">
+          {collection.title}
+        </h1>
+        {collection.description && (
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-nero/70">
+            {collection.description}
+          </p>
         )}
-      </PaginatedResourceSection>
+      </header>
+
+      {anima && (
+        <section className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-8 px-6 py-10 sm:grid-cols-2 sm:gap-12 sm:py-16">
+          <div className={animalVideo ? '' : 'sm:col-span-2 sm:text-center'}>
+            <p
+              className={`mb-3 flex items-center gap-2 text-xs uppercase tracking-[0.35em] text-gold ${animalVideo ? '' : 'sm:justify-center'}`}
+            >
+              L’anima {anima.name}
+              {anima.comingSoon && (
+                <span className="border border-fuchsia px-2 py-0.5 text-[10px] tracking-[0.15em] text-fuchsia">
+                  In arrivo
+                </span>
+              )}
+            </p>
+            <h2 className="font-display text-2xl uppercase tracking-[0.02em] text-fuchsia sm:text-3xl">
+              {anima.storyHeading}
+            </h2>
+            <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-nero/80 sm:mx-0">
+              {anima.story}
+            </p>
+          </div>
+          {animalVideo && (
+            <div className="aspect-[4/5] overflow-hidden rounded bg-nero/5">
+              <video
+                src={animalVideo.src}
+                poster={animalVideo.poster}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="h-full w-full object-cover"
+              />
+            </div>
+          )}
+        </section>
+      )}
+
+      <div className="mx-auto max-w-6xl px-6 pb-24">
+        <PaginatedResourceSection<ProductItemFragment>
+          connection={collection.products}
+          resourcesClassName="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
+        >
+          {({node: product, index}) => (
+            <ProductItem
+              key={product.id}
+              product={product}
+              loading={index < 8 ? 'eager' : undefined}
+            />
+          )}
+        </PaginatedResourceSection>
+      </div>
+
       <Analytics.CollectionView
         data={{
           collection: {

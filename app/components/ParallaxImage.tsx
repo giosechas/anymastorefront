@@ -9,7 +9,7 @@ export function ParallaxImage({
   src,
   alt = '',
   className = '',
-  strength = 30,
+  strength = 60,
   objectPosition = 'center',
 }: {
   src: string;
@@ -27,8 +27,8 @@ export function ParallaxImage({
         alt={alt}
         className="absolute left-0 w-full object-cover will-change-transform"
         style={{
-          top: '-15%',
-          height: '130%',
+          top: '-30%',
+          height: '160%',
           objectPosition,
           transform: `translateY(${offset}px)`,
         }}

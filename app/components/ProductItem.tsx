@@ -1,3 +1,4 @@
+import {useEffect, useState} from 'react';
 import {Link} from 'react-router';
 import {Image, Money} from '@shopify/hydrogen';
 import type {
@@ -8,6 +9,9 @@ import type {
 import {useVariantUrl} from '~/lib/variants';
 import {AddToCartButton} from '~/components/AddToCartButton';
 import {useAside} from '~/components/Aside';
+import {WishlistHeart} from '~/components/WishlistHeart';
+
+const IMAGE_ROTATE_MS = 2500;
 
 export function ProductItem({
   product,
@@ -21,8 +25,34 @@ export function ProductItem({
 }) {
   const variantUrl = useVariantUrl(product.handle);
   const {open} = useAside();
-  const image = product.featuredImage;
+  const gallery = 'images' in product ? product.images.nodes : [];
+  const images = gallery.length > 1 ? gallery : [product.featuredImage];
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [initialDelay] = useState(() => Math.random() * IMAGE_ROTATE_MS);
+  const image = images[activeIndex] ?? product.featuredImage;
   const variant = product.variants?.nodes?.[0];
+
+  useEffect(() => {
+    if (images.length < 2) return;
+    let intervalId: ReturnType<typeof setInterval>;
+    const nextRandomIndex = (current: number) => {
+      if (images.length < 3) return (current + 1) % images.length;
+      let next = current;
+      while (next === current) next = Math.floor(Math.random() * images.length);
+      return next;
+    };
+    const timeoutId = setTimeout(() => {
+      setActiveIndex((i) => nextRandomIndex(i));
+      intervalId = setInterval(() => {
+        setActiveIndex((i) => nextRandomIndex(i));
+      }, IMAGE_ROTATE_MS);
+    }, initialDelay);
+    return () => {
+      clearTimeout(timeoutId);
+      clearInterval(intervalId);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [images.length, initialDelay]);
 
   return (
     <div className="group relative">
@@ -32,16 +62,28 @@ export function ProductItem({
         prefetch="intent"
         to={variantUrl}
       >
-        <div className="aspect-[4/5] bg-nero/5">
+        <div className="relative aspect-[4/5] bg-nero/5">
           {image && (
             <Image
               alt={image.altText || product.title}
               data={image}
               loading={loading}
               sizes="(min-width: 45em) 400px, 100vw"
-              className="h-full w-full object-contain"
+              className="h-full w-full object-contain transition-opacity duration-500"
             />
           )}
+          <WishlistHeart
+            className="absolute right-2 top-2"
+            item={{
+              id: product.id,
+              handle: product.handle,
+              title: product.title,
+              image: image
+                ? {url: image.url, altText: image.altText}
+                : undefined,
+              price: product.priceRange.minVariantPrice,
+            }}
+          />
         </div>
         <h4 className="mt-3 text-xs uppercase tracking-[0.05em] text-nero">
           {product.title}

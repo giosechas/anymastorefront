@@ -1,5 +1,5 @@
-import {Suspense} from 'react';
-import {Await, NavLink, useAsyncValue} from 'react-router';
+import {Suspense, useEffect, useState} from 'react';
+import {Await, NavLink, useAsyncValue, useLocation} from 'react-router';
 import {
   type CartViewPayload,
   useAnalytics,
@@ -8,7 +8,10 @@ import {
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
 import {ANIME, getPackPath} from '~/lib/animas';
+import {useWishlist} from '~/lib/wishlist';
+import {LOCALES, LOCALE_COOKIE, type LocaleCode} from '~/lib/locale';
 import logoPositive from '~/assets/anyma-logo-wordmark.png';
+import logoWhite from '~/assets/anyma-logo-wordmark-white.png';
 import sealY from '~/assets/images/seal-y-positive.png';
 
 const MARQUEE_ITEMS = [
@@ -36,30 +39,55 @@ export function Header({
   publicStoreDomain,
 }: HeaderProps) {
   const {shop, menu} = header;
+  const location = useLocation();
+  const isHome = location.pathname === '/';
+  const [transparent, setTransparent] = useState(isHome);
+
+  useEffect(() => {
+    if (!isHome) {
+      setTransparent(false);
+      return;
+    }
+    const onScroll = () => {
+      setTransparent(window.scrollY < window.innerHeight * 0.75);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, {passive: true});
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [isHome]);
+
   return (
-    <div className="header-wrap">
-      <header className="header">
-        <NavLink prefetch="intent" to="/" end aria-label={shop.name}>
-          <img
-            src={logoPositive}
-            alt={shop.name}
-            className="h-11 w-auto md:h-14"
-          />
-        </NavLink>
-        <HeaderMenu
-          menu={menu}
-          viewport="desktop"
-          primaryDomainUrl={header.shop.primaryDomain.url}
-          publicStoreDomain={publicStoreDomain}
+    <header className={`header ${transparent ? 'header--transparent' : ''}`}>
+      <HeaderMenu
+        menu={menu}
+        viewport="desktop"
+        primaryDomainUrl={header.shop.primaryDomain.url}
+        publicStoreDomain={publicStoreDomain}
+        transparent={transparent}
+      />
+      <NavLink
+        prefetch="intent"
+        to="/"
+        end
+        aria-label={shop.name}
+        className="header-logo"
+      >
+        <img
+          src={transparent ? logoWhite : logoPositive}
+          alt={shop.name}
+          className="h-5 w-auto md:h-7"
         />
-        <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
-      </header>
-      <MarqueeBar />
-    </div>
+      </NavLink>
+      <HeaderCtas
+        isLoggedIn={isLoggedIn}
+        cart={cart}
+        transparent={transparent}
+      />
+    </header>
   );
 }
 
-function MarqueeBar() {
+export function MarqueeBar() {
   const items = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS, ...MARQUEE_ITEMS];
   return (
     <div className="marquee-bar" aria-hidden="true">
@@ -85,14 +113,17 @@ export function HeaderMenu({
   primaryDomainUrl,
   viewport,
   publicStoreDomain,
+  transparent = false,
 }: {
   menu: HeaderProps['header']['menu'];
   primaryDomainUrl: HeaderProps['header']['shop']['primaryDomain']['url'];
   viewport: Viewport;
   publicStoreDomain: HeaderProps['publicStoreDomain'];
+  transparent?: boolean;
 }) {
   const className = `header-menu-${viewport}`;
   const {close} = useAside();
+  const linkStyle = makeActiveLinkStyle(transparent);
 
   const visibleItems = (menu || FALLBACK_HEADER_MENU).items.filter(
     (item) => !HIDDEN_MENU_TITLES.includes(item.title.trim().toLowerCase()),
@@ -176,7 +207,7 @@ export function HeaderMenu({
         end
         onClick={close}
         prefetch="intent"
-        style={activeLinkStyle}
+        style={linkStyle}
         to="/about"
       >
         La nostra storia
@@ -198,7 +229,7 @@ export function HeaderMenu({
             key={item.id}
             onClick={close}
             prefetch="intent"
-            style={activeLinkStyle}
+            style={linkStyle}
             to={url}
           >
             {item.title}
@@ -212,20 +243,73 @@ export function HeaderMenu({
 function HeaderCtas({
   isLoggedIn,
   cart,
-}: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
+  transparent = false,
+}: Pick<HeaderProps, 'isLoggedIn' | 'cart'> & {transparent?: boolean}) {
+  const linkStyle = makeActiveLinkStyle(transparent);
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
-      <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
+      <NavLink prefetch="intent" to="/account" style={linkStyle}>
         <Suspense fallback="Sign in">
           <Await resolve={isLoggedIn} errorElement="Sign in">
             {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Sign in')}
           </Await>
         </Suspense>
       </NavLink>
+      <WishlistToggle transparent={transparent} />
+      <LanguageSwitcher transparent={transparent} />
       <SearchToggle />
       <CartToggle cart={cart} />
     </nav>
+  );
+}
+
+function LanguageSwitcher({transparent = false}: {transparent?: boolean}) {
+  const [current, setCurrent] = useState<LocaleCode>('IT');
+
+  useEffect(() => {
+    const match = document.cookie.match(
+      new RegExp(`${LOCALE_COOKIE}=([A-Z]{2})`),
+    );
+    if (match?.[1]) setCurrent(match[1] as LocaleCode);
+  }, []);
+
+  return (
+    <div
+      className="header-lang"
+      style={{color: transparent ? '#fff' : 'var(--nero)'}}
+    >
+      {LOCALES.map(({code, label}, i) => (
+        <span key={code}>
+          {i > 0 && <span className="header-lang-sep">/</span>}
+          <button
+            type="button"
+            aria-current={code === current}
+            className="header-lang-item"
+            data-active={code === current}
+            onClick={() => {
+              document.cookie = `${LOCALE_COOKIE}=${code}; path=/; max-age=31536000`;
+              window.location.reload();
+            }}
+          >
+            {label}
+          </button>
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function WishlistToggle({transparent = false}: {transparent?: boolean}) {
+  const count = useWishlist().length;
+  return (
+    <NavLink
+      prefetch="intent"
+      to="/wishlist"
+      style={makeActiveLinkStyle(transparent)}
+    >
+      Preferiti{count > 0 ? ` (${count})` : ''}
+    </NavLink>
   );
 }
 
@@ -331,15 +415,9 @@ const FALLBACK_HEADER_MENU = {
   ],
 };
 
-function activeLinkStyle({
-  isActive,
-  isPending,
-}: {
-  isActive: boolean;
-  isPending: boolean;
-}) {
-  return {
+function makeActiveLinkStyle(transparent: boolean) {
+  return ({isActive, isPending}: {isActive: boolean; isPending: boolean}) => ({
     fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : 'var(--nero)',
-  };
+    color: isPending ? 'grey' : transparent ? '#fff' : 'var(--nero)',
+  });
 }

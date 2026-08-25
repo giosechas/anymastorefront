@@ -2,6 +2,7 @@ import {createHydrogenContext} from '@shopify/hydrogen';
 import {AppSession} from '~/lib/session';
 import {CART_QUERY_FRAGMENT} from '~/lib/fragments';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
+import {getLocaleFromRequest} from '~/lib/locale';
 
 // Define the additional context object
 const additionalContext = {
@@ -54,8 +55,10 @@ export async function createHydrogenRouterContext(
       session,
       // Italy is the primary market (Brand Book v25). Markets are set to
       // `none` in this scaffold — wire up Shopify Markets subfolders/domains
-      // here once EN/ES locales are ready.
-      i18n: {language: 'IT', country: 'IT'},
+      // here once EN/ES locales are ready. For now the language switcher
+      // sets the `anyma_locale` cookie and this just reads it back; product
+      // copy only shows translated when it exists in Shopify Admin.
+      i18n: getLocaleFromRequest(request),
       cart: {
         queryFragment: CART_QUERY_FRAGMENT,
       },

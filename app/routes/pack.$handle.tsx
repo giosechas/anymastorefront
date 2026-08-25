@@ -2,8 +2,35 @@ import {useMemo, useState} from 'react';
 import {Link, useLoaderData} from 'react-router';
 import type {Route} from './+types/pack.$handle';
 import {Image, Money} from '@shopify/hydrogen';
-import {findAnimaByCollectionHandle} from '~/lib/animas';
+import {findAnimaByCollectionHandle, type AnimaKey} from '~/lib/animas';
 import {COLOR_SWATCH_HEX, getColorTag} from '~/lib/productCopy';
+
+/**
+ * Condensed from copy-kit-anyma.md — only the 3 pre-launch trittici
+ * (Leopard, Candy Rosa, Street) have this copy; the rest stay generic.
+ */
+const TRITTICO_COPY: Partial<
+  Record<AnimaKey, {attitude: string; packaging: string}>
+> = {
+  leopard: {
+    attitude:
+      'Leopard è l’anima di chi occupa il proprio spazio senza chiedere scusa: presenza magnetica, grinta che protegge la sensibilità invece di nasconderla.',
+    packaging:
+      'Sculture in alluminio e acrilico: velatura bronzo-dorata, macchie leopardate in rilievo, chevron dorato lucido.',
+  },
+  candyRosa: {
+    attitude:
+      'Candy Rosa è per i giorni in cui la dolcezza è la tua forza più grande — tenerezza ribelle che trasforma la sensibilità in energia gioiosa.',
+    packaging:
+      'Finitura oro rosa custom con tappi rosa opaco, motivo paisley pastello e chevron dorato.',
+  },
+  street: {
+    attitude:
+      'Street è l’anima di chi è a proprio agio ovunque, senza pose: bellezza reale, spontanea, in movimento.',
+    packaging:
+      'Texture denim azzurro con cuciture arancioni a contrasto e patch in pelle marrone, delimitata dal chevron dorato.',
+  },
+};
 
 export const meta: Route.MetaFunction = ({data}) => {
   return [
@@ -46,6 +73,7 @@ export async function loader({context, params}: Route.LoaderArgs) {
 
 export default function Pack() {
   const {anima, byCategory} = useLoaderData<typeof loader>();
+  const trittico = TRITTICO_COPY[anima.key];
 
   const [selection, setSelection] = useState<Record<string, string>>(() => {
     const initial: Record<string, string> = {};
@@ -98,6 +126,12 @@ export default function Pack() {
         sola scatola.
       </p>
 
+      {trittico && (
+        <p className="mt-4 max-w-xl text-sm leading-relaxed text-nero/80">
+          {trittico.attitude}
+        </p>
+      )}
+
       <div className="mt-10 space-y-10">
         {PACK_CATEGORIES.map((category) => (
           <div key={category}>
@@ -149,7 +183,29 @@ export default function Pack() {
         ))}
       </div>
 
-      <div className="mt-12 border-t border-nero/10 pt-6">
+      <div className="mt-10 border-t border-nero/10 pt-6">
+        {trittico && (
+          <>
+            <p className="text-sm leading-relaxed text-nero/80">
+              <span className="font-display uppercase tracking-[0.05em] text-nero">
+                Il packaging:
+              </span>{' '}
+              {trittico.packaging}
+            </p>
+            <p className="mt-3 text-xs uppercase tracking-[0.1em] text-fuchsia">
+              Solo ~42 pezzi al mondo per questa combinazione — lotto di
+              pre-lancio di 800 unità.
+            </p>
+          </>
+        )}
+        <ul className="mt-4 space-y-1.5 text-xs text-nero/70">
+          <li>Rituale completo — i tre gesti della tua giornata, un&rsquo;unica energia.</li>
+          <li>Spedizione sempre gratuita su tutto l&rsquo;ordine.</li>
+          <li>ANYMA Tote Bag in omaggio con ogni trittico.</li>
+        </ul>
+      </div>
+
+      <div className="mt-8 border-t border-nero/10 pt-6">
         <div className="flex items-center justify-between text-sm text-nero">
           <span className="uppercase tracking-[0.1em]">Totale Pack</span>
           <Money data={{amount: String(total), currencyCode: currency}} />
