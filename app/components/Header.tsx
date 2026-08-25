@@ -308,7 +308,7 @@ function WishlistToggle({transparent = false}: {transparent?: boolean}) {
       to="/wishlist"
       style={makeActiveLinkStyle(transparent)}
     >
-      Preferiti{count > 0 ? ` (${count})` : ''}
+      Wishlist{count > 0 ? ` (${count})` : ''}
     </NavLink>
   );
 }

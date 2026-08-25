@@ -1,3 +1,4 @@
+import {useState} from 'react';
 import {Link, useNavigate} from 'react-router';
 import {type MappedProductOptions} from '@shopify/hydrogen';
 import type {
@@ -19,6 +20,7 @@ export function ProductForm({
 }) {
   const navigate = useNavigate();
   const {open} = useAside();
+  const [quantity, setQuantity] = useState(1);
   return (
     <div className="product-form">
       {productOptions.map((option) => {
@@ -103,6 +105,23 @@ export function ProductForm({
           </div>
         );
       })}
+      <div className="quantity-selector">
+        <button
+          type="button"
+          aria-label="Diminuisci quantità"
+          onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+        >
+          −
+        </button>
+        <span aria-live="polite">{quantity}</span>
+        <button
+          type="button"
+          aria-label="Aumenta quantità"
+          onClick={() => setQuantity((q) => q + 1)}
+        >
+          +
+        </button>
+      </div>
       <AddToCartButton
         className={buttonClassName}
         disabled={!selectedVariant || !selectedVariant.availableForSale}
@@ -114,7 +133,7 @@ export function ProductForm({
             ? [
                 {
                   merchandiseId: selectedVariant.id,
-                  quantity: 1,
+                  quantity,
                   selectedVariant,
                 },
               ]

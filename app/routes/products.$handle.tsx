@@ -13,6 +13,7 @@ import {ProductGallery} from '~/components/ProductGallery';
 import {ProductForm} from '~/components/ProductForm';
 import {YRating} from '~/components/YRating';
 import {ProductVideos} from '~/components/ProductVideos';
+import {WishlistHeart} from '~/components/WishlistHeart';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {
   ANIME,
@@ -184,9 +185,26 @@ export default function Product() {
             </div>
           )}
 
-          <h1 className="font-display text-3xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
-            {displayTitle}
-          </h1>
+          <div className="flex items-start justify-between gap-3">
+            <h1 className="font-display text-3xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
+              {displayTitle}
+            </h1>
+            <WishlistHeart
+              className="static shrink-0 bg-transparent"
+              item={{
+                id: product.id,
+                handle: product.handle,
+                title: product.title,
+                image: product.images.nodes[0]
+                  ? {
+                      url: product.images.nodes[0].url,
+                      altText: product.images.nodes[0].altText,
+                    }
+                  : undefined,
+                price: selectedVariant?.price,
+              }}
+            />
+          </div>
 
           <div className="mt-3">
             <ProductPrice

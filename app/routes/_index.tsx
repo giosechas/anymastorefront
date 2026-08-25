@@ -233,6 +233,12 @@ function Hero() {
         >
           Scopri le tue Anyme
         </a>
+        <Link
+          to="/collections/all"
+          className="border border-white bg-white px-8 py-3 text-xs uppercase tracking-[0.2em] text-nero transition-colors hover:bg-transparent hover:text-white"
+        >
+          Shop Now
+        </Link>
       </div>
       <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 gap-2">
         {HERO_IMAGES.map((src, i) => (

@@ -4,7 +4,7 @@ import type {Route} from './+types/wishlist';
 import {useWishlist, removeWishlistItem} from '~/lib/wishlist';
 
 export const meta: Route.MetaFunction = () => {
-  return [{title: 'Anyma Beauty | Preferiti'}];
+  return [{title: 'Anyma Beauty | Wishlist'}];
 };
 
 export default function Wishlist() {
@@ -13,10 +13,10 @@ export default function Wishlist() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-16 sm:py-24">
       <p className="mb-3 text-xs uppercase tracking-[0.4em] text-gold">
-        I tuoi preferiti
+        La tua Wishlist
       </p>
       <h1 className="font-display text-3xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
-        Preferiti
+        Wishlist
       </h1>
 
       {items.length === 0 ? (
