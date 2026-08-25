@@ -149,6 +149,17 @@ export default function Product() {
           <ProductGallery images={product.images.nodes} video={video} />
 
           {anima && (
+            <div className="mt-6">
+              <p className="text-xs uppercase tracking-[0.25em] text-fuchsia">
+                {anima.storyHeading}
+              </p>
+              <p className="mt-2 max-w-md text-sm leading-relaxed text-nero/80">
+                {anima.story}
+              </p>
+            </div>
+          )}
+
+          {anima && (
             <Link
               to={getPackPath(anima)}
               className="group relative mt-6 block aspect-[16/9] overflow-hidden rounded bg-nero/5"
