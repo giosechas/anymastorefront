@@ -14,7 +14,7 @@ import type {
 } from 'storefrontapi.generated';
 
 export const meta: Route.MetaFunction = () => {
-  return [{title: `Hydrogen | Search`}];
+  return [{title: `Anyma Beauty | Cerca`}];
 };
 
 export async function loader({request, context}: Route.LoaderArgs) {
@@ -41,30 +41,35 @@ export default function SearchPage() {
   if (type === 'predictive') return null;
 
   return (
-    <div className="search">
-      <h1>Search</h1>
-      <SearchForm>
+    <div className="mx-auto max-w-6xl px-6 py-10 sm:py-16">
+      <p className="mb-3 text-xs uppercase tracking-[0.4em] text-gold">
+        Anyma Beauty
+      </p>
+      <h1 className="font-display text-3xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
+        Cerca
+      </h1>
+
+      <SearchForm className="search-page-form">
         {({inputRef}) => (
           <>
             <input
               defaultValue={term}
               name="q"
-              placeholder="Search…"
+              placeholder="Cerca prodotti, anime..."
               ref={inputRef}
               type="search"
             />
-            &nbsp;
-            <button type="submit">Search</button>
+            <button type="submit">Cerca</button>
           </>
         )}
       </SearchForm>
-      {error && <p style={{color: 'red'}}>{error}</p>}
+      {error && <p className="mt-4 text-sm text-fuchsia">{error}</p>}
       {!term || !result?.total ? (
         <SearchResults.Empty />
       ) : (
         <SearchResults result={result} term={term}>
           {({articles, pages, products, term}) => (
-            <div>
+            <div className="mt-4">
               <SearchResults.Products products={products} term={term} />
               <SearchResults.Pages pages={pages} term={term} />
               <SearchResults.Articles articles={articles} term={term} />

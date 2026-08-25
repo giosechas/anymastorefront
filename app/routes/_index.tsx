@@ -4,7 +4,6 @@ import {Suspense, useEffect, useRef, useState} from 'react';
 import type {RecommendedProductsQuery} from 'storefrontapi.generated';
 import {ProductItem} from '~/components/ProductItem';
 import {MockShopNotice} from '~/components/MockShopNotice';
-import {MarqueeBar} from '~/components/Header';
 import {ScrollReveal} from '~/components/ScrollReveal';
 import {useParallaxOffset} from '~/hooks/useParallaxOffset';
 import {
@@ -168,7 +167,6 @@ export default function Homepage() {
     <div className="home">
       {data.isShopLinked ? null : <MockShopNotice />}
       <Hero />
-      <MarqueeBar />
       <RecommendedProducts products={data.recommendedProducts} />
       <SealDivider bg="light" />
       <AnimeGrid />

@@ -9,7 +9,11 @@ import {findAnimaByCollectionHandle} from '~/lib/animas';
 import {getAnimaAnimalVideo} from '~/lib/animaVideo';
 
 export const meta: Route.MetaFunction = ({data}) => {
-  return [{title: `Hydrogen | ${data?.collection.title ?? ''} Collection`}];
+  const anima = data
+    ? findAnimaByCollectionHandle(data.collection.handle)
+    : undefined;
+  const title = anima ? `Anyma ${anima.name}` : (data?.collection.title ?? '');
+  return [{title: `Anyma Beauty | ${title}`}];
 };
 
 export async function loader(args: Route.LoaderArgs) {
@@ -79,7 +83,7 @@ export default function Collection() {
           Anyma Beauty
         </p>
         <h1 className="font-display text-4xl uppercase tracking-[0.03em] text-nero sm:text-5xl">
-          {collection.title}
+          {anima ? `Anyma ${anima.name}` : collection.title}
         </h1>
         {collection.description && (
           <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-nero/70">
@@ -94,7 +98,7 @@ export default function Collection() {
             <p
               className={`mb-3 flex items-center gap-2 text-xs uppercase tracking-[0.35em] text-gold ${animalVideo ? '' : 'sm:justify-center'}`}
             >
-              L’anima {anima.name}
+              Anyma {anima.name}
               {anima.comingSoon && (
                 <span className="border border-fuchsia px-2 py-0.5 text-[10px] tracking-[0.15em] text-fuchsia">
                   In arrivo

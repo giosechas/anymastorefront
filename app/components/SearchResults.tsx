@@ -40,7 +40,7 @@ function SearchResultsArticles({
 
   return (
     <div className="search-result">
-      <h2>Articles</h2>
+      <h2>Articoli</h2>
       <div>
         {articles?.nodes?.map((article) => {
           const articleUrl = urlWithTrackingParams({
@@ -58,7 +58,6 @@ function SearchResultsArticles({
           );
         })}
       </div>
-      <br />
     </div>
   );
 }
@@ -70,7 +69,7 @@ function SearchResultsPages({term, pages}: PartialSearchResult<'pages'>) {
 
   return (
     <div className="search-result">
-      <h2>Pages</h2>
+      <h2>Pagine</h2>
       <div>
         {pages?.nodes?.map((page) => {
           const pageUrl = urlWithTrackingParams({
@@ -88,7 +87,6 @@ function SearchResultsPages({term, pages}: PartialSearchResult<'pages'>) {
           );
         })}
       </div>
-      <br />
     </div>
   );
 }
@@ -103,7 +101,7 @@ function SearchResultsProducts({
 
   return (
     <div className="search-result">
-      <h2>Products</h2>
+      <h2>Prodotti</h2>
       <Pagination connection={products}>
         {({nodes, isLoading, NextLink, PreviousLink}) => {
           const ItemsMarkup = nodes.map((product) => {
@@ -117,45 +115,46 @@ function SearchResultsProducts({
             const image = product?.selectedOrFirstAvailableVariant?.image;
 
             return (
-              <div className="search-results-item" key={product.id}>
-                <Link prefetch="intent" to={productUrl}>
-                  {image && (
-                    <Image data={image} alt={product.title} width={50} />
-                  )}
-                  <div>
-                    <p>{product.title}</p>
-                    <small>{price && <Money data={price} />}</small>
-                  </div>
-                </Link>
-              </div>
+              <Link
+                className="search-results-item"
+                key={product.id}
+                prefetch="intent"
+                to={productUrl}
+              >
+                {image && (
+                  <Image data={image} alt={product.title} sizes="200px" />
+                )}
+                <p>{product.title}</p>
+                <small>{price && <Money data={price} />}</small>
+              </Link>
             );
           });
 
           return (
-            <div>
-              <div>
+            <>
+              <div className="search-results-pagination">
                 <PreviousLink>
-                  {isLoading ? 'Loading...' : <span>↑ Load previous</span>}
+                  {isLoading ? 'Caricamento…' : <span>↑ Precedenti</span>}
                 </PreviousLink>
               </div>
-              <div>
-                {ItemsMarkup}
-                <br />
-              </div>
-              <div>
+              <div className="search-results-grid">{ItemsMarkup}</div>
+              <div className="search-results-pagination">
                 <NextLink>
-                  {isLoading ? 'Loading...' : <span>Load more ↓</span>}
+                  {isLoading ? 'Caricamento…' : <span>Altri prodotti ↓</span>}
                 </NextLink>
               </div>
-            </div>
+            </>
           );
         }}
       </Pagination>
-      <br />
     </div>
   );
 }
 
 function SearchResultsEmpty() {
-  return <p>No results, try a different search.</p>;
+  return (
+    <p className="mt-10 text-sm text-nero/60">
+      Nessun risultato. Prova con un&rsquo;altra ricerca.
+    </p>
+  );
 }

@@ -7,12 +7,12 @@ import {
 } from '@shopify/hydrogen';
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
+import {SearchPopover} from '~/components/SearchPopover';
 import {ANIME, getPackPath} from '~/lib/animas';
 import {useWishlist} from '~/lib/wishlist';
 import {LOCALES, LOCALE_COOKIE, type LocaleCode} from '~/lib/locale';
 import logoPositive from '~/assets/anyma-logo-wordmark.png';
 import logoWhite from '~/assets/anyma-logo-wordmark-white.png';
-import sealY from '~/assets/images/seal-y-positive.png';
 
 const MARQUEE_ITEMS = [
   {icon: '🎁', text: 'Sconto esclusivo per chi si iscrive'},
@@ -87,23 +87,26 @@ export function Header({
   );
 }
 
+const MARQUEE_ROTATE_MS = 3500;
+
 export function MarqueeBar() {
-  const items = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS, ...MARQUEE_ITEMS];
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % MARQUEE_ITEMS.length);
+    }, MARQUEE_ROTATE_MS);
+    return () => clearInterval(id);
+  }, []);
+
+  const item = MARQUEE_ITEMS[index];
+
   return (
     <div className="marquee-bar" aria-hidden="true">
-      <div className="marquee-bar-track">
-        {[0, 1].map((rep) => (
-          <div className="marquee-bar-track-group" key={rep}>
-            {items.map((item, i) => (
-              <span className="marquee-bar-item" key={`${rep}-${i}`}>
-                <span>{item.icon}</span>
-                <span>{item.text}</span>
-                <img src={sealY} alt="" className="marquee-bar-sep" />
-              </span>
-            ))}
-          </div>
-        ))}
-      </div>
+      <span className="marquee-bar-item" key={index}>
+        <span>{item.icon}</span>
+        <span>{item.text}</span>
+      </span>
     </div>
   );
 }
@@ -245,22 +248,40 @@ function HeaderCtas({
   cart,
   transparent = false,
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'> & {transparent?: boolean}) {
-  const linkStyle = makeActiveLinkStyle(transparent);
+  const iconStyle = {color: transparent ? '#fff' : 'var(--nero)'};
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
-      <NavLink prefetch="intent" to="/account" style={linkStyle}>
-        <Suspense fallback="Sign in">
-          <Await resolve={isLoggedIn} errorElement="Sign in">
-            {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Sign in')}
+      <NavLink
+        prefetch="intent"
+        to="/account"
+        className="header-icon-btn"
+        style={iconStyle}
+      >
+        <Suspense fallback={<AccountIcon />}>
+          <Await resolve={isLoggedIn} errorElement={<AccountIcon />}>
+            {(isLoggedIn) => (
+              <span aria-label={isLoggedIn ? 'Account' : 'Sign in'}>
+                <AccountIcon filled={isLoggedIn} />
+              </span>
+            )}
           </Await>
         </Suspense>
       </NavLink>
       <WishlistToggle transparent={transparent} />
       <LanguageSwitcher transparent={transparent} />
-      <SearchToggle />
+      <SearchPopover transparent={transparent} />
       <CartToggle cart={cart} />
     </nav>
+  );
+}
+
+function AccountIcon({filled = false}: {filled?: boolean}) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <circle cx="12" cy="8" r="4" fill={filled ? 'currentColor' : 'none'} />
+      <path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6" />
+    </svg>
   );
 }
 
@@ -306,9 +327,14 @@ function WishlistToggle({transparent = false}: {transparent?: boolean}) {
     <NavLink
       prefetch="intent"
       to="/wishlist"
-      style={makeActiveLinkStyle(transparent)}
+      aria-label="Wishlist"
+      className="header-icon-btn"
+      style={{color: transparent ? '#fff' : 'var(--nero)'}}
     >
-      Wishlist{count > 0 ? ` (${count})` : ''}
+      <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M12 20.5c-.2 0-.4-.07-.55-.2C7.4 17 3 13.14 3 8.9 3 5.9 5.36 3.5 8.3 3.5c1.7 0 3.3.82 4.3 2.14A5.4 5.4 0 0 1 20.7 8.9c0 4.24-4.4 8.1-8.45 11.4-.15.13-.35.2-.55.2Z" />
+      </svg>
+      {count > 0 && <span className="header-icon-badge">{count}</span>}
     </NavLink>
   );
 }
@@ -321,15 +347,6 @@ function HeaderMenuMobileToggle() {
       onClick={() => open('mobile')}
     >
       <h3>☰</h3>
-    </button>
-  );
-}
-
-function SearchToggle() {
-  const {open} = useAside();
-  return (
-    <button className="reset" onClick={() => open('search')}>
-      Search
     </button>
   );
 }

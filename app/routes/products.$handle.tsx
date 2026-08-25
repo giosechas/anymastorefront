@@ -18,6 +18,8 @@ import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {
   ANIME,
   findAnimaByCollectionHandle,
+  getAnimaGalleryImages,
+  getPackPath,
   type AnimaDefinition,
 } from '~/lib/animas';
 import {
@@ -143,7 +145,31 @@ export default function Product() {
   return (
     <div className="mx-auto max-w-6xl px-6 py-10 sm:py-16">
       <div className="grid grid-cols-1 items-start gap-10 sm:grid-cols-2 sm:gap-16">
-        <ProductGallery images={product.images.nodes} video={video} />
+        <div>
+          <ProductGallery images={product.images.nodes} video={video} />
+
+          {anima && (
+            <Link
+              to={getPackPath(anima)}
+              className="group relative mt-6 block aspect-[16/9] overflow-hidden rounded bg-nero/5"
+            >
+              <img
+                src={getAnimaGalleryImages(anima)[0]}
+                alt={`Trittico Anyma ${anima.name}`}
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-nero/30 transition-colors group-hover:bg-nero/40" />
+              <div className="absolute inset-0 flex flex-col items-start justify-end p-5">
+                <p className="text-xs uppercase tracking-[0.25em] text-white/80">
+                  Trittico Anyma {anima.name}
+                </p>
+                <p className="mt-1 font-display text-lg uppercase tracking-[0.03em] text-white">
+                  Componi il tuo Pack →
+                </p>
+              </div>
+            </Link>
+          )}
+        </div>
 
         <div>
           {anima && (
