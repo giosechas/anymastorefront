@@ -150,10 +150,10 @@ export default function Product() {
 
           {anima && (
             <div className="mt-6">
-              <p className="text-xs uppercase tracking-[0.25em] text-fuchsia">
+              <p className="text-lg uppercase tracking-[0.25em] text-fuchsia">
                 {anima.storyHeading}
               </p>
-              <p className="mt-2 max-w-md text-sm leading-relaxed text-nero/80">
+              <p className="mt-2 max-w-md text-xl leading-relaxed text-nero/80">
                 {anima.story}
               </p>
             </div>
