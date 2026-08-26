@@ -18,6 +18,9 @@ export interface AnimaDefinition {
   /** True while this anima's brand copy is still a preview draft. */
   comingSoon?: boolean;
   swatch: string;
+  /** Representative hex, used to color-code this anima in UI like the
+   *  PDP's "change anima" pills — matches its tile texture's palette. */
+  color: string;
   /** Exact Shopify product tag used to group this anima's products. */
   tag: string;
   /** Number of rotating gallery photos at /images/animas/<slug>/1..N.webp */
@@ -34,6 +37,7 @@ export const ANIME: AnimaDefinition[] = [
     story:
       'L’energia di chi non ha bisogno di chiedere permesso. Per i giorni in cui sai già chi sei e decidi di occupare il tuo spazio nel mondo senza scuse. Un manto regale che protegge e rivela la tua sensibilità più profonda. Oggi non ti nascondi: oggi guidi tu.',
     swatch: 'anima-tile-leopard',
+    color: '#a9793a',
     tag: 'LEOPARD',
     galleryCount: 8,
   },
@@ -47,6 +51,7 @@ export const ANIME: AnimaDefinition[] = [
       'Il potere che non ha bisogno di farsi vedere. Dove Leopard dichiara presenza, Panther possiede il silenzio. Una calma magnetica e sinuosa che custodisce la tua straordinaria forza sotto un’armatura di velluto nero. Entra nel tuo mondo solo chi decidi tu.',
     comingSoon: true,
     swatch: 'anima-tile-panther',
+    color: '#3a3536',
     tag: 'PANTHER',
     galleryCount: 11,
   },
@@ -59,6 +64,7 @@ export const ANIME: AnimaDefinition[] = [
     story:
       'La leggerezza come atto di coraggio. Chi ha detto che diventare grandi significa rinunciare alla meraviglia? Scegli la gioia come tua dichiarazione di indipendenza. Proteggi la tua bambina interiore e risplendi di una dolcezza che resiste a tutto.',
     swatch: 'anima-tile-candy-rosa',
+    color: '#c96b93',
     tag: 'CANDY ROSA',
     galleryCount: 5,
   },
@@ -72,6 +78,7 @@ export const ANIME: AnimaDefinition[] = [
       'La tua sensibilità è una frequenza luminosa. La versione più limpida, fresca e aerea della dolcezza. Un’innocenza che si apre con fiducia al mondo, trasformando la fragilità in pura energia diurna. Per i giorni in cui decidi semplicemente di splendere.',
     comingSoon: true,
     swatch: 'anima-tile-candy-tiffany',
+    color: '#6fcfc0',
     tag: 'CANDY TIFFANY',
     galleryCount: 10,
   },
@@ -84,6 +91,7 @@ export const ANIME: AnimaDefinition[] = [
     story:
       'A proprio agio ovunque, fiera di chi sei. Come il tuo paio di jeans più amato, la tua bellezza si scrive nel cammino, non nell’intonso. Senza specchi, senza filtri, con l’autenticità di chi non deve dimostrare niente a nessuno. Questa è la tua libertà quotidiana.',
     swatch: 'anima-tile-street',
+    color: '#4a6280',
     tag: 'STREET',
     galleryCount: 9,
   },
@@ -97,6 +105,7 @@ export const ANIME: AnimaDefinition[] = [
       'La tua storia è il tuo sapere più prezioso. La versione notturna, intima e matura di chi cammina a testa alta. Non hai bisogno di esibire la tua forza: la porti dentro di te come medaglia di libertà e consapevolezza.',
     comingSoon: true,
     swatch: 'anima-tile-urban',
+    color: '#1c2333',
     tag: 'URBAN',
     galleryCount: 10,
   },

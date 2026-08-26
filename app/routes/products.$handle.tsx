@@ -144,164 +144,167 @@ export default function Product() {
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-10 sm:py-16">
-      <div className="grid grid-cols-1 items-start gap-10 sm:grid-cols-2 sm:gap-16">
-        <div>
-          <ProductGallery images={product.images.nodes} video={video} />
+      <div className="grid grid-cols-1 items-stretch gap-10 sm:grid-cols-2 sm:gap-16">
+        <ProductGallery images={product.images.nodes} video={video} />
 
-          {anima && (
-            <div className="mt-6">
-              <p className="text-sm uppercase tracking-[0.25em] text-fuchsia sm:text-lg">
-                {anima.storyHeading}
-              </p>
-              <p className="mt-2 max-w-md text-sm leading-relaxed text-nero/80 sm:text-xl">
-                {anima.story}
-              </p>
-            </div>
-          )}
-
-          {anima && (
-            <Link
-              to={getPackPath(anima)}
-              className="group relative mt-6 block aspect-[16/9] overflow-hidden rounded bg-nero/5"
-            >
-              <img
-                src={getAnimaGalleryImages(anima)[0]}
-                alt={`Trittico Anyma ${anima.name}`}
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        <div className="flex flex-col sm:justify-between">
+          <div>
+            <div className="flex items-start justify-between gap-3">
+              <h1 className="font-display text-2xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
+                {displayTitle}
+              </h1>
+              <WishlistHeart
+                className="static shrink-0 bg-transparent"
+                item={{
+                  id: product.id,
+                  handle: product.handle,
+                  title: product.title,
+                  image: product.images.nodes[0]
+                    ? {
+                        url: product.images.nodes[0].url,
+                        altText: product.images.nodes[0].altText,
+                      }
+                    : undefined,
+                  price: selectedVariant?.price,
+                }}
               />
-              <div className="absolute inset-0 bg-nero/30 transition-colors group-hover:bg-nero/40" />
-              <div className="absolute inset-0 flex flex-col items-start justify-end p-5">
-                <p className="text-xs uppercase tracking-[0.25em] text-white/80">
-                  Trittico Anyma {anima.name}
-                </p>
-                <p className="mt-1 font-display text-lg uppercase tracking-[0.03em] text-white">
-                  Componi il tuo Pack →
-                </p>
-              </div>
-            </Link>
-          )}
-        </div>
-
-        <div>
-          {anima && (
-            <Link
-              to={`/collections/${anima.handle}`}
-              className="mb-2 inline-block border border-gold px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-gold transition-colors hover:bg-gold hover:text-nero"
-            >
-              Anyma {anima.name}
-            </Link>
-          )}
-
-          {orderedAnimaVariants.length > 1 && (
-            <div className="mb-4">
-              <p className="mb-1.5 text-[10px] uppercase tracking-[0.15em] text-nero/50">
-                Cambia Anyma, stesso colore
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {orderedAnimaVariants.map(({anima: variantAnima, handle}) => {
-                  const isCurrent = variantAnima.key === anima?.key;
-                  return isCurrent ? (
-                    <span
-                      key={variantAnima.key}
-                      aria-current="true"
-                      className="border border-nero px-3 py-1 text-[10px] uppercase tracking-[0.15em] text-nero"
-                    >
-                      {variantAnima.name}
-                    </span>
-                  ) : (
-                    <Link
-                      key={variantAnima.key}
-                      to={`/products/${handle}`}
-                      className="border border-nero/20 px-3 py-1 text-[10px] uppercase tracking-[0.15em] text-nero/60 transition-colors hover:border-nero hover:text-nero"
-                    >
-                      {variantAnima.name}
-                    </Link>
-                  );
-                })}
-              </div>
             </div>
-          )}
 
-          <div className="flex items-start justify-between gap-3">
-            <h1 className="font-display text-2xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
-              {displayTitle}
-            </h1>
-            <WishlistHeart
-              className="static shrink-0 bg-transparent"
-              item={{
-                id: product.id,
-                handle: product.handle,
-                title: product.title,
-                image: product.images.nodes[0]
-                  ? {
-                      url: product.images.nodes[0].url,
-                      altText: product.images.nodes[0].altText,
-                    }
-                  : undefined,
-                price: selectedVariant?.price,
-              }}
-            />
-          </div>
+            <div className="mt-2 flex items-center gap-3">
+              <ProductPrice
+                price={selectedVariant?.price}
+                compareAtPrice={selectedVariant?.compareAtPrice}
+              />
+              {anima && (
+                <Link
+                  to={`/collections/${anima.handle}`}
+                  className="inline-block border border-gold px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-gold transition-colors hover:bg-gold hover:text-nero"
+                >
+                  Anyma {anima.name}
+                </Link>
+              )}
+            </div>
 
-          <div className="mt-3">
-            <ProductPrice
-              price={selectedVariant?.price}
-              compareAtPrice={selectedVariant?.compareAtPrice}
-            />
-          </div>
+            {orderedAnimaVariants.length > 1 && (
+              <div className="mt-4">
+                <p className="mb-1.5 text-[10px] uppercase tracking-[0.15em] text-nero/50">
+                  Cambia Anyma, stesso colore
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {orderedAnimaVariants.map(({anima: variantAnima, handle}) => {
+                    const isCurrent = variantAnima.key === anima?.key;
+                    return isCurrent ? (
+                      <span
+                        key={variantAnima.key}
+                        aria-current="true"
+                        className="rounded-full px-2.5 py-1 text-[9px] uppercase tracking-[0.1em] text-paper"
+                        style={{backgroundColor: variantAnima.color}}
+                      >
+                        {variantAnima.name}
+                      </span>
+                    ) : (
+                      <Link
+                        key={variantAnima.key}
+                        to={`/products/${handle}`}
+                        className="rounded-full border px-2.5 py-1 text-[9px] uppercase tracking-[0.1em] opacity-70 transition-opacity hover:opacity-100"
+                        style={{
+                          borderColor: variantAnima.color,
+                          color: variantAnima.color,
+                        }}
+                      >
+                        {variantAnima.name}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
-          <p className="mt-5 max-w-md text-sm leading-relaxed text-nero/80">
-            {shortDescription ?? product.description}
-          </p>
+            <p className="mt-5 max-w-md text-sm leading-relaxed text-nero/80">
+              {shortDescription ?? product.description}
+            </p>
 
-          {siblings.length > 1 && (
+            {siblings.length > 1 && (
+              <div className="mt-8">
+                <p className="mb-2 text-xs uppercase tracking-[0.15em] text-nero/60">
+                  Altri colori · Anyma {anima?.name}
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  {siblings.map((sibling) => {
+                    const siblingColor = getColorTag(sibling.tags);
+                    const isCurrent = sibling.handle === product.handle;
+                    return (
+                      <Link
+                        key={sibling.handle}
+                        to={`/products/${sibling.handle}`}
+                        aria-label={sibling.title}
+                        aria-current={isCurrent}
+                        className={`h-8 w-8 rounded-full border-2 transition-transform hover:scale-110 ${
+                          isCurrent
+                            ? 'border-nero'
+                            : 'border-transparent hover:border-nero/30'
+                        }`}
+                        style={{
+                          backgroundColor: siblingColor
+                            ? COLOR_SWATCH_HEX[siblingColor]
+                            : '#ccc',
+                        }}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             <div className="mt-8">
-              <p className="mb-2 text-xs uppercase tracking-[0.15em] text-nero/60">
-                Altri colori · Anyma {anima?.name}
-              </p>
-              <div className="flex flex-wrap gap-3">
-                {siblings.map((sibling) => {
-                  const siblingColor = getColorTag(sibling.tags);
-                  const isCurrent = sibling.handle === product.handle;
-                  return (
-                    <Link
-                      key={sibling.handle}
-                      to={`/products/${sibling.handle}`}
-                      aria-label={sibling.title}
-                      aria-current={isCurrent}
-                      className={`h-8 w-8 rounded-full border-2 transition-transform hover:scale-110 ${
-                        isCurrent
-                          ? 'border-nero'
-                          : 'border-transparent hover:border-nero/30'
-                      }`}
-                      style={{
-                        backgroundColor: siblingColor
-                          ? COLOR_SWATCH_HEX[siblingColor]
-                          : '#ccc',
-                      }}
-                    />
-                  );
-                })}
-              </div>
+              <YRating />
             </div>
-          )}
-
-          <div className="mt-8">
-            <YRating />
           </div>
 
-          <div className="mt-4">
+          <div className="mt-8 sm:mt-4">
             <ProductForm
               productOptions={productOptions}
               selectedVariant={selectedVariant}
               buttonClassName="w-full border border-nero bg-nero px-8 py-4 text-xs uppercase tracking-[0.2em] text-paper transition-colors hover:bg-transparent hover:text-nero disabled:cursor-not-allowed disabled:opacity-40"
             />
           </div>
-
-          <div className="mt-12">
-            <ProductVideos />
-          </div>
         </div>
+      </div>
+
+      {anima && (
+        <div className="mt-12 grid grid-cols-1 items-center gap-6 sm:mt-16 sm:grid-cols-2 sm:gap-10">
+          <div>
+            <p className="text-sm uppercase tracking-[0.25em] text-fuchsia sm:text-base">
+              {anima.storyHeading}
+            </p>
+            <p className="mt-2 max-w-md text-sm leading-relaxed text-nero/80">
+              {anima.story}
+            </p>
+          </div>
+          <Link
+            to={getPackPath(anima)}
+            className="group relative block aspect-[16/9] overflow-hidden rounded bg-nero/5"
+          >
+            <img
+              src={getAnimaGalleryImages(anima)[0]}
+              alt={`Trittico Anyma ${anima.name}`}
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-nero/30 transition-colors group-hover:bg-nero/40" />
+            <div className="absolute inset-0 flex flex-col items-start justify-end p-5">
+              <p className="text-xs uppercase tracking-[0.25em] text-white/80">
+                Trittico Anyma {anima.name}
+              </p>
+              <p className="mt-1 font-display text-lg uppercase tracking-[0.03em] text-white">
+                Componi il tuo Pack →
+              </p>
+            </div>
+          </Link>
+        </div>
+      )}
+
+      <div className="mt-12">
+        <ProductVideos anima={anima} />
       </div>
 
       <Analytics.ProductView

@@ -12,7 +12,7 @@ import {useAside} from '~/components/Aside';
 import {WishlistHeart} from '~/components/WishlistHeart';
 import {NotifyBell} from '~/components/NotifyBell';
 
-const IMAGE_ROTATE_MS = 2500;
+const IMAGE_ROTATE_MS = 3000;
 
 export function ProductItem({
   product,
@@ -26,7 +26,9 @@ export function ProductItem({
 }) {
   const variantUrl = useVariantUrl(product.handle);
   const {open} = useAside();
-  const gallery = 'images' in product ? product.images.nodes : [];
+  // Only the product's open/closed shots for now — skip swatch smears,
+  // video thumbnails, etc. until more categorized photography exists.
+  const gallery = 'images' in product ? product.images.nodes.slice(0, 2) : [];
   const images = gallery.length > 1 ? gallery : [product.featuredImage];
   const [activeIndex, setActiveIndex] = useState(0);
   const [initialDelay] = useState(() => Math.random() * IMAGE_ROTATE_MS);
