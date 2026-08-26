@@ -309,6 +309,12 @@ button.reset:hover:not(:has(> *)) {
   grid-gap: 1rem;
 }
 
+.header-menu-mobile-lang {
+  border-top: 1px solid rgb(35 31 32 / 10%);
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+}
+
 .header-menu-desktop {
   display: none;
   grid-gap: 1rem;
@@ -325,7 +331,20 @@ button.reset:hover:not(:has(> *)) {
 .header-ctas {
   align-items: center;
   display: flex;
-  grid-gap: 1rem;
+  grid-gap: 0.65rem;
+  @media (min-width: 40em) {
+    grid-gap: 1rem;
+  }
+}
+
+/* The language switcher's IT/EN/ES text is the widest, least essential
+   item at phone widths — it collides with the centered logo there.
+   It's still reachable from the mobile menu drawer at that size. */
+.header-ctas .header-lang {
+  display: none;
+  @media (min-width: 40em) {
+    display: flex;
+  }
 }
 
 .header-ctas > * {

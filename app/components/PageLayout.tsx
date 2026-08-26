@@ -7,7 +7,12 @@ import type {
 } from 'storefrontapi.generated';
 import {Aside} from '~/components/Aside';
 import {Footer} from '~/components/Footer';
-import {Header, HeaderMenu, MarqueeBar} from '~/components/Header';
+import {
+  Header,
+  HeaderMenu,
+  LanguageSwitcher,
+  MarqueeBar,
+} from '~/components/Header';
 import {CartMain} from '~/components/CartMain';
 
 interface PageLayoutProps {
@@ -81,6 +86,9 @@ function MobileMenuAside({
           primaryDomainUrl={header.shop.primaryDomain.url}
           publicStoreDomain={publicStoreDomain}
         />
+        <div className="header-menu-mobile-lang">
+          <LanguageSwitcher />
+        </div>
       </Aside>
     )
   );

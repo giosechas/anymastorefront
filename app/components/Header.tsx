@@ -344,7 +344,7 @@ function AccountIcon({filled = false}: {filled?: boolean}) {
   );
 }
 
-function LanguageSwitcher({onDark = false}: {onDark?: boolean}) {
+export function LanguageSwitcher({onDark = false}: {onDark?: boolean}) {
   const [current, setCurrent] = useState<LocaleCode>('IT');
 
   useEffect(() => {

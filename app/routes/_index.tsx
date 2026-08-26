@@ -265,7 +265,7 @@ function SealDivider({bg}: {bg: 'light' | 'dark'}) {
   return (
     <ScrollReveal
       direction="up"
-      className={`flex items-center justify-center gap-6 px-6 py-10 ${container}`}
+      className={`flex items-center justify-center gap-6 px-6 py-6 sm:py-10 ${container}`}
     >
       <span className={`h-px w-16 sm:w-24 ${line}`} />
       <img src={seal} alt="" aria-hidden="true" className="h-8 w-auto sm:h-10" />
@@ -276,19 +276,19 @@ function SealDivider({bg}: {bg: 'light' | 'dark'}) {
 
 function AnimeGrid() {
   return (
-    <section id="anime" className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
-      <div className="mb-12 text-center">
+    <section id="anime" className="mx-auto max-w-6xl px-6 py-12 sm:py-28">
+      <div className="mb-8 text-center sm:mb-12">
         <p className="mb-3 text-xs uppercase tracking-[0.4em] text-gold">
           Le 6 Anyme
         </p>
-        <h2 className="font-display text-3xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
+        <h2 className="font-display text-2xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
           Scegli la tua Anyma
         </h2>
-        <p className="mx-auto mt-4 whitespace-nowrap text-base text-nero/70">
+        <p className="mx-auto mt-4 max-w-md text-sm text-nero/70 sm:max-w-none sm:text-base sm:whitespace-nowrap">
           Ogni Anyma ha la sua estetica. Il pack che scegli non è un contenitore: è un simbolo.
         </p>
       </div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
         {ANIME.map((anima) => (
           <AnimaTile key={anima.key} anima={anima} />
         ))}
@@ -474,8 +474,8 @@ function PhilosophyBlock({
           )}
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center px-8 py-16 text-center sm:px-12">
-        <p className="font-display max-w-xl text-balance text-5xl uppercase leading-[1.05] tracking-[0.02em] text-nero sm:text-7xl lg:text-8xl">
+      <div className="flex flex-col items-center justify-center px-8 py-10 text-center sm:px-12 sm:py-16">
+        <p className="font-display max-w-xl text-balance text-3xl uppercase leading-[1.05] tracking-[0.02em] text-nero sm:text-7xl lg:text-8xl">
           {quote}
           <br />
           <span className={accent === 'fuchsia' ? 'text-fuchsia' : 'text-gold'}>
@@ -489,7 +489,7 @@ function PhilosophyBlock({
 
 function BrandStoryTeaser() {
   return (
-    <section className="bg-paper px-6 py-20 text-center sm:py-28">
+    <section className="bg-paper px-6 py-14 text-center sm:py-28">
       <ScrollReveal direction="up">
         <blockquote className="font-display mx-auto max-w-2xl text-2xl uppercase tracking-[0.03em] text-nero sm:text-3xl">
           <span className="text-fuchsia">&ldquo;</span>Non esiste una sola te.
