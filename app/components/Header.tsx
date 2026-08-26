@@ -31,8 +31,6 @@ interface HeaderProps {
   publicStoreDomain: string;
 }
 
-type Viewport = 'desktop' | 'mobile';
-
 // How far from the viewport top the "is the header over a dark section?"
 // sample line sits — inside the header's own band, below the marquee.
 const HEADER_SAMPLE_LINE = 70;
@@ -43,7 +41,7 @@ export function Header({
   cart,
   publicStoreDomain,
 }: HeaderProps) {
-  const {shop, menu} = header;
+  const {shop} = header;
   const location = useLocation();
   const [onDark, setOnDark] = useState(false);
 
@@ -92,13 +90,7 @@ export function Header({
 
   return (
     <header className={`header ${onDark ? 'header--on-dark' : ''}`}>
-      <HeaderMenu
-        menu={menu}
-        viewport="desktop"
-        primaryDomainUrl={header.shop.primaryDomain.url}
-        publicStoreDomain={publicStoreDomain}
-        onDark={onDark}
-      />
+      <HeaderMenuMobileToggle />
       <NavLink
         prefetch="intent"
         to="/"
@@ -173,97 +165,55 @@ export function MarqueeBar() {
 export function HeaderMenu({
   menu,
   primaryDomainUrl,
-  viewport,
   publicStoreDomain,
-  onDark = false,
 }: {
   menu: HeaderProps['header']['menu'];
   primaryDomainUrl: HeaderProps['header']['shop']['primaryDomain']['url'];
-  viewport: Viewport;
   publicStoreDomain: HeaderProps['publicStoreDomain'];
-  onDark?: boolean;
 }) {
-  const className = `header-menu-${viewport}`;
   const {close} = useAside();
-  const linkStyle = makeActiveLinkStyle(onDark);
+  const linkStyle = makeActiveLinkStyle(false);
 
   const visibleItems = (menu || FALLBACK_HEADER_MENU).items.filter(
     (item) => !HIDDEN_MENU_TITLES.includes(item.title.trim().toLowerCase()),
   );
 
   return (
-    <nav className={className} role="navigation">
-      {viewport === 'desktop' ? (
-        <div className="header-menu-item header-menu-anime">
-          <span>Le Anyme</span>
-          <div className="header-menu-anime-panel">
+    <nav className="header-menu-mobile" role="navigation">
+      <div className="header-menu-item">
+        <span>Le Anyme</span>
+        <div className="header-menu-anime-mobile">
+          <NavLink
+            className="header-menu-anime-all"
+            onClick={close}
+            prefetch="intent"
+            to="/collections/all"
+          >
+            Tutte le Anyme
+          </NavLink>
+          {ANIME.map((anima) => (
             <NavLink
-              className="header-menu-anime-all"
+              key={anima.key}
               onClick={close}
               prefetch="intent"
-              to="/collections/all"
+              to={`/collections/${anima.handle}`}
             >
-              Tutte le Anyme
+              {anima.name}
             </NavLink>
-            {ANIME.map((anima) => (
-              <NavLink
-                key={anima.key}
-                onClick={close}
-                prefetch="intent"
-                to={`/collections/${anima.handle}`}
-              >
-                {anima.name}
-              </NavLink>
-            ))}
-            <p className="header-menu-anime-label">Pack per Anyme</p>
-            {ANIME.map((anima) => (
-              <NavLink
-                key={`pack-${anima.key}`}
-                onClick={close}
-                prefetch="intent"
-                to={getPackPath(anima)}
-              >
-                {anima.name}
-              </NavLink>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <div className="header-menu-item">
-          <span>Le Anyme</span>
-          <div className="header-menu-anime-mobile">
+          ))}
+          <p className="header-menu-anime-label">Pack per Anyme</p>
+          {ANIME.map((anima) => (
             <NavLink
-              className="header-menu-anime-all"
+              key={`pack-${anima.key}`}
               onClick={close}
               prefetch="intent"
-              to="/collections/all"
+              to={getPackPath(anima)}
             >
-              Tutte le Anyme
+              {anima.name}
             </NavLink>
-            {ANIME.map((anima) => (
-              <NavLink
-                key={anima.key}
-                onClick={close}
-                prefetch="intent"
-                to={`/collections/${anima.handle}`}
-              >
-                {anima.name}
-              </NavLink>
-            ))}
-            <p className="header-menu-anime-label">Pack per Anyme</p>
-            {ANIME.map((anima) => (
-              <NavLink
-                key={`pack-${anima.key}`}
-                onClick={close}
-                prefetch="intent"
-                to={getPackPath(anima)}
-              >
-                {anima.name}
-              </NavLink>
-            ))}
-          </div>
+          ))}
         </div>
-      )}
+      </div>
       <NavLink
         className="header-menu-item"
         end
@@ -310,7 +260,6 @@ function HeaderCtas({
   const iconStyle = {color: onDark ? '#fff' : 'var(--nero)'};
   return (
     <nav className="header-ctas" role="navigation">
-      <HeaderMenuMobileToggle />
       <NavLink
         prefetch="intent"
         to="/account"
@@ -328,7 +277,7 @@ function HeaderCtas({
         </Suspense>
       </NavLink>
       <WishlistToggle onDark={onDark} />
-      <LanguageSwitcher onDark={onDark} />
+      <LanguageSwitcher />
       <SearchPopover transparent={onDark} />
       <CartToggle cart={cart} onDark={onDark} />
     </nav>
@@ -344,7 +293,7 @@ function AccountIcon({filled = false}: {filled?: boolean}) {
   );
 }
 
-export function LanguageSwitcher({onDark = false}: {onDark?: boolean}) {
+export function LanguageSwitcher() {
   const [current, setCurrent] = useState<LocaleCode>('IT');
 
   useEffect(() => {
@@ -355,26 +304,22 @@ export function LanguageSwitcher({onDark = false}: {onDark?: boolean}) {
   }, []);
 
   return (
-    <div
-      className="header-lang"
-      style={{color: onDark ? '#fff' : 'var(--nero)'}}
-    >
-      {LOCALES.map(({code, label}, i) => (
-        <span key={code}>
-          {i > 0 && <span className="header-lang-sep">/</span>}
-          <button
-            type="button"
-            aria-current={code === current}
-            className="header-lang-item"
-            data-active={code === current}
-            onClick={() => {
-              document.cookie = `${LOCALE_COOKIE}=${code}; path=/; max-age=31536000`;
-              window.location.reload();
-            }}
-          >
-            {label}
-          </button>
-        </span>
+    <div className="header-lang">
+      {LOCALES.map(({code, label, flag}) => (
+        <button
+          key={code}
+          type="button"
+          aria-label={label}
+          aria-current={code === current}
+          className="header-lang-item"
+          data-active={code === current}
+          onClick={() => {
+            document.cookie = `${LOCALE_COOKIE}=${code}; path=/; max-age=31536000`;
+            window.location.reload();
+          }}
+        >
+          {flag}
+        </button>
       ))}
     </div>
   );
@@ -399,13 +344,21 @@ function WishlistToggle({onDark = false}: {onDark?: boolean}) {
 }
 
 function HeaderMenuMobileToggle() {
-  const {open} = useAside();
+  const {type, open, close} = useAside();
+  const isOpen = type === 'mobile';
   return (
     <button
+      type="button"
       className="header-menu-mobile-toggle reset"
-      onClick={() => open('mobile')}
+      aria-label={isOpen ? 'Chiudi menu' : 'Apri menu'}
+      aria-expanded={isOpen}
+      onClick={() => (isOpen ? close() : open('mobile'))}
     >
-      <h3>☰</h3>
+      <span className="hamburger-icon" data-open={isOpen}>
+        <span />
+        <span />
+        <span />
+      </span>
     </button>
   );
 }
