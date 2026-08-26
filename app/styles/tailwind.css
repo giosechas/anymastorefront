@@ -37,7 +37,7 @@
 :root {
   --nero: #231f20; /* Primary — from logo artwork, NOT #1A1A1A */
   --gold: #c8a96e; /* Goldrose — identity accent */
-  --paper: #faf9f7; /* Background */
+  --paper: #f1f0ee; /* Background */
   --fuchsia: #ff5fa0; /* Impact only — never in UI/nav */
 
   /* Themes the logo SVGs (fill: var(--anyma-ink) / var(--anyma-paper)) */

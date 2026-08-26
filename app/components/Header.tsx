@@ -33,6 +33,10 @@ interface HeaderProps {
 
 type Viewport = 'desktop' | 'mobile';
 
+// How far from the viewport top the "is the header over a dark section?"
+// sample line sits — inside the header's own band, below the marquee.
+const HEADER_SAMPLE_LINE = 70;
+
 export function Header({
   header,
   isLoggedIn,
@@ -41,30 +45,59 @@ export function Header({
 }: HeaderProps) {
   const {shop, menu} = header;
   const location = useLocation();
-  const isHome = location.pathname === '/';
-  const [transparent, setTransparent] = useState(isHome);
+  const [onDark, setOnDark] = useState(false);
 
   useEffect(() => {
-    if (!isHome) {
-      setTransparent(false);
+    const targets = Array.from(
+      document.querySelectorAll('[data-header-theme="dark"]'),
+    );
+    if (targets.length === 0) {
+      setOnDark(false);
       return;
     }
-    const onScroll = () => {
-      setTransparent(window.scrollY < window.innerHeight * 0.75);
+
+    const active = new Set<Element>();
+    let observer: IntersectionObserver;
+
+    const create = () => {
+      const bottomMargin = Math.max(
+        window.innerHeight - HEADER_SAMPLE_LINE - 1,
+        0,
+      );
+      observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) active.add(entry.target);
+            else active.delete(entry.target);
+          }
+          setOnDark(active.size > 0);
+        },
+        {rootMargin: `-${HEADER_SAMPLE_LINE}px 0px -${bottomMargin}px 0px`},
+      );
+      targets.forEach((target) => observer.observe(target));
     };
-    onScroll();
-    window.addEventListener('scroll', onScroll, {passive: true});
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [isHome]);
+
+    create();
+    const onResize = () => {
+      observer.disconnect();
+      active.clear();
+      create();
+    };
+    window.addEventListener('resize', onResize);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', onResize);
+    };
+  }, [location.pathname]);
 
   return (
-    <header className={`header ${transparent ? 'header--transparent' : ''}`}>
+    <header className={`header ${onDark ? 'header--on-dark' : ''}`}>
       <HeaderMenu
         menu={menu}
         viewport="desktop"
         primaryDomainUrl={header.shop.primaryDomain.url}
         publicStoreDomain={publicStoreDomain}
-        transparent={transparent}
+        onDark={onDark}
       />
       <NavLink
         prefetch="intent"
@@ -74,16 +107,12 @@ export function Header({
         className="header-logo"
       >
         <img
-          src={transparent ? logoWhite : logoPositive}
+          src={onDark ? logoWhite : logoPositive}
           alt={shop.name}
           className="h-5 w-auto md:h-7"
         />
       </NavLink>
-      <HeaderCtas
-        isLoggedIn={isLoggedIn}
-        cart={cart}
-        transparent={transparent}
-      />
+      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} onDark={onDark} />
     </header>
   );
 }
@@ -146,17 +175,17 @@ export function HeaderMenu({
   primaryDomainUrl,
   viewport,
   publicStoreDomain,
-  transparent = false,
+  onDark = false,
 }: {
   menu: HeaderProps['header']['menu'];
   primaryDomainUrl: HeaderProps['header']['shop']['primaryDomain']['url'];
   viewport: Viewport;
   publicStoreDomain: HeaderProps['publicStoreDomain'];
-  transparent?: boolean;
+  onDark?: boolean;
 }) {
   const className = `header-menu-${viewport}`;
   const {close} = useAside();
-  const linkStyle = makeActiveLinkStyle(transparent);
+  const linkStyle = makeActiveLinkStyle(onDark);
 
   const visibleItems = (menu || FALLBACK_HEADER_MENU).items.filter(
     (item) => !HIDDEN_MENU_TITLES.includes(item.title.trim().toLowerCase()),
@@ -276,9 +305,9 @@ export function HeaderMenu({
 function HeaderCtas({
   isLoggedIn,
   cart,
-  transparent = false,
-}: Pick<HeaderProps, 'isLoggedIn' | 'cart'> & {transparent?: boolean}) {
-  const iconStyle = {color: transparent ? '#fff' : 'var(--nero)'};
+  onDark = false,
+}: Pick<HeaderProps, 'isLoggedIn' | 'cart'> & {onDark?: boolean}) {
+  const iconStyle = {color: onDark ? '#fff' : 'var(--nero)'};
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
@@ -298,10 +327,10 @@ function HeaderCtas({
           </Await>
         </Suspense>
       </NavLink>
-      <WishlistToggle transparent={transparent} />
-      <LanguageSwitcher transparent={transparent} />
-      <SearchPopover transparent={transparent} />
-      <CartToggle cart={cart} />
+      <WishlistToggle onDark={onDark} />
+      <LanguageSwitcher onDark={onDark} />
+      <SearchPopover transparent={onDark} />
+      <CartToggle cart={cart} onDark={onDark} />
     </nav>
   );
 }
@@ -315,7 +344,7 @@ function AccountIcon({filled = false}: {filled?: boolean}) {
   );
 }
 
-function LanguageSwitcher({transparent = false}: {transparent?: boolean}) {
+function LanguageSwitcher({onDark = false}: {onDark?: boolean}) {
   const [current, setCurrent] = useState<LocaleCode>('IT');
 
   useEffect(() => {
@@ -328,7 +357,7 @@ function LanguageSwitcher({transparent = false}: {transparent?: boolean}) {
   return (
     <div
       className="header-lang"
-      style={{color: transparent ? '#fff' : 'var(--nero)'}}
+      style={{color: onDark ? '#fff' : 'var(--nero)'}}
     >
       {LOCALES.map(({code, label}, i) => (
         <span key={code}>
@@ -351,7 +380,7 @@ function LanguageSwitcher({transparent = false}: {transparent?: boolean}) {
   );
 }
 
-function WishlistToggle({transparent = false}: {transparent?: boolean}) {
+function WishlistToggle({onDark = false}: {onDark?: boolean}) {
   const count = useWishlist().length;
   return (
     <NavLink
@@ -359,7 +388,7 @@ function WishlistToggle({transparent = false}: {transparent?: boolean}) {
       to="/wishlist"
       aria-label="Wishlist"
       className="header-icon-btn"
-      style={{color: transparent ? '#fff' : 'var(--nero)'}}
+      style={{color: onDark ? '#fff' : 'var(--nero)'}}
     >
       <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth="2">
         <path d="M12 20.5c-.2 0-.4-.07-.55-.2C7.4 17 3 13.14 3 8.9 3 5.9 5.36 3.5 8.3 3.5c1.7 0 3.3.82 4.3 2.14A5.4 5.4 0 0 1 20.7 8.9c0 4.24-4.4 8.1-8.45 11.4-.15.13-.35.2-.55.2Z" />
@@ -381,13 +410,22 @@ function HeaderMenuMobileToggle() {
   );
 }
 
-function CartBadge({count}: {count: number}) {
+function CartBadge({
+  count,
+  onDark = false,
+}: {
+  count: number;
+  onDark?: boolean;
+}) {
   const {open} = useAside();
   const {publish, shop, cart, prevCart} = useAnalytics();
 
   return (
     <a
       href="/cart"
+      aria-label={`Cart${count > 0 ? ` (${count})` : ''}`}
+      className="header-icon-btn"
+      style={{color: onDark ? '#fff' : 'var(--nero)'}}
       onClick={(e) => {
         e.preventDefault();
         open('cart');
@@ -399,25 +437,38 @@ function CartBadge({count}: {count: number}) {
         } as CartViewPayload);
       }}
     >
-      Cart <span aria-label={`(items: ${count})`}>{count}</span>
+      <CartIcon />
+      {count > 0 && <span className="header-icon-badge">{count}</span>}
     </a>
   );
 }
 
-function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
+function CartIcon() {
   return (
-    <Suspense fallback={<CartBadge count={0} />}>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M6 8h12l-1 12H7L6 8Z" />
+      <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+    </svg>
+  );
+}
+
+function CartToggle({
+  cart,
+  onDark = false,
+}: Pick<HeaderProps, 'cart'> & {onDark?: boolean}) {
+  return (
+    <Suspense fallback={<CartBadge count={0} onDark={onDark} />}>
       <Await resolve={cart}>
-        <CartBanner />
+        <CartBanner onDark={onDark} />
       </Await>
     </Suspense>
   );
 }
 
-function CartBanner() {
+function CartBanner({onDark = false}: {onDark?: boolean}) {
   const originalCart = useAsyncValue() as CartApiQueryFragment | null;
   const cart = useOptimisticCart(originalCart);
-  return <CartBadge count={cart?.totalQuantity ?? 0} />;
+  return <CartBadge count={cart?.totalQuantity ?? 0} onDark={onDark} />;
 }
 
 const FALLBACK_HEADER_MENU = {
@@ -462,9 +513,9 @@ const FALLBACK_HEADER_MENU = {
   ],
 };
 
-function makeActiveLinkStyle(transparent: boolean) {
+function makeActiveLinkStyle(onDark: boolean) {
   return ({isActive, isPending}: {isActive: boolean; isPending: boolean}) => ({
     fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : transparent ? '#fff' : 'var(--nero)',
+    color: isPending ? 'grey' : onDark ? '#fff' : 'var(--nero)',
   });
 }

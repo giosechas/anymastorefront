@@ -196,7 +196,10 @@ function Hero() {
   }, []);
 
   return (
-    <section className="relative isolate flex min-h-[70vh] flex-col items-center justify-center overflow-hidden bg-nero px-6 py-20 text-center text-paper sm:min-h-[86vh] sm:py-6">
+    <section
+      data-header-theme="dark"
+      className="bleed-under-header relative isolate flex min-h-[70vh] flex-col items-center justify-center overflow-hidden bg-nero px-6 py-20 text-center text-paper sm:min-h-[86vh] sm:py-6"
+    >
       <div ref={parallaxRef} className="absolute inset-0 -z-10 h-full w-full overflow-hidden">
         <div
           className="absolute inset-0 h-[160%] w-full will-change-transform"
@@ -718,7 +721,10 @@ function FoundersSection() {
   }, []);
 
   return (
-    <section className="relative isolate flex min-h-[75vh] items-end overflow-hidden bg-nero text-paper sm:min-h-[85vh]">
+    <section
+      data-header-theme="dark"
+      className="relative isolate flex min-h-[75vh] items-end overflow-hidden bg-nero text-paper sm:min-h-[85vh]"
+    >
       <div ref={parallaxRef} className="absolute inset-0 -z-10 h-full w-full overflow-hidden">
         <div
           className="absolute inset-0 h-[160%] w-full will-change-transform"

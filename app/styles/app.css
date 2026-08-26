@@ -11,6 +11,8 @@
   --cart-aside-summary-height: 250px;
   --grid-item-width: 355px;
   --header-height: 72px;
+  --marquee-height: 2.1rem;
+  --top-bars-height: calc(var(--header-height) + var(--marquee-height));
   --color-dark: var(--nero);
   --color-light: var(--paper);
   --ease-pop: cubic-bezier(0.16, 1, 0.3, 1);
@@ -244,31 +246,40 @@ button.reset:hover:not(:has(> *)) {
 */
 .header {
   align-items: center;
-  background: var(--paper);
+  background: transparent;
   border-bottom: 1px solid rgb(35 31 32 / 8%);
   display: flex;
   height: var(--header-height);
   isolation: isolate;
   justify-content: space-between;
+  left: 0;
   padding: 0 1.5rem;
-  position: sticky;
-  top: 0;
-  transform: translateZ(0);
+  position: fixed;
+  right: 0;
+  top: var(--marquee-height);
   transition:
-    background-color 300ms ease,
-    border-color 300ms ease;
-  z-index: 1;
+    border-color 300ms ease,
+    color 300ms ease;
+  z-index: 40;
 }
 
-.header--transparent {
-  background: transparent;
+.header--on-dark {
   border-bottom-color: transparent;
 }
 
-.header--transparent .header-menu-item > span,
-.header--transparent .header-menu-mobile-toggle,
-.header--transparent .header-ctas button {
+.header--on-dark .header-menu-item > span,
+.header--on-dark .header-menu-mobile-toggle,
+.header--on-dark .header-ctas button,
+.header--on-dark .header-ctas a {
   color: #fff;
+}
+
+/* Pulls a section up to the true top of the viewport so its background
+   extends behind the fixed marquee+header, while keeping its own content
+   clear of them via matching top padding. */
+.bleed-under-header {
+  margin-top: calc(-1 * var(--top-bars-height));
+  padding-top: var(--top-bars-height);
 }
 
 .header-logo {
@@ -383,6 +394,7 @@ button.reset:hover:not(:has(> *)) {
   box-shadow:
     0 24px 60px rgb(35 31 32 / 25%),
     0 2px 10px rgb(35 31 32 / 12%);
+  color: var(--nero);
   left: 50%;
   max-height: 70vh;
   overflow-y: auto;
@@ -393,6 +405,14 @@ button.reset:hover:not(:has(> *)) {
   transform: translateX(-50%);
   width: min(560px, 92vw);
   z-index: 61;
+}
+
+/* The popover always has a light background, regardless of what the
+   header itself is sitting over — never let header--on-dark whiten it. */
+.header--on-dark .search-popover-panel,
+.header--on-dark .search-popover-panel a,
+.header--on-dark .search-popover-panel button {
+  color: var(--nero);
 }
 
 .search-popover-panel[data-closing='true'] {
@@ -700,10 +720,14 @@ button.reset:hover:not(:has(> *)) {
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid rgb(35 31 32 / 10%);
   display: flex;
-  height: 2.1rem;
+  height: var(--marquee-height);
   justify-content: center;
+  left: 0;
   overflow: hidden;
-  position: relative;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 40;
 }
 
 .marquee-bar-item {
