@@ -519,6 +519,90 @@ button.reset:hover:not(:has(> *)) {
   animation: search-pop-out 160ms var(--ease-pop) forwards;
 }
 
+.login-popover-panel {
+  width: min(360px, 90vw);
+}
+
+.login-popover-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+  margin-bottom: 1.1rem;
+  text-transform: uppercase;
+}
+
+.login-popover-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.login-popover-label {
+  color: rgb(35 31 32 / 55%);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.login-popover-form input {
+  background: none;
+  border: 1px solid rgb(35 31 32 / 20%);
+  color: var(--nero);
+  font-size: 0.9rem;
+  padding: 0.75rem 1rem;
+}
+
+.login-popover-form input:focus {
+  border-color: var(--nero);
+  outline: none;
+}
+
+.login-popover-submit {
+  background: var(--nero);
+  border: 1px solid var(--nero);
+  color: var(--paper);
+  cursor: pointer;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  margin-top: 0.6rem;
+  padding: 0.85rem 1rem;
+  text-transform: uppercase;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+.login-popover-submit:hover {
+  background: transparent;
+  color: var(--nero);
+}
+
+.login-popover-links {
+  border-top: 1px solid rgb(35 31 32 / 10%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+}
+
+.login-popover-links button {
+  background: none;
+  border: none;
+  color: rgb(35 31 32 / 65%);
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 0;
+  text-align: left;
+}
+
+.login-popover-links button:hover {
+  color: var(--nero);
+}
+
+.login-popover-links button span {
+  color: var(--gold);
+  font-weight: 600;
+}
+
 @keyframes search-fade-in {
   from {
     opacity: 0;

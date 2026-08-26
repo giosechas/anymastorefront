@@ -8,6 +8,7 @@ import {
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
 import {SearchPopover} from '~/components/SearchPopover';
+import {LoginPopover} from '~/components/LoginPopover';
 import {FlagIcon} from '~/components/FlagIcon';
 import {useReducedMotion} from '~/hooks/useReducedMotion';
 import {ANIME, getPackPath} from '~/lib/animas';
@@ -283,22 +284,25 @@ function HeaderCtas({
   const iconStyle = {color: onDark ? '#fff' : 'var(--nero)'};
   return (
     <nav className="header-ctas" role="navigation">
-      <NavLink
-        prefetch="intent"
-        to="/account"
-        className="header-icon-btn"
-        style={iconStyle}
-      >
-        <Suspense fallback={<AccountIcon />}>
-          <Await resolve={isLoggedIn} errorElement={<AccountIcon />}>
-            {(isLoggedIn) => (
-              <span aria-label={isLoggedIn ? 'Account' : 'Sign in'}>
-                <AccountIcon filled={isLoggedIn} />
-              </span>
-            )}
-          </Await>
-        </Suspense>
-      </NavLink>
+      <Suspense fallback={<LoginPopover transparent={onDark} />}>
+        <Await resolve={isLoggedIn} errorElement={<LoginPopover transparent={onDark} />}>
+          {(isLoggedIn) =>
+            isLoggedIn ? (
+              <NavLink
+                prefetch="intent"
+                to="/account"
+                aria-label="Account"
+                className="header-icon-btn"
+                style={iconStyle}
+              >
+                <AccountIcon filled />
+              </NavLink>
+            ) : (
+              <LoginPopover transparent={onDark} />
+            )
+          }
+        </Await>
+      </Suspense>
       <WishlistToggle onDark={onDark} />
       <LanguageSwitcher />
       <SearchPopover transparent={onDark} />
