@@ -25,6 +25,13 @@ const MARQUEE_ITEMS = [
 // with the logo (which links home) and "Catalogo" is off for now.
 const HIDDEN_MENU_TITLES = ['home', 'catalogo'];
 
+// Mirrors the slug map in routes/prodotti.$type.tsx.
+const PRODUCT_TYPES = [
+  {slug: 'rossetti', label: 'Rossetti'},
+  {slug: 'gloss', label: 'Lip Gloss'},
+  {slug: 'mascara', label: 'Mascara & Eyeliner'},
+];
+
 interface HeaderProps {
   header: HeaderQuery;
   cart: Promise<CartApiQueryFragment | null>;
@@ -211,6 +218,21 @@ export function HeaderMenu({
               to={getPackPath(anima)}
             >
               {anima.name}
+            </NavLink>
+          ))}
+        </div>
+      </div>
+      <div className="header-menu-item">
+        <span>Cerca per prodotto</span>
+        <div className="header-menu-anime-mobile">
+          {PRODUCT_TYPES.map(({slug, label}) => (
+            <NavLink
+              key={slug}
+              onClick={close}
+              prefetch="intent"
+              to={`/prodotti/${slug}`}
+            >
+              {label}
             </NavLink>
           ))}
         </div>
