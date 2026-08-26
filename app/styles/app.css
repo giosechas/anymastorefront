@@ -388,7 +388,12 @@ button.reset:hover:not(:has(> *)) {
 }
 
 .header-menu-item {
+  color: var(--nero);
   cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: none;
 }
 
 .header-ctas {
@@ -732,10 +737,15 @@ button.reset:hover:not(:has(> *)) {
 }
 
 .header-menu-anime-mobile a {
+  color: rgb(35 31 32 / 68%);
+  font-weight: 400;
   text-transform: none;
   letter-spacing: 0.02em;
-  font-size: 0.85rem;
-  opacity: 0.85;
+  font-size: 0.8rem;
+}
+
+.header-menu-anime-mobile a:hover {
+  color: var(--nero);
 }
 
 .header-menu-anime-mobile .header-menu-anime-all {

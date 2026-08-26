@@ -31,7 +31,6 @@ import philosophyIdentity1 from '~/assets/images/philosophy/pool/identity1.webp'
 import philosophyIdentity2 from '~/assets/images/philosophy/pool/identity2.webp';
 import philosophyIdentity3 from '~/assets/images/philosophy/pool/identity3.webp';
 import founderImage1 from '~/assets/images/founders/founder-1.webp';
-import logoWhite from '~/assets/anyma-logo-wordmark-white.png';
 
 const PHILOSOPHY_TRUTH_IMAGES = [
   philosophyTruth1,
@@ -219,15 +218,10 @@ function Hero() {
       </div>
       <div className="absolute inset-0 -z-10 bg-nero/15" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-nero/10 via-nero/55 to-nero/25" />
-      <img
-        src={logoWhite}
-        alt="Anyma Beauty"
-        className="mb-6 h-14 w-auto drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)] sm:h-16"
-      />
       <h1 className="font-display max-w-4xl text-balance text-5xl italic leading-[1.05] tracking-[0.04em] text-fuchsia [text-shadow:0_2px_16px_rgba(0,0,0,0.55)] sm:text-6xl md:text-7xl">
         Reveal your Soul!
       </h1>
-      <p className="mt-8 max-w-md text-sm leading-relaxed text-paper [text-shadow:0_1px_8px_rgba(0,0,0,0.5)]">
+      <p className="mt-8 max-w-md text-lg leading-relaxed text-paper [text-shadow:0_1px_8px_rgba(0,0,0,0.5)]">
         Non esiste una sola te. Sei sportiva e sensuale, delicata e dominante,
         minimal e audace — a volte tutto questo nella stessa settimana. Il
         pack che scegli oggi è il simbolo di chi sei oggi.
