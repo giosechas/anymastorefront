@@ -184,7 +184,10 @@ aside li {
   top: 0;
   transition: opacity 400ms var(--ease-drawer);
   visibility: hidden;
-  z-index: 10;
+  /* Above every other fixed layer sitewide (header/marquee at 40,
+     search popover at 60/61) so the cart/mobile drawer always wins,
+     regardless of DOM order relative to in-page content. */
+  z-index: 100;
 }
 
 .overlay .close-outside {
@@ -427,7 +430,7 @@ button.reset:hover:not(:has(> *)) {
 
 .header-icon-badge {
   align-items: center;
-  background: var(--fuchsia);
+  background: var(--gold);
   border-radius: 999px;
   color: #fff;
   display: flex;
@@ -625,7 +628,7 @@ button.reset:hover:not(:has(> *)) {
 }
 
 .search-popover-history li button:last-child:hover {
-  color: var(--fuchsia);
+  color: var(--gold);
 }
 
 .search-popover-status {
@@ -702,7 +705,7 @@ button.reset:hover:not(:has(> *)) {
 }
 
 .header-menu-anime-all {
-  border-bottom: 1px solid var(--fuchsia);
+  border-bottom: 1px solid var(--gold);
   font-weight: 600;
   margin-bottom: 0.25rem;
   padding-bottom: 0.75rem;
@@ -713,7 +716,7 @@ button.reset:hover:not(:has(> *)) {
 
 .header-menu-anime-label {
   border-top: 1px solid rgb(35 31 32 / 10%);
-  color: var(--fuchsia);
+  color: var(--gold);
   font-size: 0.65rem;
   letter-spacing: 0.15em;
   margin: 0.5rem 0 0.25rem;
