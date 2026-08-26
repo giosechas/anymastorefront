@@ -1,11 +1,11 @@
-import {redirect, useLoaderData} from 'react-router';
+import {Link, redirect, useLoaderData} from 'react-router';
 import type {Route} from './+types/collections.$handle';
 import {getPaginationVariables, Analytics} from '@shopify/hydrogen';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {ProductItem} from '~/components/ProductItem';
 import type {ProductItemFragment} from 'storefrontapi.generated';
-import {findAnimaByCollectionHandle} from '~/lib/animas';
+import {ANIME, findAnimaByCollectionHandle} from '~/lib/animas';
 import {getAnimaAnimalVideo} from '~/lib/animaVideo';
 
 export const meta: Route.MetaFunction = ({data}) => {
@@ -89,6 +89,38 @@ export default function Collection() {
           <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-nero/70">
             {collection.description}
           </p>
+        )}
+
+        {anima && (
+          <div className="mt-6">
+            <p className="mb-2 text-[10px] uppercase tracking-[0.15em] text-nero/50">
+              Cambia la tua Anyma
+            </p>
+            <div className="flex flex-wrap justify-center gap-1.5">
+              {ANIME.map((a) => {
+                const isCurrent = a.key === anima.key;
+                return isCurrent ? (
+                  <span
+                    key={a.key}
+                    aria-current="true"
+                    className="rounded-full px-2.5 py-1 text-[9px] uppercase tracking-[0.1em] text-paper"
+                    style={{backgroundColor: a.color}}
+                  >
+                    {a.name}
+                  </span>
+                ) : (
+                  <Link
+                    key={a.key}
+                    to={`/collections/${a.handle}`}
+                    className="rounded-full border px-2.5 py-1 text-[9px] uppercase tracking-[0.1em] opacity-70 transition-opacity hover:opacity-100"
+                    style={{borderColor: a.color, color: a.color}}
+                  >
+                    {a.name}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
         )}
       </header>
 
