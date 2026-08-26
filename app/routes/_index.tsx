@@ -647,27 +647,37 @@ function ProductRow({
 const TIKTOK_HANDLE = '@anyma.beauty';
 const TIKTOK_URL = 'https://www.tiktok.com/@anyma.beauty';
 
-const SOCIAL_CLIPS = [
-  {src: '/videos/animas/leopard.mp4', poster: '/videos/animas/posters/leopard.jpg'},
-  {src: '/videos/animas/panther.mp4', poster: '/videos/animas/posters/panther.jpg'},
-  {src: '/videos/animas/candy-rosa.mp4', poster: '/videos/animas/posters/candy-rosa.jpg'},
-  {src: '/videos/animas/street.mp4', poster: '/videos/animas/posters/street.jpg'},
+const TIKTOK_WALL_CLIPS = [
+  {name: 'bedroom-alt', src: '/videos/tiktok-wall/bedroom-alt.mp4', poster: '/videos/tiktok-wall/posters/bedroom-alt.jpg'},
+  {name: 'lip-closeup', src: '/videos/tiktok-wall/lip-closeup.mp4', poster: '/videos/tiktok-wall/posters/lip-closeup.jpg'},
+  {name: 'paris-walk', src: '/videos/tiktok-wall/paris-walk.mp4', poster: '/videos/tiktok-wall/posters/paris-walk.jpg'},
+  {name: 'street-bite', src: '/videos/tiktok-wall/street-bite.mp4', poster: '/videos/tiktok-wall/posters/street-bite.jpg'},
+  {name: 'city-selfie', src: '/videos/tiktok-wall/city-selfie.mp4', poster: '/videos/tiktok-wall/posters/city-selfie.jpg'},
+  {name: 'locker-room', src: '/videos/tiktok-wall/locker-room.mp4', poster: '/videos/tiktok-wall/posters/locker-room.jpg'},
 ];
 
 function SocialSection() {
-  const {ref: parallaxRef, offset} = useParallaxOffset<HTMLDivElement>(50);
+  const col1 = useParallaxOffset<HTMLDivElement>(-70);
+  const col2 = useParallaxOffset<HTMLDivElement>(55);
+  const col3 = useParallaxOffset<HTMLDivElement>(-40);
+
+  const columns = [
+    {...col1, clips: TIKTOK_WALL_CLIPS.slice(0, 2)},
+    {...col2, clips: TIKTOK_WALL_CLIPS.slice(2, 4)},
+    {...col3, clips: TIKTOK_WALL_CLIPS.slice(4, 6)},
+  ];
 
   return (
-    <section className="bg-paper px-6 py-16 sm:py-24">
+    <section className="overflow-hidden bg-nero px-6 py-16 sm:py-24">
       <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-10 sm:grid-cols-2 sm:gap-16">
         <ScrollReveal direction="left">
           <p className="mb-3 text-xs uppercase tracking-[0.4em] text-gold">
             Seguici
           </p>
-          <h2 className="font-display text-3xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
+          <h2 className="font-display text-3xl uppercase tracking-[0.03em] text-paper sm:text-4xl">
             Guardaci su <span className="text-fuchsia">TikTok</span>
           </h2>
-          <p className="mt-4 max-w-md text-sm leading-relaxed text-nero/70">
+          <p className="mt-4 max-w-md text-sm leading-relaxed text-paper/70">
             Backstage, texture, anyme in movimento — la parte più vera del
             brand vive sui social, prima ancora che sullo shop.
           </p>
@@ -675,7 +685,7 @@ function SocialSection() {
             href={TIKTOK_URL}
             target="_blank"
             rel="noreferrer"
-            className="mt-6 inline-flex items-center gap-2 border border-nero px-6 py-3 text-xs uppercase tracking-[0.2em] text-nero transition-colors hover:bg-nero hover:text-paper"
+            className="mt-6 inline-flex items-center gap-2 border border-paper px-6 py-3 text-xs uppercase tracking-[0.2em] text-paper transition-colors hover:bg-paper hover:text-nero"
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
               <path d="M16.6 5.82c-.9-.86-1.47-2.03-1.6-3.32h-3.02v13.9c0 1.7-1.38 3.08-3.08 3.08a3.08 3.08 0 0 1-1.13-5.95 3.06 3.06 0 0 1 1.13-.21c.28 0 .55.03.81.09v-3.1a6.1 6.1 0 0 0-.81-.05A6.1 6.1 0 0 0 3.28 16.5 6.1 6.1 0 0 0 8.9 22.6a6.1 6.1 0 0 0 6.1-6.1V8.94a8.2 8.2 0 0 0 4.8 1.53V7.45c-1.13 0-2.19-.35-3.2-1.63Z" />
@@ -685,25 +695,32 @@ function SocialSection() {
         </ScrollReveal>
 
         <ScrollReveal direction="right" delay={100}>
-          <div
-            ref={parallaxRef}
-            className="grid grid-cols-2 gap-3 will-change-transform"
-            style={{transform: `translateY(${offset}px)`}}
-          >
-            {SOCIAL_CLIPS.map((clip, i) => (
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {columns.map((col, i) => (
               <div
-                key={clip.src}
-                className={`aspect-[9/16] overflow-hidden rounded bg-nero/5 ${i % 2 === 1 ? 'mt-6' : ''}`}
+                key={i}
+                ref={col.ref}
+                className={`flex flex-col gap-3 will-change-transform ${
+                  i === 2 ? 'hidden sm:flex' : ''
+                }`}
+                style={{transform: `translateY(${col.offset}px)`}}
               >
-                <video
-                  src={clip.src}
-                  poster={clip.poster}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="h-full w-full object-cover"
-                />
+                {col.clips.map((clip) => (
+                  <div
+                    key={clip.name}
+                    className="aspect-[9/16] overflow-hidden rounded bg-paper/10"
+                  >
+                    <video
+                      src={clip.src}
+                      poster={clip.poster}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                ))}
               </div>
             ))}
           </div>
