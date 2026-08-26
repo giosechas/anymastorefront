@@ -219,6 +219,22 @@ aside li {
   transform: translateX(calc(var(--aside-width) * -1));
 }
 
+/* The mobile nav drawer opens from the left, matching the hamburger
+   trigger's position — every other aside (cart) keeps the right side. */
+.overlay[data-type='mobile'] aside {
+  left: calc(-1 * var(--aside-width));
+  right: auto;
+}
+
+.overlay[data-type='mobile'] .close-outside {
+  left: auto;
+  right: 0;
+}
+
+.overlay[data-type='mobile'].expanded aside {
+  transform: translateX(var(--aside-width));
+}
+
 button.reset {
   border: 0;
   background: inherit;
