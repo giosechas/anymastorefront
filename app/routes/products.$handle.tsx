@@ -150,10 +150,10 @@ export default function Product() {
 
           {anima && (
             <div className="mt-6">
-              <p className="text-lg uppercase tracking-[0.25em] text-fuchsia">
+              <p className="text-sm uppercase tracking-[0.25em] text-fuchsia sm:text-lg">
                 {anima.storyHeading}
               </p>
-              <p className="mt-2 max-w-md text-xl leading-relaxed text-nero/80">
+              <p className="mt-2 max-w-md text-sm leading-relaxed text-nero/80 sm:text-xl">
                 {anima.story}
               </p>
             </div>
@@ -223,7 +223,7 @@ export default function Product() {
           )}
 
           <div className="flex items-start justify-between gap-3">
-            <h1 className="font-display text-3xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
+            <h1 className="font-display text-2xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
               {displayTitle}
             </h1>
             <WishlistHeart
