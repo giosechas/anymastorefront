@@ -79,9 +79,6 @@ export default function Collection() {
   return (
     <div className="bg-paper">
       <header className="mx-auto max-w-3xl px-6 pb-6 pt-16 text-center sm:pt-24">
-        <p className="mb-4 text-xs uppercase tracking-[0.4em] text-gold">
-          Anyma Beauty
-        </p>
         <h1 className="font-display text-4xl uppercase tracking-[0.03em] text-nero sm:text-5xl">
           {anima ? `Anyma ${anima.name}` : collection.title}
         </h1>
