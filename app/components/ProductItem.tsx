@@ -10,6 +10,7 @@ import {useVariantUrl} from '~/lib/variants';
 import {AddToCartButton} from '~/components/AddToCartButton';
 import {useAside} from '~/components/Aside';
 import {WishlistHeart} from '~/components/WishlistHeart';
+import {NotifyBell} from '~/components/NotifyBell';
 
 const IMAGE_ROTATE_MS = 2500;
 
@@ -72,18 +73,39 @@ export function ProductItem({
               className="h-full w-full object-contain transition-opacity duration-500"
             />
           )}
-          <WishlistHeart
-            className="absolute right-2 top-2"
-            item={{
-              id: product.id,
-              handle: product.handle,
-              title: product.title,
-              image: image
-                ? {url: image.url, altText: image.altText}
-                : undefined,
-              price: product.priceRange.minVariantPrice,
-            }}
-          />
+          <div className="absolute right-2 top-2 z-10 flex flex-col gap-2">
+            <WishlistHeart
+              item={{
+                id: product.id,
+                handle: product.handle,
+                title: product.title,
+                image: image
+                  ? {url: image.url, altText: image.altText}
+                  : undefined,
+                price: product.priceRange.minVariantPrice,
+              }}
+            />
+            {variant?.availableForSale ? (
+              <div
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+              >
+                <AddToCartButton
+                  onClick={() => open('cart')}
+                  lines={[
+                    {merchandiseId: variant.id, quantity: 1, selectedVariant: variant},
+                  ]}
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-paper/80 backdrop-blur-sm transition-transform hover:scale-110"
+                >
+                  <CartAddIcon />
+                </AddToCartButton>
+              </div>
+            ) : (
+              variant && <NotifyBell productId={product.id} />
+            )}
+          </div>
         </div>
         <h4 className="mt-3 text-xs uppercase tracking-[0.05em] text-nero">
           {product.title}
@@ -108,5 +130,20 @@ export function ProductItem({
         </div>
       )}
     </div>
+  );
+}
+
+function CartAddIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-4 w-4"
+      fill="none"
+      stroke="var(--nero)"
+      strokeWidth={1.5}
+    >
+      <path d="M6 8h12l-1 12H7L6 8Z" />
+      <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+    </svg>
   );
 }
