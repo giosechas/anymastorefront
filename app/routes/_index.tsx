@@ -381,6 +381,11 @@ function PhilosophySection() {
             src: '/videos/philosophy/truth-beach.mp4',
             poster: '/videos/philosophy/posters/truth-beach.jpg',
           },
+          {
+            kind: 'video',
+            src: '/videos/philosophy/reveal-lipstick.mp4',
+            poster: '/videos/philosophy/posters/reveal-lipstick.jpg',
+          },
         ]}
         quote="La bellezza non è coerenza."
         subquote="È verità."

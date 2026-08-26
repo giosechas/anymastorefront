@@ -304,7 +304,7 @@ export default function Product() {
       )}
 
       <div className="mt-12">
-        <ProductVideos anima={anima} />
+        <ProductVideos />
       </div>
 
       <Analytics.ProductView
