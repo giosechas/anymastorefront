@@ -8,25 +8,45 @@ import {
   useSearchHistory,
 } from '~/lib/searchHistory';
 
+const CLOSE_ANIMATION_MS = 170;
+
 export function SearchPopover({transparent = false}: {transparent?: boolean}) {
   const [open, setOpen] = useState(false);
+  const [closing, setClosing] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const history = useSearchHistory();
   const panelRef = useRef<HTMLDivElement>(null);
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
+  // Navigating away closes instantly — the page itself is already
+  // transitioning, so a lingering exit animation would feel laggy.
   useEffect(() => {
+    clearTimeout(closeTimeoutRef.current);
     setOpen(false);
+    setClosing(false);
   }, [location.pathname, location.search]);
+
+  useEffect(() => () => clearTimeout(closeTimeoutRef.current), []);
+
+  function requestClose() {
+    if (closing) return;
+    setClosing(true);
+    closeTimeoutRef.current = setTimeout(() => {
+      setOpen(false);
+      setClosing(false);
+    }, CLOSE_ANIMATION_MS);
+  }
 
   useEffect(() => {
     if (!open) return;
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') setOpen(false);
+      if (event.key === 'Escape') requestClose();
     }
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [open]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, closing]);
 
   function runSearch(term: string) {
     const trimmed = term.trim();
@@ -43,7 +63,7 @@ export function SearchPopover({transparent = false}: {transparent?: boolean}) {
         aria-label="Cerca"
         className="header-icon-btn"
         style={{color: transparent ? '#fff' : 'var(--nero)'}}
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => (open ? requestClose() : setOpen(true))}
       >
         <SearchIcon />
       </button>
@@ -54,11 +74,13 @@ export function SearchPopover({transparent = false}: {transparent?: boolean}) {
             type="button"
             aria-label="Chiudi ricerca"
             className="search-popover-backdrop"
-            onClick={() => setOpen(false)}
+            data-closing={closing || undefined}
+            onClick={requestClose}
           />
           <div
             ref={panelRef}
             className="search-popover-panel"
+            data-closing={closing || undefined}
             role="dialog"
             aria-modal="true"
             aria-label="Cerca"

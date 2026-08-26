@@ -13,6 +13,8 @@
   --header-height: 72px;
   --color-dark: var(--nero);
   --color-light: var(--paper);
+  --ease-pop: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 img {
@@ -108,7 +110,7 @@ aside {
   position: fixed;
   right: calc(-1 * var(--aside-width));
   top: 0;
-  transition: transform 200ms ease-in-out;
+  transition: transform 200ms var(--ease-drawer);
 }
 
 aside header {
@@ -128,7 +130,7 @@ aside header .close {
   font-weight: bold;
   opacity: 0.8;
   text-decoration: none;
-  transition: all 200ms;
+  transition: opacity 200ms ease;
   width: 20px;
 }
 
@@ -178,8 +180,7 @@ aside li {
   position: fixed;
   right: 0;
   top: 0;
-  transition: opacity 400ms ease-in-out;
-  transition: opacity 400ms;
+  transition: opacity 400ms var(--ease-drawer);
   visibility: hidden;
   z-index: 10;
 }
@@ -371,8 +372,12 @@ button.reset:hover:not(:has(> *)) {
   z-index: 60;
 }
 
+.search-popover-backdrop[data-closing='true'] {
+  animation: search-fade-out 160ms ease forwards;
+}
+
 .search-popover-panel {
-  animation: search-pop-in 220ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: search-pop-in 220ms var(--ease-pop) forwards;
   background: var(--paper);
   border-radius: 16px;
   box-shadow:
@@ -390,12 +395,25 @@ button.reset:hover:not(:has(> *)) {
   z-index: 61;
 }
 
+.search-popover-panel[data-closing='true'] {
+  animation: search-pop-out 160ms var(--ease-pop) forwards;
+}
+
 @keyframes search-fade-in {
   from {
     opacity: 0;
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes search-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }
 
@@ -407,6 +425,24 @@ button.reset:hover:not(:has(> *)) {
   to {
     opacity: 1;
     transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+@keyframes search-pop-out {
+  from {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px) scale(0.96);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .search-popover-backdrop,
+  .search-popover-panel {
+    animation-duration: 1ms;
   }
 }
 
@@ -567,19 +603,30 @@ button.reset:hover:not(:has(> *)) {
   background: var(--paper);
   border: 1px solid rgb(35 31 32 / 10%);
   box-shadow: 0 12px 24px rgb(35 31 32 / 8%);
-  display: none;
+  display: flex;
   flex-direction: column;
   left: 0;
   min-width: 220px;
+  opacity: 0;
   padding: 0.75rem 0;
+  pointer-events: none;
   position: absolute;
   top: 100%;
+  transform: translateY(-6px);
+  transition:
+    opacity 180ms var(--ease-pop),
+    transform 180ms var(--ease-pop),
+    visibility 180ms;
+  visibility: hidden;
   z-index: 2;
 }
 
 .header-menu-anime:hover .header-menu-anime-panel,
 .header-menu-anime:focus-within .header-menu-anime-panel {
-  display: flex;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  visibility: visible;
 }
 
 .header-menu-anime-panel a {
@@ -661,15 +708,25 @@ button.reset:hover:not(:has(> *)) {
 
 .marquee-bar-item {
   align-items: center;
-  animation: marquee-vertical-in 450ms cubic-bezier(0.16, 1, 0.3, 1);
   color: var(--nero);
-  display: inline-flex;
+  display: flex;
   font-size: 0.72rem;
   font-weight: 600;
   gap: 0.5rem;
+  inset: 0;
+  justify-content: center;
   letter-spacing: 0.12em;
+  position: absolute;
   text-transform: uppercase;
   white-space: nowrap;
+}
+
+.marquee-bar-item[data-phase='enter'] {
+  animation: marquee-vertical-in 450ms var(--ease-pop) forwards;
+}
+
+.marquee-bar-item[data-phase='exit'] {
+  animation: marquee-vertical-out 450ms var(--ease-pop) forwards;
 }
 
 @keyframes marquee-vertical-in {
@@ -683,9 +740,30 @@ button.reset:hover:not(:has(> *)) {
   }
 }
 
+@keyframes marquee-vertical-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .marquee-bar-item {
     animation: none;
+  }
+
+  .header-menu-anime-panel {
+    transform: none;
+    transition-duration: 120ms;
+  }
+
+  .header-menu-anime:hover .header-menu-anime-panel,
+  .header-menu-anime:focus-within .header-menu-anime-panel {
+    transform: none;
   }
 }
 

@@ -1,4 +1,4 @@
-import {Suspense, useEffect, useState} from 'react';
+import {Suspense, useEffect, useRef, useState} from 'react';
 import {Await, NavLink, useAsyncValue, useLocation} from 'react-router';
 import {
   type CartViewPayload,
@@ -8,6 +8,7 @@ import {
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
 import {SearchPopover} from '~/components/SearchPopover';
+import {useReducedMotion} from '~/hooks/useReducedMotion';
 import {ANIME, getPackPath} from '~/lib/animas';
 import {useWishlist} from '~/lib/wishlist';
 import {LOCALES, LOCALE_COOKIE, type LocaleCode} from '~/lib/locale';
@@ -88,22 +89,51 @@ export function Header({
 }
 
 const MARQUEE_ROTATE_MS = 3500;
+const MARQUEE_TRANSITION_MS = 450;
 
 export function MarqueeBar() {
   const [index, setIndex] = useState(0);
+  const [exitingIndex, setExitingIndex] = useState<number | null>(null);
+  const reducedMotion = useReducedMotion();
+  const rotationKey = useRef(0);
 
   useEffect(() => {
     const id = setInterval(() => {
-      setIndex((i) => (i + 1) % MARQUEE_ITEMS.length);
+      setIndex((current) => {
+        if (!reducedMotion) {
+          rotationKey.current += 1;
+          setExitingIndex(current);
+        }
+        return (current + 1) % MARQUEE_ITEMS.length;
+      });
     }, MARQUEE_ROTATE_MS);
     return () => clearInterval(id);
-  }, []);
+  }, [reducedMotion]);
+
+  useEffect(() => {
+    if (exitingIndex === null) return;
+    const timeout = setTimeout(
+      () => setExitingIndex(null),
+      MARQUEE_TRANSITION_MS,
+    );
+    return () => clearTimeout(timeout);
+  }, [exitingIndex]);
 
   const item = MARQUEE_ITEMS[index];
 
   return (
     <div className="marquee-bar" aria-hidden="true">
-      <span className="marquee-bar-item" key={index}>
+      {exitingIndex !== null && (
+        <span
+          className="marquee-bar-item"
+          data-phase="exit"
+          key={`exit-${rotationKey.current}`}
+        >
+          <span>{MARQUEE_ITEMS[exitingIndex].icon}</span>
+          <span>{MARQUEE_ITEMS[exitingIndex].text}</span>
+        </span>
+      )}
+      <span className="marquee-bar-item" data-phase="enter" key={index}>
         <span>{item.icon}</span>
         <span>{item.text}</span>
       </span>

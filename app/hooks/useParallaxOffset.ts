@@ -11,6 +11,10 @@ export function useParallaxOffset<T extends HTMLElement>(strength = 30) {
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
     let ticking = false;
 
     const update = () => {

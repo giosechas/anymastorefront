@@ -1,4 +1,5 @@
 import {useEffect, useRef, useState} from 'react';
+import {useReducedMotion} from '~/hooks/useReducedMotion';
 
 type Direction = 'up' | 'down' | 'left' | 'right';
 
@@ -22,6 +23,7 @@ export function ScrollReveal({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     const el = ref.current;
@@ -39,13 +41,15 @@ export function ScrollReveal({
     return () => observer.disconnect();
   }, []);
 
+  const offsetClass = reducedMotion ? '' : OFFSET_CLASS[direction];
+
   return (
     <div
       ref={ref}
-      className={`transition-all duration-1000 ease-out ${
+      className={`transition-[transform,opacity] duration-1000 ease-out ${
         visible
           ? 'translate-x-0 translate-y-0 opacity-100'
-          : `opacity-0 ${OFFSET_CLASS[direction]}`
+          : `opacity-0 ${offsetClass}`
       } ${className}`}
       style={{transitionDelay: `${delay}ms`}}
     >
