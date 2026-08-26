@@ -8,6 +8,7 @@ import {
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
 import {SearchPopover} from '~/components/SearchPopover';
+import {FlagIcon} from '~/components/FlagIcon';
 import {useReducedMotion} from '~/hooks/useReducedMotion';
 import {ANIME, getPackPath} from '~/lib/animas';
 import {useWishlist} from '~/lib/wishlist';
@@ -305,7 +306,7 @@ export function LanguageSwitcher() {
 
   return (
     <div className="header-lang">
-      {LOCALES.map(({code, label, flag}) => (
+      {LOCALES.map(({code, label}) => (
         <button
           key={code}
           type="button"
@@ -318,7 +319,7 @@ export function LanguageSwitcher() {
             window.location.reload();
           }}
         >
-          {flag}
+          <FlagIcon code={code} />
         </button>
       ))}
     </div>

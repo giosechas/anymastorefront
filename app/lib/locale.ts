@@ -4,10 +4,10 @@ export const LOCALE_COOKIE = 'anyma_locale';
 
 export type LocaleCode = 'IT' | 'EN' | 'ES';
 
-export const LOCALES: {code: LocaleCode; label: string; flag: string}[] = [
-  {code: 'IT', label: 'IT', flag: '🇮🇹'},
-  {code: 'EN', label: 'EN', flag: '🇺🇸'},
-  {code: 'ES', label: 'ES', flag: '🇪🇸'},
+export const LOCALES: {code: LocaleCode; label: string}[] = [
+  {code: 'IT', label: 'IT'},
+  {code: 'EN', label: 'EN'},
+  {code: 'ES', label: 'ES'},
 ];
 
 const LOCALE_I18N: Record<
