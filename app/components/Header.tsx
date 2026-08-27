@@ -181,7 +181,6 @@ export function HeaderMenu({
   publicStoreDomain: HeaderProps['publicStoreDomain'];
 }) {
   const {close} = useAside();
-  const linkStyle = makeActiveLinkStyle(false);
 
   const visibleItems = (menu || FALLBACK_HEADER_MENU).items.filter(
     (item) => !HIDDEN_MENU_TITLES.includes(item.title.trim().toLowerCase()),
@@ -243,7 +242,6 @@ export function HeaderMenu({
         end
         onClick={close}
         prefetch="intent"
-        style={linkStyle}
         to="/about"
       >
         La nostra storia
@@ -265,7 +263,6 @@ export function HeaderMenu({
             key={item.id}
             onClick={close}
             prefetch="intent"
-            style={linkStyle}
             to={url}
           >
             {item.title}
@@ -493,9 +490,3 @@ const FALLBACK_HEADER_MENU = {
   ],
 };
 
-function makeActiveLinkStyle(onDark: boolean) {
-  return ({isActive, isPending}: {isActive: boolean; isPending: boolean}) => ({
-    fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : onDark ? '#fff' : 'var(--nero)',
-  });
-}

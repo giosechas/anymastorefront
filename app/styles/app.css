@@ -400,6 +400,54 @@ button.reset:hover:not(:has(> *)) {
   padding-top: 1.5rem;
 }
 
+.header-menu-register {
+  border: 1px solid var(--fuchsia);
+  color: var(--fuchsia);
+  display: block;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  margin-top: 1.5rem;
+  padding: 0.85rem;
+  text-align: center;
+  text-transform: uppercase;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+.header-menu-register:hover {
+  background: var(--fuchsia);
+  color: var(--paper);
+}
+
+/* Divider between each top-level section (Le Anyme / Cerca per
+   prodotto / La nostra storia / Contatti). */
+.header-menu-mobile > .header-menu-item + .header-menu-item {
+  border-top: 1px solid rgb(35 31 32 / 10%);
+  padding-top: 1rem;
+}
+
+/* Hovering one entry darkens it (fuchsia) and fades its siblings,
+   instead of an underline. Scoped per list so top-level items and each
+   sublist behave independently. */
+.header-menu-mobile:hover > .header-menu-item {
+  opacity: 0.45;
+  transition: color 200ms ease, opacity 200ms ease;
+}
+
+.header-menu-mobile > .header-menu-item:hover {
+  color: var(--fuchsia);
+  opacity: 1;
+}
+
+.header-menu-anime-mobile:hover > a {
+  opacity: 0.45;
+  transition: color 200ms ease, opacity 200ms ease;
+}
+
+.header-menu-anime-mobile > a:hover {
+  color: var(--fuchsia);
+  opacity: 1;
+}
+
 .header-menu-item {
   color: var(--nero);
   cursor: pointer;

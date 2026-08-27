@@ -1,4 +1,4 @@
-import {Await} from 'react-router';
+import {Await, Link} from 'react-router';
 import {Suspense} from 'react';
 import type {
   CartApiQueryFragment,
@@ -88,6 +88,9 @@ function MobileMenuAside({
         <div className="header-menu-mobile-lang">
           <LanguageSwitcher />
         </div>
+        <Link to="/account/login" className="header-menu-register">
+          Registrati
+        </Link>
       </Aside>
     )
   );
