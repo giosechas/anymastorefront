@@ -7,14 +7,22 @@ type ImageSlide = {
   id: string;
   image: ProductFragment['images']['nodes'][number];
 };
+type StaticImageSlide = {
+  kind: 'staticImage';
+  id: 'model-photo';
+  url: string;
+  altText: string;
+};
 type VideoSlide = {kind: 'video'; id: 'video'; src: string; poster: string};
-type Slide = ImageSlide | VideoSlide;
+type Slide = ImageSlide | StaticImageSlide | VideoSlide;
 
 export function ProductGallery({
   images,
+  modelPhoto,
   video,
 }: {
   images: ProductFragment['images']['nodes'];
+  modelPhoto?: {url: string; altText: string};
   video?: {src: string; poster: string};
 }) {
   const slides: Slide[] = [
@@ -25,11 +33,16 @@ export function ProductGallery({
         image,
       }),
     ),
+    ...(modelPhoto
+      ? [{kind: 'staticImage', id: 'model-photo', ...modelPhoto} as StaticImageSlide]
+      : []),
     ...(video ? [{kind: 'video', id: 'video', ...video} as VideoSlide] : []),
   ];
 
   const [activeId, setActiveId] = useState(slides[0]?.id);
   const active = slides.find((s) => s.id === activeId) ?? slides[0];
+  const [zoomOrigin, setZoomOrigin] = useState('50% 50%');
+  const [isZooming, setIsZooming] = useState(false);
 
   if (!active) return <div className="aspect-[2/3] bg-nero/5" />;
 
@@ -38,11 +51,25 @@ export function ProductGallery({
       ? `${active.image.width} / ${active.image.height}`
       : '2 / 3';
 
+  const canZoom = active.kind !== 'video';
+
+  function handleMouseMove(event: React.MouseEvent<HTMLDivElement>) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+    setZoomOrigin(`${x}% ${y}%`);
+  }
+
   return (
     <div className="flex flex-col items-start gap-3 sm:flex-row-reverse">
       <div
-        className="min-w-0 flex-1 bg-nero/5"
+        className={`min-w-0 flex-1 overflow-hidden bg-nero/5 ${
+          canZoom ? 'sm:cursor-zoom-in' : ''
+        }`}
         style={{aspectRatio: activeAspectRatio}}
+        onMouseEnter={() => canZoom && setIsZooming(true)}
+        onMouseLeave={() => setIsZooming(false)}
+        onMouseMove={canZoom ? handleMouseMove : undefined}
       >
         {active.kind === 'video' ? (
           <video
@@ -54,12 +81,27 @@ export function ProductGallery({
             loop
             className="h-full w-full object-contain"
           />
+        ) : active.kind === 'staticImage' ? (
+          <img
+            key={active.id}
+            src={active.url}
+            alt={active.altText}
+            className="h-full w-full object-contain transition-transform duration-300 ease-out"
+            style={{
+              transform: isZooming ? 'scale(2)' : 'scale(1)',
+              transformOrigin: zoomOrigin,
+            }}
+          />
         ) : (
           <Image
             data={active.image}
             key={active.id}
             sizes="(min-width: 45em) 50vw, 100vw"
-            className="h-full w-full object-contain"
+            className="h-full w-full object-contain transition-transform duration-300 ease-out"
+            style={{
+              transform: isZooming ? 'scale(2)' : 'scale(1)',
+              transformOrigin: zoomOrigin,
+            }}
           />
         )}
       </div>
@@ -89,6 +131,12 @@ export function ProductGallery({
                     </span>
                   </span>
                 </>
+              ) : slide.kind === 'staticImage' ? (
+                <img
+                  src={slide.url}
+                  alt={slide.altText}
+                  className="h-full w-full object-contain"
+                />
               ) : (
                 <Image
                   data={slide.image}

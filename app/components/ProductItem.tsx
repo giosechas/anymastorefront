@@ -11,6 +11,8 @@ import {AddToCartButton} from '~/components/AddToCartButton';
 import {useAside} from '~/components/Aside';
 import {WishlistHeart} from '~/components/WishlistHeart';
 import {NotifyBell} from '~/components/NotifyBell';
+import {findAnimaByTag} from '~/lib/animas';
+import {getMascaraModelPhoto} from '~/lib/mascaraModelPhoto';
 
 const IMAGE_ROTATE_MS = 3000;
 
@@ -34,6 +36,12 @@ export function ProductItem({
   const [initialDelay] = useState(() => Math.random() * IMAGE_ROTATE_MS);
   const image = images[activeIndex] ?? product.featuredImage;
   const variant = product.variants?.nodes?.[0];
+  const anima =
+    'tags' in product ? findAnimaByTag(product.tags) : undefined;
+  const modelPhoto =
+    'productType' in product
+      ? getMascaraModelPhoto(product.productType, anima?.handle)
+      : undefined;
 
   useEffect(() => {
     if (images.length < 2) return;
@@ -73,6 +81,13 @@ export function ProductItem({
               loading={loading}
               sizes="(min-width: 45em) 400px, 100vw"
               className="h-full w-full object-contain transition-opacity duration-500"
+            />
+          )}
+          {modelPhoto && (
+            <img
+              src={modelPhoto.url}
+              alt={modelPhoto.altText}
+              className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
             />
           )}
           <div className="absolute right-2 top-2 z-10 flex flex-col gap-2">

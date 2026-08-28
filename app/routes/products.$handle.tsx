@@ -1,4 +1,5 @@
-import {Link, useLoaderData} from 'react-router';
+import {Suspense} from 'react';
+import {Link, useLoaderData, Await} from 'react-router';
 import type {Route} from './+types/products.$handle';
 import {
   getSelectedProductOptions,
@@ -14,6 +15,7 @@ import {ProductForm} from '~/components/ProductForm';
 import {YRating} from '~/components/YRating';
 import {ProductVideos} from '~/components/ProductVideos';
 import {WishlistHeart} from '~/components/WishlistHeart';
+import {ProductItem} from '~/components/ProductItem';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {
   ANIME,
@@ -28,6 +30,8 @@ import {
   getShortDescription,
 } from '~/lib/productCopy';
 import {getProductVideo} from '~/lib/productVideo';
+import {getMascaraModelPhoto} from '~/lib/mascaraModelPhoto';
+import {getAnimaHeroVideo} from '~/lib/productHeroVideo';
 
 export const meta: Route.MetaFunction = ({data}) => {
   return [
@@ -40,8 +44,12 @@ export const meta: Route.MetaFunction = ({data}) => {
 };
 
 export async function loader(args: Route.LoaderArgs) {
-  const deferredData = loadDeferredData(args);
   const criticalData = await loadCriticalData(args);
+  const deferredData = loadDeferredData(
+    args,
+    criticalData.product.id,
+    criticalData.product.handle,
+  );
 
   return {...deferredData, ...criticalData};
 }
@@ -114,12 +122,32 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
   };
 }
 
-function loadDeferredData({context, params}: Route.LoaderArgs) {
-  return {};
+function loadDeferredData(
+  {context}: Route.LoaderArgs,
+  productId: string,
+  currentHandle: string,
+) {
+  const recommendedProducts = Promise.all([
+    context.storefront
+      .query(PRODUCT_RECOMMENDATIONS_QUERY, {variables: {productId}})
+      .catch(() => null),
+    context.storefront
+      .query(FALLBACK_RECOMMENDATIONS_QUERY)
+      .catch(() => null),
+  ]).then(([primary, fallback]) => {
+    const primaryItems = primary?.productRecommendations ?? [];
+    if (primaryItems.length > 0) return primaryItems;
+    return (fallback?.products.nodes ?? []).filter(
+      (item) => item.handle !== currentHandle,
+    );
+  });
+
+  return {recommendedProducts};
 }
 
 export default function Product() {
-  const {product, anima, siblings, animaVariants} = useLoaderData<typeof loader>();
+  const {product, anima, siblings, animaVariants, recommendedProducts} =
+    useLoaderData<typeof loader>();
 
   const orderedAnimaVariants = ANIME.map((a) =>
     animaVariants.find((v) => v.anima.key === a.key),
@@ -141,11 +169,17 @@ export default function Product() {
   const shortDescription = getShortDescription(product.productType, colorTag);
   const displayTitle = product.title.split('·').pop()?.trim() ?? product.title;
   const video = getProductVideo(product.productType, anima?.handle);
+  const modelPhoto = getMascaraModelPhoto(product.productType, anima?.handle);
+  const heroVideo = getAnimaHeroVideo(anima?.handle);
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-10 sm:py-16">
       <div className="grid grid-cols-1 items-stretch gap-10 sm:grid-cols-2 sm:gap-16">
-        <ProductGallery images={product.images.nodes} video={video} />
+        <ProductGallery
+          images={product.images.nodes}
+          modelPhoto={modelPhoto}
+          video={video}
+        />
 
         <div className="flex flex-col sm:justify-between">
           <div>
@@ -275,10 +309,12 @@ export default function Product() {
         <div className="mt-12 grid grid-cols-1 items-center gap-6 sm:mt-16 sm:grid-cols-2 sm:gap-10">
           <div>
             <p className="text-sm uppercase tracking-[0.25em] text-fuchsia sm:text-base">
-              {anima.storyHeading}
+              Un rituale completo
             </p>
             <p className="mt-2 max-w-md text-sm leading-relaxed text-nero/80">
-              {anima.story}
+              Rossetto, gloss e mascara pensati per completarsi. Scopri il
+              trittico Anyma {anima.name} e porta a casa l&apos;intera
+              esperienza.
             </p>
           </div>
           <Link
@@ -303,8 +339,53 @@ export default function Product() {
         </div>
       )}
 
+      {anima && (
+        <div className="mt-12 grid grid-cols-1 items-center gap-6 sm:mt-16 sm:grid-cols-2 sm:gap-10">
+          <div className="aspect-[9/16] max-h-[600px] w-full overflow-hidden rounded bg-nero/5">
+            {heroVideo && (
+              <video
+                src={heroVideo.src}
+                poster={heroVideo.poster}
+                controls
+                playsInline
+                loop
+                className="h-full w-full object-cover"
+              />
+            )}
+          </div>
+          <div>
+            <p className="text-sm uppercase tracking-[0.25em] text-fuchsia sm:text-base">
+              {anima.storyHeading}
+            </p>
+            <p className="mt-2 max-w-md text-sm leading-relaxed text-nero/80">
+              {anima.story}
+            </p>
+          </div>
+        </div>
+      )}
+
       <div className="mt-12">
         <ProductVideos />
+      </div>
+
+      <div className="mt-12 border-t border-nero/10 pt-8">
+        <h2 className="font-display text-lg uppercase tracking-[0.1em] text-nero">
+          Ti potrebbero piacere anche
+        </h2>
+        <Suspense fallback={null}>
+          <Await resolve={recommendedProducts}>
+            {(items) => {
+              if (!items || items.length === 0) return null;
+              return (
+                <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                  {items.slice(0, 8).map((item) => (
+                    <ProductItem key={item.id} product={item} />
+                  ))}
+                </div>
+              );
+            }}
+          </Await>
+        </Suspense>
       </div>
 
       <Analytics.ProductView
@@ -459,6 +540,96 @@ const ANIMA_VARIANTS_QUERY = `#graphql
             handle
           }
         }
+      }
+    }
+  }
+` as const;
+
+const PRODUCT_RECOMMENDATIONS_QUERY = `#graphql
+  fragment MoneyProductItem on MoneyV2 {
+    amount
+    currencyCode
+  }
+  fragment ProductItem on Product {
+    id
+    handle
+    title
+    productType
+    tags
+    featuredImage {
+      id
+      altText
+      url
+      width
+      height
+    }
+    priceRange {
+      minVariantPrice {
+        ...MoneyProductItem
+      }
+      maxVariantPrice {
+        ...MoneyProductItem
+      }
+    }
+    variants(first: 1) {
+      nodes {
+        id
+        availableForSale
+      }
+    }
+  }
+  query ProductRecommendations(
+    $productId: ID!
+    $country: CountryCode
+    $language: LanguageCode
+  ) @inContext(country: $country, language: $language) {
+    productRecommendations(productId: $productId) {
+      ...ProductItem
+    }
+  }
+` as const;
+
+// Shopify's productRecommendations has no purchase history to draw on for
+// this store and returns []; this covers that case with a general product
+// list so the section never renders empty.
+const FALLBACK_RECOMMENDATIONS_QUERY = `#graphql
+  fragment MoneyProductItem on MoneyV2 {
+    amount
+    currencyCode
+  }
+  fragment ProductItem on Product {
+    id
+    handle
+    title
+    productType
+    tags
+    featuredImage {
+      id
+      altText
+      url
+      width
+      height
+    }
+    priceRange {
+      minVariantPrice {
+        ...MoneyProductItem
+      }
+      maxVariantPrice {
+        ...MoneyProductItem
+      }
+    }
+    variants(first: 1) {
+      nodes {
+        id
+        availableForSale
+      }
+    }
+  }
+  query FallbackRecommendations($country: CountryCode, $language: LanguageCode)
+    @inContext(country: $country, language: $language) {
+    products(first: 9, sortKey: UPDATED_AT, reverse: true) {
+      nodes {
+        ...ProductItem
       }
     }
   }

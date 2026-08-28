@@ -1,14 +1,26 @@
-import {Link} from 'react-router';
+import {Suspense} from 'react';
+import {Await, Link, useLoaderData} from 'react-router';
 import {Money} from '@shopify/hydrogen';
 import type {Route} from './+types/wishlist';
 import {useWishlist, removeWishlistItem} from '~/lib/wishlist';
+import {ProductItem} from '~/components/ProductItem';
 
 export const meta: Route.MetaFunction = () => {
   return [{title: 'Anyma Beauty | Wishlist'}];
 };
 
+export async function loader({context}: Route.LoaderArgs) {
+  const recommendedProducts = context.storefront
+    .query(WISHLIST_RECOMMENDATIONS_QUERY)
+    .catch(() => null);
+
+  return {recommendedProducts};
+}
+
 export default function Wishlist() {
   const items = useWishlist();
+  const {recommendedProducts} = useLoaderData<typeof loader>();
+  const wishlistHandles = new Set(items.map((item) => item.handle));
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-16 sm:py-24">
@@ -33,7 +45,7 @@ export default function Wishlist() {
           </Link>
         </div>
       ) : (
-        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {items.map((item) => (
             <div key={item.id} className="group relative">
               <Link to={`/products/${item.handle}`} className="block">
@@ -69,6 +81,72 @@ export default function Wishlist() {
           ))}
         </div>
       )}
+
+      <div className="mt-16 border-t border-nero/10 pt-8">
+        <h2 className="font-display text-lg uppercase tracking-[0.1em] text-nero">
+          Potrebbero piacerti anche
+        </h2>
+        <Suspense fallback={null}>
+          <Await resolve={recommendedProducts}>
+            {(response) => {
+              const products = (response?.products.nodes ?? []).filter(
+                (product) => !wishlistHandles.has(product.handle),
+              );
+              if (products.length === 0) return null;
+              return (
+                <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                  {products.slice(0, 8).map((product) => (
+                    <ProductItem key={product.id} product={product} />
+                  ))}
+                </div>
+              );
+            }}
+          </Await>
+        </Suspense>
+      </div>
     </div>
   );
 }
+
+const WISHLIST_RECOMMENDATIONS_QUERY = `#graphql
+  fragment MoneyProductItem on MoneyV2 {
+    amount
+    currencyCode
+  }
+  fragment ProductItem on Product {
+    id
+    handle
+    title
+    productType
+    tags
+    featuredImage {
+      id
+      altText
+      url
+      width
+      height
+    }
+    priceRange {
+      minVariantPrice {
+        ...MoneyProductItem
+      }
+      maxVariantPrice {
+        ...MoneyProductItem
+      }
+    }
+    variants(first: 1) {
+      nodes {
+        id
+        availableForSale
+      }
+    }
+  }
+  query WishlistRecommendations($country: CountryCode, $language: LanguageCode)
+    @inContext(country: $country, language: $language) {
+    products(first: 12, sortKey: UPDATED_AT, reverse: true) {
+      nodes {
+        ...ProductItem
+      }
+    }
+  }
+` as const;

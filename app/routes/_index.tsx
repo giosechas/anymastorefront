@@ -219,7 +219,15 @@ function Hero() {
       <div className="absolute inset-0 -z-10 bg-nero/15" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-nero/10 via-nero/55 to-nero/25" />
       <h1 className="font-display max-w-4xl text-balance text-5xl italic leading-[1.05] tracking-[0.04em] text-fuchsia [text-shadow:0_2px_16px_rgba(0,0,0,0.55)] sm:text-6xl md:text-7xl">
-        Reveal your Soul!
+        <span className="hero-word" style={{animationDelay: '150ms'}}>
+          Reveal
+        </span>{' '}
+        <span className="hero-word" style={{animationDelay: '240ms'}}>
+          your
+        </span>{' '}
+        <span className="hero-word" style={{animationDelay: '330ms'}}>
+          Soul!
+        </span>
       </h1>
       <p className="mt-8 max-w-md text-lg leading-relaxed text-paper [text-shadow:0_1px_8px_rgba(0,0,0,0.5)]">
         Non esiste una sola te. Sei sportiva e sensuale, delicata e dominante,
@@ -880,6 +888,8 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
     id
     title
     handle
+    productType
+    tags
     priceRange {
       minVariantPrice {
         amount

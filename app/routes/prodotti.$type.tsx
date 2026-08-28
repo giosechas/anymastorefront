@@ -75,6 +75,8 @@ const PRODUCTS_BY_TYPE_QUERY = `#graphql
     id
     handle
     title
+    productType
+    tags
     featuredImage {
       id
       altText

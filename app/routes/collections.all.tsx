@@ -78,6 +78,8 @@ const COLLECTION_ITEM_FRAGMENT = `#graphql
     id
     handle
     title
+    productType
+    tags
     featuredImage {
       id
       altText

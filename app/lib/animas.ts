@@ -125,6 +125,13 @@ export function findAnimaByCollectionHandle(
   return ANIME.find((a) => a.handle === handle);
 }
 
+export function findAnimaByTag(
+  tags: string[] | undefined | null,
+): AnimaDefinition | undefined {
+  if (!tags) return undefined;
+  return ANIME.find((a) => tags.includes(a.tag));
+}
+
 /** /pack/$handle expects the slug without the "anima-" prefix. */
 export function getPackPath(anima: AnimaDefinition): string {
   return `/pack/${anima.handle.replace(/^anima-/, '')}`;
