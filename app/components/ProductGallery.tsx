@@ -9,7 +9,7 @@ type ImageSlide = {
 };
 type StaticImageSlide = {
   kind: 'staticImage';
-  id: 'model-photo';
+  id: string;
   url: string;
   altText: string;
 };
@@ -18,11 +18,11 @@ type Slide = ImageSlide | StaticImageSlide | VideoSlide;
 
 export function ProductGallery({
   images,
-  modelPhoto,
+  modelPhotos,
   video,
 }: {
   images: ProductFragment['images']['nodes'];
-  modelPhoto?: {url: string; altText: string};
+  modelPhotos?: {url: string; altText: string}[];
   video?: {src: string; poster: string};
 }) {
   const slides: Slide[] = [
@@ -33,9 +33,13 @@ export function ProductGallery({
         image,
       }),
     ),
-    ...(modelPhoto
-      ? [{kind: 'staticImage', id: 'model-photo', ...modelPhoto} as StaticImageSlide]
-      : []),
+    ...(modelPhotos ?? []).map(
+      (photo, i): StaticImageSlide => ({
+        kind: 'staticImage',
+        id: `model-photo-${i}`,
+        ...photo,
+      }),
+    ),
     ...(video ? [{kind: 'video', id: 'video', ...video} as VideoSlide] : []),
   ];
 

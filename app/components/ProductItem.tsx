@@ -13,6 +13,8 @@ import {WishlistHeart} from '~/components/WishlistHeart';
 import {NotifyBell} from '~/components/NotifyBell';
 import {findAnimaByTag} from '~/lib/animas';
 import {getMascaraModelPhoto} from '~/lib/mascaraModelPhoto';
+import {getLipstickModelPhotos} from '~/lib/lipstickModelPhoto';
+import {getColorTag} from '~/lib/productCopy';
 
 const IMAGE_ROTATE_MS = 3000;
 
@@ -38,10 +40,26 @@ export function ProductItem({
   const variant = product.variants?.nodes?.[0];
   const anima =
     'tags' in product ? findAnimaByTag(product.tags) : undefined;
-  const modelPhoto =
+  const mascaraModelPhoto =
     'productType' in product
       ? getMascaraModelPhoto(product.productType, anima?.handle)
       : undefined;
+  const lipstickModelPhotos =
+    'productType' in product && 'tags' in product
+      ? getLipstickModelPhotos(product.productType, getColorTag(product.tags))
+      : [];
+  const [lipstickPhotoIndex, setLipstickPhotoIndex] = useState(0);
+  function pickNextLipstickPhoto() {
+    if (lipstickModelPhotos.length < 2) return;
+    setLipstickPhotoIndex((prev) => {
+      let next = prev;
+      while (next === prev) {
+        next = Math.floor(Math.random() * lipstickModelPhotos.length);
+      }
+      return next;
+    });
+  }
+  const modelPhoto = mascaraModelPhoto ?? lipstickModelPhotos[lipstickPhotoIndex];
 
   useEffect(() => {
     if (images.length < 2) return;
@@ -66,7 +84,12 @@ export function ProductItem({
   }, [images.length, initialDelay]);
 
   return (
-    <div className="group relative">
+    <div
+      className="group relative"
+      onMouseEnter={
+        lipstickModelPhotos.length > 1 ? pickNextLipstickPhoto : undefined
+      }
+    >
       <Link
         className="block"
         key={product.id}

@@ -30,6 +30,7 @@ import {
   getShortDescription,
 } from '~/lib/productCopy';
 import {getProductVideo} from '~/lib/productVideo';
+import {getLipstickModelPhotos} from '~/lib/lipstickModelPhoto';
 import {getMascaraModelPhoto} from '~/lib/mascaraModelPhoto';
 import {getAnimaHeroVideo} from '~/lib/productHeroVideo';
 
@@ -169,7 +170,17 @@ export default function Product() {
   const shortDescription = getShortDescription(product.productType, colorTag);
   const displayTitle = product.title.split('·').pop()?.trim() ?? product.title;
   const video = getProductVideo(product.productType, anima?.handle);
-  const modelPhoto = getMascaraModelPhoto(product.productType, anima?.handle);
+  const mascaraModelPhoto = getMascaraModelPhoto(
+    product.productType,
+    anima?.handle,
+  );
+  const lipstickModelPhotos = getLipstickModelPhotos(
+    product.productType,
+    colorTag,
+  );
+  const modelPhotos = mascaraModelPhoto
+    ? [mascaraModelPhoto]
+    : lipstickModelPhotos;
   const heroVideo = getAnimaHeroVideo(anima?.handle);
 
   return (
@@ -177,7 +188,7 @@ export default function Product() {
       <div className="grid grid-cols-1 items-stretch gap-10 sm:grid-cols-2 sm:gap-16">
         <ProductGallery
           images={product.images.nodes}
-          modelPhoto={modelPhoto}
+          modelPhotos={modelPhotos}
           video={video}
         />
 
