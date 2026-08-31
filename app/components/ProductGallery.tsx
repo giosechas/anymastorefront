@@ -25,7 +25,10 @@ export function ProductGallery({
   modelPhotos?: {url: string; altText: string}[];
   video?: {src: string; poster: string};
 }) {
+  // Video first, then the product shots (open, closed, swatch — Shopify's
+  // own order), then the model photos, if any.
   const slides: Slide[] = [
+    ...(video ? [{kind: 'video', id: 'video', ...video} as VideoSlide] : []),
     ...images.map(
       (image): ImageSlide => ({
         kind: 'image',
@@ -40,11 +43,10 @@ export function ProductGallery({
         ...photo,
       }),
     ),
-    ...(video ? [{kind: 'video', id: 'video', ...video} as VideoSlide] : []),
   ];
 
-  const [activeId, setActiveId] = useState(slides[0]?.id);
-  const active = slides.find((s) => s.id === activeId) ?? slides[0];
+  const [activeIndex, setActiveIndex] = useState(0);
+  const active = slides[activeIndex] ?? slides[0];
   const [zoomOrigin, setZoomOrigin] = useState('50% 50%');
   const [isZooming, setIsZooming] = useState(false);
 
@@ -64,10 +66,14 @@ export function ProductGallery({
     setZoomOrigin(`${x}% ${y}%`);
   }
 
+  function goTo(index: number) {
+    setActiveIndex((index + slides.length) % slides.length);
+  }
+
   return (
-    <div className="flex flex-col items-start gap-3 sm:flex-row-reverse">
+    <div className="flex flex-col items-center gap-3">
       <div
-        className={`min-w-0 flex-1 overflow-hidden bg-nero/5 ${
+        className={`relative w-full overflow-hidden bg-nero/5 ${
           canZoom ? 'sm:cursor-zoom-in' : ''
         }`}
         style={{aspectRatio: activeAspectRatio}}
@@ -108,50 +114,64 @@ export function ProductGallery({
             }}
           />
         )}
+
+        {slides.length > 1 && (
+          <>
+            <button
+              type="button"
+              aria-label="Foto precedente"
+              onClick={() => goTo(activeIndex - 1)}
+              className="absolute left-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-paper/80 text-nero backdrop-blur-sm transition-transform hover:scale-110"
+            >
+              <ChevronIcon direction="left" />
+            </button>
+            <button
+              type="button"
+              aria-label="Foto successiva"
+              onClick={() => goTo(activeIndex + 1)}
+              className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-paper/80 text-nero backdrop-blur-sm transition-transform hover:scale-110"
+            >
+              <ChevronIcon direction="right" />
+            </button>
+          </>
+        )}
       </div>
+
       {slides.length > 1 && (
-        <div className="flex gap-3 sm:flex-col">
-          {slides.map((slide) => (
+        <div className="flex items-center gap-2">
+          {slides.map((slide, i) => (
             <button
               key={slide.id}
               type="button"
-              onClick={() => setActiveId(slide.id)}
-              className={`relative aspect-square w-16 shrink-0 border transition-colors sm:w-20 ${
-                slide.id === active.id
-                  ? 'border-nero'
-                  : 'border-transparent opacity-60 hover:opacity-100'
+              aria-label={`Vai alla foto ${i + 1}`}
+              onClick={() => goTo(i)}
+              className={`h-1.5 rounded-full transition-all ${
+                i === activeIndex
+                  ? 'w-6 bg-nero'
+                  : 'w-1.5 bg-nero/25 hover:bg-nero/50'
               }`}
-            >
-              {slide.kind === 'video' ? (
-                <>
-                  <img
-                    src={slide.poster}
-                    alt="Video"
-                    className="h-full w-full object-cover"
-                  />
-                  <span className="absolute inset-0 flex items-center justify-center">
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-paper/90 text-[10px] text-nero">
-                      ▶
-                    </span>
-                  </span>
-                </>
-              ) : slide.kind === 'staticImage' ? (
-                <img
-                  src={slide.url}
-                  alt={slide.altText}
-                  className="h-full w-full object-contain"
-                />
-              ) : (
-                <Image
-                  data={slide.image}
-                  sizes="80px"
-                  className="h-full w-full object-contain"
-                />
-              )}
-            </button>
+            />
           ))}
         </div>
       )}
     </div>
+  );
+}
+
+function ChevronIcon({direction}: {direction: 'left' | 'right'}) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-4 w-4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+    >
+      <path
+        d={direction === 'left' ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7'}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
