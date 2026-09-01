@@ -121,7 +121,7 @@ function StorySectionOrigin() {
 function StorySectionVoid() {
   return (
     <section className="bg-nero px-6 py-16 text-paper sm:px-12 sm:py-24">
-      <ScrollReveal direction="up" className="mx-auto max-w-2xl text-center">
+      <ScrollReveal direction="up" className="mx-auto max-w-2xl text-left">
         <p className="mb-3 text-xs uppercase tracking-[0.35em] text-gold">
           Il vuoto che abbiamo visto
         </p>
@@ -222,7 +222,7 @@ function StorySectionTruth() {
 function StorySectionCraft() {
   return (
     <section className="px-6 py-16 sm:px-12 sm:py-24">
-      <ScrollReveal direction="up" className="mx-auto max-w-2xl text-center">
+      <ScrollReveal direction="up" className="mx-auto max-w-2xl text-left">
         <p className="mb-3 text-xs uppercase tracking-[0.35em] text-gold">
           La nostra unicità
         </p>

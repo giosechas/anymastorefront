@@ -25,17 +25,17 @@ export function ProductGallery({
   modelPhotos?: {url: string; altText: string}[];
   video?: {src: string; poster: string};
 }) {
-  // Video first, then the product shots (open, closed, swatch — Shopify's
-  // own order), then the model photos, if any.
+  // Product shots (open, closed — Shopify's own order) first, then the
+  // video as the 3rd slide, then the swatch shot and the model photos.
+  const imageSlides: ImageSlide[] = images.map((image) => ({
+    kind: 'image',
+    id: image.id ?? image.url,
+    image,
+  }));
   const slides: Slide[] = [
+    ...imageSlides.slice(0, 2),
     ...(video ? [{kind: 'video', id: 'video', ...video} as VideoSlide] : []),
-    ...images.map(
-      (image): ImageSlide => ({
-        kind: 'image',
-        id: image.id ?? image.url,
-        image,
-      }),
-    ),
+    ...imageSlides.slice(2),
     ...(modelPhotos ?? []).map(
       (photo, i): StaticImageSlide => ({
         kind: 'staticImage',
@@ -86,7 +86,8 @@ export function ProductGallery({
             key={active.id}
             src={active.src}
             poster={active.poster}
-            controls
+            autoPlay
+            muted
             playsInline
             loop
             className="h-full w-full object-contain"
@@ -96,7 +97,7 @@ export function ProductGallery({
             key={active.id}
             src={active.url}
             alt={active.altText}
-            className="h-full w-full object-contain transition-transform duration-300 ease-out"
+            className="h-full w-full object-cover transition-transform duration-300 ease-out"
             style={{
               transform: isZooming ? 'scale(2)' : 'scale(1)',
               transformOrigin: zoomOrigin,

@@ -20,7 +20,7 @@ const TRITTICO_COPY: Partial<
   },
   candyRosa: {
     attitude:
-      'Candy Rosa è per i giorni in cui la dolcezza è la tua forza più grande — tenerezza ribelle che trasforma la sensibilità in energia gioiosa.',
+      'Candy Rosa è per i giorni in cui la dolcezza è la tua forza più grande: tenerezza ribelle che trasforma la sensibilità in energia gioiosa.',
     packaging:
       'Finitura oro rosa custom con tappi rosa opaco, motivo paisley pastello e chevron dorato.',
   },
@@ -122,7 +122,7 @@ export default function Pack() {
         Componi il tuo Pack
       </h1>
       <p className="mt-2 text-sm text-nero/70">
-        Un rossetto, un gloss, un mascara — la tua Anyma {anima.name} in una
+        Un rossetto, un gloss, un mascara: la tua Anyma {anima.name} in una
         sola scatola.
       </p>
 
@@ -193,13 +193,13 @@ export default function Pack() {
               {trittico.packaging}
             </p>
             <p className="mt-3 text-xs uppercase tracking-[0.1em] text-fuchsia">
-              Solo ~42 pezzi al mondo per questa combinazione — lotto di
+              Solo ~42 pezzi al mondo per questa combinazione, lotto di
               pre-lancio di 800 unità.
             </p>
           </>
         )}
         <ul className="mt-4 space-y-1.5 text-xs text-nero/70">
-          <li>Rituale completo — i tre gesti della tua giornata, un&rsquo;unica energia.</li>
+          <li>Rituale completo: i tre gesti della tua giornata, un&rsquo;unica energia.</li>
           <li>Spedizione sempre gratuita su tutto l&rsquo;ordine.</li>
           <li>ANYMA Tote Bag in omaggio con ogni trittico.</li>
         </ul>

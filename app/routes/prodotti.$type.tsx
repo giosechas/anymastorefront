@@ -41,7 +41,7 @@ export default function ProductsByType() {
           {info.label}
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-nero/70">
-          Lo stesso gesto, in tutte le Anyme — trova il tuo colore.
+          Lo stesso gesto, in tutte le Anyme. Trova il tuo colore.
         </p>
       </header>
 

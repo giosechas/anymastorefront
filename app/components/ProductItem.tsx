@@ -14,6 +14,7 @@ import {NotifyBell} from '~/components/NotifyBell';
 import {findAnimaByTag} from '~/lib/animas';
 import {getMascaraModelPhoto} from '~/lib/mascaraModelPhoto';
 import {getLipstickModelPhotos} from '~/lib/lipstickModelPhoto';
+import {getGlossModelPhotos} from '~/lib/glossModelPhoto';
 import {getColorTag} from '~/lib/productCopy';
 
 const IMAGE_ROTATE_MS = 3000;
@@ -44,22 +45,30 @@ export function ProductItem({
     'productType' in product
       ? getMascaraModelPhoto(product.productType, anima?.handle)
       : undefined;
+  const colorTag = 'tags' in product ? getColorTag(product.tags) : undefined;
   const lipstickModelPhotos =
-    'productType' in product && 'tags' in product
-      ? getLipstickModelPhotos(product.productType, getColorTag(product.tags))
+    'productType' in product
+      ? getLipstickModelPhotos(product.productType, colorTag)
       : [];
-  const [lipstickPhotoIndex, setLipstickPhotoIndex] = useState(0);
-  function pickNextLipstickPhoto() {
-    if (lipstickModelPhotos.length < 2) return;
-    setLipstickPhotoIndex((prev) => {
+  const glossModelPhotos =
+    'productType' in product
+      ? getGlossModelPhotos(product.productType, colorTag)
+      : [];
+  const colorModelPhotos = lipstickModelPhotos.length
+    ? lipstickModelPhotos
+    : glossModelPhotos;
+  const [colorPhotoIndex, setColorPhotoIndex] = useState(0);
+  function pickNextColorPhoto() {
+    if (colorModelPhotos.length < 2) return;
+    setColorPhotoIndex((prev) => {
       let next = prev;
       while (next === prev) {
-        next = Math.floor(Math.random() * lipstickModelPhotos.length);
+        next = Math.floor(Math.random() * colorModelPhotos.length);
       }
       return next;
     });
   }
-  const modelPhoto = mascaraModelPhoto ?? lipstickModelPhotos[lipstickPhotoIndex];
+  const modelPhoto = mascaraModelPhoto ?? colorModelPhotos[colorPhotoIndex];
 
   useEffect(() => {
     if (images.length < 2) return;
@@ -87,7 +96,7 @@ export function ProductItem({
     <div
       className="group relative"
       onMouseEnter={
-        lipstickModelPhotos.length > 1 ? pickNextLipstickPhoto : undefined
+        colorModelPhotos.length > 1 ? pickNextColorPhoto : undefined
       }
     >
       <Link

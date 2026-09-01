@@ -65,6 +65,13 @@ const HERO_IMAGES = [
   heroImage12,
 ];
 const HERO_ROTATE_MS = 5000;
+const HERO_HEADLINES = ['Reveal your Soul!', 'Non esiste una sola te'];
+const HERO_TAGLINES = [
+  'Non coprire chi sei. Rivela la tua anima.',
+  'Il trucco che non chiede permesso.',
+  'Zero filtri. Zero scuse. Solo la tua verità.',
+  'La tua molteplicità è il tuo potere più grande.',
+];
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -72,7 +79,7 @@ export const meta: Route.MetaFunction = () => {
     {
       name: 'description',
       content:
-        'Anyma Beauty — il make-up con personalità. Scegli la tua Anyma, poi il colore.',
+        'Anyma Beauty, il make-up con personalità. Scegli la tua Anyma, poi il colore.',
     },
   ];
 };
@@ -180,6 +187,13 @@ export default function Homepage() {
 
 function Hero() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [headline] = useState(
+    () => HERO_HEADLINES[Math.floor(Math.random() * HERO_HEADLINES.length)],
+  );
+  const headlineWords = headline.split(' ');
+  const [tagline] = useState(
+    () => HERO_TAGLINES[Math.floor(Math.random() * HERO_TAGLINES.length)],
+  );
   const {ref: parallaxRef, offset} = useParallaxOffset<HTMLDivElement>(100);
 
   useEffect(() => {
@@ -219,20 +233,20 @@ function Hero() {
       <div className="absolute inset-0 -z-10 bg-nero/15" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-nero/10 via-nero/55 to-nero/25" />
       <h1 className="font-display max-w-4xl text-balance text-5xl italic leading-[1.05] tracking-[0.04em] text-fuchsia [text-shadow:0_2px_16px_rgba(0,0,0,0.55)] sm:text-6xl md:text-7xl">
-        <span className="hero-word" style={{animationDelay: '150ms'}}>
-          Reveal
-        </span>{' '}
-        <span className="hero-word" style={{animationDelay: '240ms'}}>
-          your
-        </span>{' '}
-        <span className="hero-word" style={{animationDelay: '330ms'}}>
-          Soul!
-        </span>
+        {headlineWords.map((word, i) => (
+          <span key={i}>
+            <span
+              className="hero-word"
+              style={{animationDelay: `${150 + i * 90}ms`}}
+            >
+              {word}
+            </span>
+            {i < headlineWords.length - 1 && ' '}
+          </span>
+        ))}
       </h1>
-      <p className="mt-8 max-w-md text-lg leading-relaxed text-paper [text-shadow:0_1px_8px_rgba(0,0,0,0.5)]">
-        Non esiste una sola te. Sei sportiva e sensuale, delicata e dominante,
-        minimal e audace — a volte tutto questo nella stessa settimana. Il
-        pack che scegli oggi è il simbolo di chi sei oggi.
+      <p className="mt-3 max-w-md text-2xl leading-relaxed text-paper [text-shadow:0_1px_8px_rgba(0,0,0,0.5)] sm:text-3xl">
+        {tagline}
       </p>
       <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
         <a
@@ -685,7 +699,7 @@ function SocialSection() {
             Guardaci su <span className="text-fuchsia">TikTok</span>
           </h2>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-paper/70">
-            Backstage, texture, anyme in movimento — la parte più vera del
+            Backstage, texture, anyme in movimento: la parte più vera del
             brand vive sui social, prima ancora che sullo shop.
           </p>
           <a
@@ -784,7 +798,7 @@ function FoundersSection() {
           Diventa Anyma Prima
         </h2>
         <p className="mt-4 max-w-md text-sm leading-relaxed text-paper/80">
-          Spedizione a vita, tessera numerata, 15% di benvenuto — solo per le
+          Spedizione a vita, tessera numerata, 15% di benvenuto: solo per le
           prime 800 anyme.
         </p>
 
@@ -852,7 +866,7 @@ function FoundersEmailForm() {
   if (submitted) {
     return (
       <p className="mt-8 text-sm uppercase tracking-[0.1em] text-gold">
-        Grazie — ti faremo sapere quando si apre il tuo posto.
+        Grazie, ti faremo sapere quando si apre il tuo posto.
       </p>
     );
   }

@@ -20,3 +20,18 @@ export function getLipstickModelPhotos(
     altText: 'Modella indossa il rossetto Anyma',
   }));
 }
+
+/** 4 short worn-on-lips clips per color, same models as the photos above. */
+export function getLipstickModelVideos(
+  productType: string,
+  colorTag: string | undefined,
+): {src: string; poster: string}[] {
+  if (productType !== 'Rossetto') return [];
+  const slug = colorTag && COLOR_SLUG[colorTag];
+  if (!slug) return [];
+
+  return Array.from({length: 4}, (_, i) => ({
+    src: `/videos/lipstick-model/${slug}/${i + 1}.mp4`,
+    poster: `/videos/lipstick-model/${slug}/posters/${i + 1}.jpg`,
+  }));
+}

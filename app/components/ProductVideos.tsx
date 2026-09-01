@@ -30,7 +30,7 @@ export function ProductVideos() {
         ))}
       </div>
       <p className="mt-3 text-xs text-nero/50">
-        Altri video della community arrivano presto — segui{' '}
+        Altri video della community arrivano presto, segui{' '}
         <a
           href="https://www.tiktok.com/@anyma.beauty"
           target="_blank"

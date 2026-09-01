@@ -1,4 +1,4 @@
-import {Suspense} from 'react';
+import {Suspense, useState} from 'react';
 import {Link, useLoaderData, Await} from 'react-router';
 import type {Route} from './+types/products.$handle';
 import {
@@ -30,7 +30,11 @@ import {
   getShortDescription,
 } from '~/lib/productCopy';
 import {getProductVideo} from '~/lib/productVideo';
-import {getLipstickModelPhotos} from '~/lib/lipstickModelPhoto';
+import {
+  getLipstickModelPhotos,
+  getLipstickModelVideos,
+} from '~/lib/lipstickModelPhoto';
+import {getGlossModelPhotos, getGlossModelVideos} from '~/lib/glossModelPhoto';
 import {getMascaraModelPhoto} from '~/lib/mascaraModelPhoto';
 import {getAnimaHeroVideo} from '~/lib/productHeroVideo';
 
@@ -178,9 +182,23 @@ export default function Product() {
     product.productType,
     colorTag,
   );
-  const modelPhotos = mascaraModelPhoto
-    ? [mascaraModelPhoto]
-    : lipstickModelPhotos;
+  const glossModelPhotos = getGlossModelPhotos(product.productType, colorTag);
+  const colorModelPhotos = lipstickModelPhotos.length
+    ? lipstickModelPhotos
+    : glossModelPhotos;
+  const modelPhotos = mascaraModelPhoto ? [mascaraModelPhoto] : colorModelPhotos;
+  const lipstickModelVideos = getLipstickModelVideos(
+    product.productType,
+    colorTag,
+  );
+  const glossModelVideos = getGlossModelVideos(product.productType, colorTag);
+  const colorModelVideos = lipstickModelVideos.length
+    ? lipstickModelVideos
+    : glossModelVideos;
+  const [colorVideoIndex, setColorVideoIndex] = useState(() =>
+    Math.floor(Math.random() * colorModelVideos.length),
+  );
+  const colorVideo = colorModelVideos[colorVideoIndex];
   const heroVideo = getAnimaHeroVideo(anima?.handle);
 
   return (
@@ -265,7 +283,7 @@ export default function Product() {
               </div>
             )}
 
-            <p className="mt-5 max-w-md text-sm leading-relaxed text-nero/80">
+            <p className="mt-5 max-w-md text-base leading-relaxed text-nero/80 sm:text-lg">
               {shortDescription ?? product.description}
             </p>
 
@@ -316,13 +334,40 @@ export default function Product() {
         </div>
       </div>
 
+      {colorVideo && (
+        <div className="mt-12 grid grid-cols-1 items-center gap-6 sm:mt-16 sm:grid-cols-2 sm:gap-10">
+          <div className="aspect-[9/16] max-h-[600px] w-full overflow-hidden rounded bg-nero/5">
+            <video
+              key={colorVideo.src}
+              src={colorVideo.src}
+              poster={colorVideo.poster}
+              autoPlay
+              muted
+              playsInline
+              onEnded={() =>
+                setColorVideoIndex((i) => (i + 1) % colorModelVideos.length)
+              }
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <div>
+            <p className="text-lg uppercase tracking-[0.25em] text-fuchsia sm:text-xl">
+              Guardalo addosso
+            </p>
+            <p className="mt-2 max-w-md text-xl leading-relaxed text-nero/80 sm:text-2xl">
+              {shortDescription ?? product.description}
+            </p>
+          </div>
+        </div>
+      )}
+
       {anima && (
         <div className="mt-12 grid grid-cols-1 items-center gap-6 sm:mt-16 sm:grid-cols-2 sm:gap-10">
           <div>
-            <p className="text-sm uppercase tracking-[0.25em] text-fuchsia sm:text-base">
+            <p className="text-lg uppercase tracking-[0.25em] text-fuchsia sm:text-xl">
               Un rituale completo
             </p>
-            <p className="mt-2 max-w-md text-sm leading-relaxed text-nero/80">
+            <p className="mt-2 max-w-md text-xl leading-relaxed text-nero/80 sm:text-2xl">
               Rossetto, gloss e mascara pensati per completarsi. Scopri il
               trittico Anyma {anima.name} e porta a casa l&apos;intera
               esperienza.
@@ -352,25 +397,26 @@ export default function Product() {
 
       {anima && (
         <div className="mt-12 grid grid-cols-1 items-center gap-6 sm:mt-16 sm:grid-cols-2 sm:gap-10">
+          <div>
+            <p className="text-lg uppercase tracking-[0.25em] text-fuchsia sm:text-xl">
+              {anima.storyHeading}
+            </p>
+            <p className="mt-2 max-w-md text-xl leading-relaxed text-nero/80 sm:text-2xl">
+              {anima.story}
+            </p>
+          </div>
           <div className="aspect-[9/16] max-h-[600px] w-full overflow-hidden rounded bg-nero/5">
             {heroVideo && (
               <video
                 src={heroVideo.src}
                 poster={heroVideo.poster}
-                controls
+                autoPlay
+                muted
                 playsInline
                 loop
                 className="h-full w-full object-cover"
               />
             )}
-          </div>
-          <div>
-            <p className="text-sm uppercase tracking-[0.25em] text-fuchsia sm:text-base">
-              {anima.storyHeading}
-            </p>
-            <p className="mt-2 max-w-md text-sm leading-relaxed text-nero/80">
-              {anima.story}
-            </p>
           </div>
         </div>
       )}

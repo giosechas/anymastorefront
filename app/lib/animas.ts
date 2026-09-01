@@ -66,7 +66,7 @@ export const ANIME: AnimaDefinition[] = [
     swatch: 'anima-tile-candy-rosa',
     color: '#c96b93',
     tag: 'CANDY ROSA',
-    galleryCount: 5,
+    galleryCount: 4,
   },
   {
     key: 'candyTiffany',
