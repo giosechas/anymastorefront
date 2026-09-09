@@ -135,7 +135,8 @@ export function ProductItem({
                 transformOrigin: mascaraModelPhoto
                   ? MASCARA_EYE_ORIGIN[anima?.key ?? ''] ?? '50% 28%'
                   : '50% 68%',
-                transition: 'opacity 250ms ease, transform 900ms cubic-bezier(0.16,1,0.3,1)',
+                transition:
+                  'opacity 250ms ease, transform 500ms cubic-bezier(0.16,1,0.3,1) 250ms',
               }}
               className={`absolute inset-0 z-[2] h-full w-full scale-100 object-cover opacity-0 group-hover:opacity-100 ${
                 mascaraModelPhoto ? 'group-hover:scale-[1.9]' : 'group-hover:scale-[1.15]'
