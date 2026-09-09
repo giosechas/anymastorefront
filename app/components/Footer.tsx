@@ -150,7 +150,7 @@ function LegalMenu() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="w-full max-w-xs">
+    <div className="w-full">
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
@@ -166,18 +166,20 @@ function LegalMenu() {
         </span>
       </button>
       {open && (
-        <ul className="mt-4 flex flex-col items-center gap-2">
-          {LEGAL_POLICIES.map((policy) => (
-            <li key={policy.slug}>
-              <Link
-                to={`/legale/${policy.slug}`}
-                className="text-xs text-paper/50 transition-colors hover:text-paper"
-              >
-                {policy.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div className="mx-auto mt-4 w-full max-w-3xl rounded bg-paper px-6 py-5">
+          <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+            {LEGAL_POLICIES.map((policy) => (
+              <li key={policy.slug}>
+                <Link
+                  to={`/legale/${policy.slug}`}
+                  className="text-xs uppercase tracking-[0.05em] text-nero/70 transition-colors hover:text-gold"
+                >
+                  {policy.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );
