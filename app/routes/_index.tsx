@@ -1,6 +1,6 @@
 import {Await, useLoaderData, Link} from 'react-router';
 import type {Route} from './+types/_index';
-import {Suspense, useEffect, useRef, useState} from 'react';
+import {Suspense, useCallback, useEffect, useRef, useState} from 'react';
 import type {RecommendedProductsQuery} from 'storefrontapi.generated';
 import {ProductItem} from '~/components/ProductItem';
 import {MockShopNotice} from '~/components/MockShopNotice';
@@ -53,18 +53,19 @@ const FOUNDERS_ROTATE_MS = 6000;
 const FOUNDERS_REGISTERED = 247;
 const FOUNDERS_TOTAL = 800;
 
-const HERO_IMAGES = [
-  heroImage1,
-  heroImage3,
-  heroImage5,
-  heroImage6,
-  heroImage8,
-  heroImage9,
-  heroImage10,
-  heroImage11,
-  heroImage12,
+const HERO_SLIDES = [
+  {kind: 'image' as const, src: heroImage1},
+  {kind: 'image' as const, src: heroImage3},
+  {kind: 'image' as const, src: heroImage5},
+  {kind: 'image' as const, src: heroImage6},
+  {kind: 'image' as const, src: heroImage8},
+  {kind: 'image' as const, src: heroImage9},
+  {kind: 'image' as const, src: heroImage10},
+  {kind: 'image' as const, src: heroImage11},
+  {kind: 'image' as const, src: heroImage12},
+  {kind: 'video' as const, src: '/videos/hero/hero-campaign.mp4'},
 ];
-const HERO_ROTATE_MS = 5000;
+const HERO_IMAGE_ROTATE_MS = 4000;
 const HERO_HEADLINES = ['Reveal your Soul!', 'Non esiste una sola te'];
 const HERO_TAGLINES = [
   'Non coprire chi sei. Rivela la tua anima.',
@@ -199,12 +200,12 @@ function Hero() {
   useEffect(() => {
     const id = setInterval(() => {
       setActiveIndex((i) => {
-        if (HERO_IMAGES.length < 3) return (i + 1) % HERO_IMAGES.length;
+        if (HERO_SLIDES.length < 3) return (i + 1) % HERO_SLIDES.length;
         let next = i;
-        while (next === i) next = Math.floor(Math.random() * HERO_IMAGES.length);
+        while (next === i) next = Math.floor(Math.random() * HERO_SLIDES.length);
         return next;
       });
-    }, HERO_ROTATE_MS);
+    }, HERO_IMAGE_ROTATE_MS);
     return () => clearInterval(id);
   }, []);
 
@@ -218,15 +219,29 @@ function Hero() {
           className="absolute inset-0 h-[160%] w-full will-change-transform"
           style={{top: '-30%', transform: `translateY(${offset}px)`}}
         >
-          {HERO_IMAGES.map((src, i) => (
-            <img
-              key={src}
-              src={src}
-              alt="Le Anyme di Anyma Beauty"
-              className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-1000 ${
-                i === activeIndex ? 'opacity-100' : 'opacity-0'
-              }`}
-            />
+          {HERO_SLIDES.map((slide, i) => (
+            slide.kind === 'image' ? (
+              <img
+                key={`image-${i}`}
+                src={slide.src}
+                alt="Le Anyme di Anyma Beauty"
+                className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-1000 ${
+                  i === activeIndex ? 'opacity-100' : 'opacity-0'
+                }`}
+              />
+            ) : (
+              <video
+                key={`video-${i}`}
+                src={slide.src}
+                autoPlay
+                muted
+                playsInline
+                loop
+                className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-1000 ${
+                  i === activeIndex ? 'opacity-100' : 'opacity-0'
+                }`}
+              />
+            )
           ))}
         </div>
       </div>
@@ -263,11 +278,11 @@ function Hero() {
         </Link>
       </div>
       <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 gap-2">
-        {HERO_IMAGES.map((src, i) => (
+        {HERO_SLIDES.map((slide, i) => (
           <button
-            key={src}
+            key={`dot-${i}`}
             type="button"
-            aria-label={`Immagine ${i + 1}`}
+            aria-label={`Slide ${i + 1}`}
             onClick={() => setActiveIndex(i)}
             className={`h-1.5 rounded-full transition-all ${
               i === activeIndex ? 'w-6 bg-gold' : 'w-1.5 bg-paper/40 hover:bg-paper/70'
