@@ -1,7 +1,16 @@
 import {useLoaderData} from 'react-router';
+import {useMemo, useState} from 'react';
 import type {Route} from './+types/prodotti.$type';
 import {ProductItem} from '~/components/ProductItem';
+import {getColorTag} from '~/lib/productCopy';
 import type {ProductItemFragment} from 'storefrontapi.generated';
+
+type ViewMode = 'anima' | 'color';
+
+/** "ANYMA LEOPARD · LIPSTICK ROSSO" -> "LEOPARD" */
+function getAnimaName(title: string): string {
+  return title.split('·')[0]?.replace(/^ANYMA\s+/i, '').trim() ?? '';
+}
 
 const TYPE_MAP: Record<string, {label: string; productType: string}> = {
   rossetti: {label: 'Rossetti', productType: 'Rossetto'},
@@ -30,6 +39,22 @@ export async function loader({context, params}: Route.LoaderArgs) {
 
 export default function ProductsByType() {
   const {info, products} = useLoaderData<typeof loader>();
+  const [viewMode, setViewMode] = useState<ViewMode>('anima');
+
+  const groups = useMemo(() => {
+    const byGroup = new Map<string, typeof products>();
+    for (const product of products) {
+      const key =
+        viewMode === 'anima'
+          ? getAnimaName(product.title)
+          : getColorTag(product.tags) ?? '';
+      if (!byGroup.has(key)) byGroup.set(key, []);
+      byGroup.get(key)!.push(product);
+    }
+    return Array.from(byGroup.entries())
+      .filter(([key]) => key)
+      .sort(([a], [b]) => a.localeCompare(b));
+  }, [products, viewMode]);
 
   return (
     <div className="bg-paper">
@@ -45,21 +70,55 @@ export default function ProductsByType() {
         </p>
       </header>
 
+      {products.length > 0 && (
+        <div className="mx-auto flex max-w-6xl justify-center gap-2 px-6 pb-8">
+          <button
+            type="button"
+            onClick={() => setViewMode('anima')}
+            className={`border px-5 py-2 text-xs uppercase tracking-[0.15em] transition-colors ${
+              viewMode === 'anima'
+                ? 'border-nero bg-nero text-paper'
+                : 'border-nero/30 text-nero/70 hover:border-nero'
+            }`}
+          >
+            Vedi per Anyma
+          </button>
+          <button
+            type="button"
+            onClick={() => setViewMode('color')}
+            className={`border px-5 py-2 text-xs uppercase tracking-[0.15em] transition-colors ${
+              viewMode === 'color'
+                ? 'border-nero bg-nero text-paper'
+                : 'border-nero/30 text-nero/70 hover:border-nero'
+            }`}
+          >
+            Vedi per colore
+          </button>
+        </div>
+      )}
+
       <div className="mx-auto max-w-6xl px-6 pb-24">
         {products.length === 0 ? (
           <p className="text-center text-sm text-nero/60">
             Nessun prodotto trovato per questa categoria.
           </p>
         ) : (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            {products.map((product, index) => (
-              <ProductItem
-                key={product.id}
-                product={product}
-                loading={index < 8 ? 'eager' : undefined}
-              />
-            ))}
-          </div>
+          groups.map(([groupKey, groupProducts]) => (
+            <div key={groupKey} className="mb-12">
+              <p className="mb-4 text-xs uppercase tracking-[0.2em] text-nero/50">
+                {groupKey}
+              </p>
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                {groupProducts.map((product, index) => (
+                  <ProductItem
+                    key={product.id}
+                    product={product}
+                    loading={index < 8 ? 'eager' : undefined}
+                  />
+                ))}
+              </div>
+            </div>
+          ))
         )}
       </div>
     </div>
