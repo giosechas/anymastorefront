@@ -28,6 +28,28 @@ export function getShortDescription(
   return SHORT_DESCRIPTIONS[productType]?.[colorTag];
 }
 
+/**
+ * A second, more philosophical line for "La community lo indossa" — distinct
+ * in tone from the short description above, so the two sections don't repeat
+ * the same thought in different words.
+ */
+const COMMUNITY_TAGLINES: Record<string, Record<string, string>> = {
+  Rossetto: {
+    NUDE: 'Non hai bisogno di alzare la voce per farti sentire.',
+    ROSSO: 'Ogni volta che lo indossi, decidi tu chi sei oggi.',
+    VIOLA: 'Chi ti guarda si accorge subito che non chiedi permesso.',
+    CHERRY: 'La tua energia non si nasconde: si mostra, si vive, si condivide.',
+  },
+};
+
+export function getCommunityTagline(
+  productType: string,
+  colorTag: string | undefined,
+): string | undefined {
+  if (!colorTag) return undefined;
+  return COMMUNITY_TAGLINES[productType]?.[colorTag];
+}
+
 export const COLOR_SWATCH_HEX: Record<string, string> = {
   NUDE: '#C9A488',
   ROSSO: '#B3212E',

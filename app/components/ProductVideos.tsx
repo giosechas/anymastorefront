@@ -6,19 +6,31 @@ const COMMUNITY_CLIPS = [
 ];
 
 /**
- * Real UGC-style clips from the influencer shoot — no live TikTok embed
- * feed yet, so this is a fixed set shown on every product for now.
+ * Real UGC-style clips from the influencer shoot — shown as a fallback
+ * when the product has no color-specific videos of its own yet.
  */
-export function ProductVideos() {
+export function ProductVideos({
+  videos,
+  tagline,
+}: {
+  videos?: {src: string; poster: string}[];
+  tagline?: string;
+}) {
+  const clips = videos?.length ? videos : COMMUNITY_CLIPS;
   return (
     <section className="border-t border-nero/10 pt-8">
       <h2 className="font-display text-lg uppercase tracking-[0.1em] text-nero">
         La community lo indossa
       </h2>
+      {tagline && (
+        <p className="mt-2 max-w-md text-sm leading-relaxed text-nero/70">
+          {tagline}
+        </p>
+      )}
       <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {COMMUNITY_CLIPS.map((clip) => (
+        {clips.map((clip, i) => (
           <video
-            key={clip.name}
+            key={`${i}-${clip.src}`}
             src={clip.src}
             poster={clip.poster}
             autoPlay

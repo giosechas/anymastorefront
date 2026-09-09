@@ -27,6 +27,7 @@ import {
 import {
   COLOR_SWATCH_HEX,
   getColorTag,
+  getCommunityTagline,
   getShortDescription,
 } from '~/lib/productCopy';
 import {getProductVideo} from '~/lib/productVideo';
@@ -38,6 +39,7 @@ import {getGlossModelPhotos, getGlossModelVideos} from '~/lib/glossModelPhoto';
 import {getMascaraModelPhoto} from '~/lib/mascaraModelPhoto';
 import {getMascaraModelVideos} from '~/lib/mascaraModelVideo';
 import {getAnimaHeroVideo} from '~/lib/productHeroVideo';
+import {getLipstickHeroVideos} from '~/lib/lipstickHeroVideo';
 
 export const meta: Route.MetaFunction = ({data}) => {
   return [
@@ -207,7 +209,13 @@ export default function Product() {
   );
   const colorVideo = colorModelVideos[colorVideoIndex];
   const guardaloAddossoPhoto = !colorVideo ? mascaraModelPhoto : undefined;
-  const heroVideo = getAnimaHeroVideo(anima?.handle);
+  const lipstickHeroVideos = getLipstickHeroVideos(product.productType, colorTag);
+  const [heroVideoIndex, setHeroVideoIndex] = useState(() =>
+    Math.floor(Math.random() * lipstickHeroVideos.length),
+  );
+  const heroVideo = lipstickHeroVideos.length
+    ? lipstickHeroVideos[heroVideoIndex]
+    : getAnimaHeroVideo(anima?.handle);
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-10 sm:py-16">
@@ -426,12 +434,21 @@ export default function Product() {
           <div className="aspect-[9/16] max-h-[600px] w-full overflow-hidden rounded bg-nero/5">
             {heroVideo && (
               <video
+                key={heroVideo.src}
                 src={heroVideo.src}
                 poster={heroVideo.poster}
                 autoPlay
                 muted
                 playsInline
-                loop
+                loop={lipstickHeroVideos.length < 2}
+                onEnded={
+                  lipstickHeroVideos.length > 1
+                    ? () =>
+                        setHeroVideoIndex(
+                          (i) => (i + 1) % lipstickHeroVideos.length,
+                        )
+                    : undefined
+                }
                 className="h-full w-full object-cover"
               />
             )}
@@ -440,7 +457,10 @@ export default function Product() {
       )}
 
       <div className="mt-12">
-        <ProductVideos />
+        <ProductVideos
+          videos={lipstickModelVideos.length ? lipstickModelVideos : undefined}
+          tagline={getCommunityTagline(product.productType, colorTag)}
+        />
       </div>
 
       <div className="mt-12 border-t border-nero/10 pt-8">
