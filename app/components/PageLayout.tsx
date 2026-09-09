@@ -14,6 +14,7 @@ import {
   MarqueeBar,
 } from '~/components/Header';
 import {CartMain} from '~/components/CartMain';
+import {CookieBanner} from '~/components/CookieBanner';
 
 interface PageLayoutProps {
   cart: Promise<CartApiQueryFragment | null>;
@@ -51,6 +52,7 @@ export function PageLayout({
         header={header}
         publicStoreDomain={publicStoreDomain}
       />
+      <CookieBanner />
     </Aside.Provider>
   );
 }

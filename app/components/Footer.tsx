@@ -34,6 +34,12 @@ export function Footer({
               <p className="text-xs uppercase tracking-widest text-paper/50">
                 © {new Date().getFullYear()} Anyma Beauty
               </p>
+              {/* PLACEHOLDER: dati societari da confermare con il commercialista/legale
+                 (Codice del Consumo art. 49 - trasparenza obbligatoria per l'e-commerce). */}
+              <p className="max-w-md text-center text-[10px] leading-relaxed text-paper/40">
+                [RAGIONE SOCIALE] S.r.l. · P.IVA [00000000000] · Sede legale:
+                [Via, Città, CAP, IT] · REA [XX-000000]
+              </p>
             </div>
           </footer>
         )}
