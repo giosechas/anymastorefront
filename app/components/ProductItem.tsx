@@ -105,21 +105,21 @@ export function ProductItem({
         prefetch="intent"
         to={variantUrl}
       >
-        <div className="relative aspect-[4/5] bg-nero/5">
+        <div className="relative aspect-[4/5] overflow-hidden bg-white">
           {image && (
             <Image
               alt={image.altText || product.title}
               data={image}
               loading={loading}
               sizes="(min-width: 45em) 400px, 100vw"
-              className="h-full w-full object-contain transition-opacity duration-500"
+              className="relative z-[1] h-full w-full object-cover transition-[opacity,transform] duration-500"
             />
           )}
           {modelPhoto && (
             <img
               src={modelPhoto.url}
               alt={modelPhoto.altText}
-              className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+              className="absolute inset-0 z-[2] h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
             />
           )}
           <div className="absolute right-2 top-2 z-10 flex flex-col gap-2">
