@@ -120,9 +120,11 @@ export function ProductItem({
               src={modelPhoto.url}
               alt={modelPhoto.altText}
               style={{
-                transformOrigin: mascaraModelPhoto ? '50% 30%' : '50% 68%',
+                transformOrigin: mascaraModelPhoto ? '50% 22%' : '50% 68%',
               }}
-              className="absolute inset-0 z-[2] h-full w-full scale-100 object-cover opacity-0 transition-[opacity,transform] duration-500 group-hover:scale-[1.15] group-hover:opacity-100"
+              className={`absolute inset-0 z-[2] h-full w-full scale-100 object-cover opacity-0 transition-[opacity,transform] duration-500 group-hover:opacity-100 ${
+                mascaraModelPhoto ? 'group-hover:scale-[1.9]' : 'group-hover:scale-[1.15]'
+              }`}
             />
           )}
           <div className="absolute right-2 top-2 z-10 flex flex-col gap-2">
