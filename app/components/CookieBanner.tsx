@@ -65,7 +65,7 @@ export function CookieBanner() {
           {/* PLACEHOLDER: da rivedere con un legale prima del lancio. */}
           Utilizziamo cookie tecnici necessari al funzionamento del sito e,
           previo consenso, cookie di analisi e marketing. Consulta la{' '}
-          <Link to="/policies/privacy-policy" className="underline hover:text-gold">
+          <Link to="/legale/privacy-policy" className="underline hover:text-gold">
             Privacy Policy
           </Link>{' '}
           per maggiori informazioni.

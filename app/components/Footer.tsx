@@ -1,7 +1,8 @@
-import {Suspense} from 'react';
-import {Await, NavLink} from 'react-router';
+import {Suspense, useState} from 'react';
+import {Await, Link, NavLink} from 'react-router';
 import type {FooterQuery, HeaderQuery} from 'storefrontapi.generated';
 import logoNegative from '~/assets/anyma-logo-negative.svg';
+import {LEGAL_POLICIES} from '~/lib/legalContent';
 
 interface FooterProps {
   footer: Promise<FooterQuery | null>;
@@ -31,14 +32,15 @@ export function Footer({
                   publicStoreDomain={publicStoreDomain}
                 />
               )}
+              <LegalMenu />
               <p className="text-xs uppercase tracking-widest text-paper/50">
                 © {new Date().getFullYear()} Anyma Beauty
               </p>
-              {/* PLACEHOLDER: dati societari da confermare con il commercialista/legale
-                 (Codice del Consumo art. 49 - trasparenza obbligatoria per l'e-commerce). */}
+              {/* PLACEHOLDER: indirizzo, P.IVA e REA da confermare con il
+                 commercialista/legale (Codice del Consumo art. 49). */}
               <p className="max-w-md text-center text-[10px] leading-relaxed text-paper/40">
-                [RAGIONE SOCIALE] S.r.l. · P.IVA [00000000000] · Sede legale:
-                [Via, Città, CAP, IT] · REA [XX-000000]
+                MAD SOLUTION S.R.L. · P.IVA [DA COMPLETARE] · Sede legale:
+                [DA COMPLETARE]
               </p>
             </div>
           </footer>
@@ -142,4 +144,41 @@ function activeLinkStyle({
     fontWeight: isActive ? 'bold' : undefined,
     color: isPending ? 'grey' : 'white',
   };
+}
+
+function LegalMenu() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="w-full max-w-xs">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        className="mx-auto flex items-center gap-1.5 text-xs uppercase tracking-[0.15em] text-paper/60 transition-colors hover:text-paper"
+      >
+        Area Legale
+        <span
+          className={`transition-transform ${open ? 'rotate-180' : ''}`}
+          aria-hidden="true"
+        >
+          ▾
+        </span>
+      </button>
+      {open && (
+        <ul className="mt-4 flex flex-col items-center gap-2">
+          {LEGAL_POLICIES.map((policy) => (
+            <li key={policy.slug}>
+              <Link
+                to={`/legale/${policy.slug}`}
+                className="text-xs text-paper/50 transition-colors hover:text-paper"
+              >
+                {policy.title}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 }
