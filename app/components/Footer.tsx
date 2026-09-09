@@ -252,12 +252,12 @@ function LegalMenu() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="w-full">
+    <div className="relative inline-flex">
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        className="mx-auto flex items-center gap-1.5 text-xs uppercase tracking-[0.15em] text-paper/60 transition-colors hover:text-paper"
+        className="flex items-center gap-1.5 text-xs uppercase tracking-[0.15em] text-paper/60 transition-colors hover:text-paper"
       >
         Area Legale
         <span
@@ -268,7 +268,7 @@ function LegalMenu() {
         </span>
       </button>
       {open && (
-        <div className="mx-auto mt-4 w-full max-w-3xl rounded bg-paper px-6 py-5">
+        <div className="absolute left-1/2 top-full z-20 mt-4 w-[90vw] max-w-3xl -translate-x-1/2 rounded bg-paper px-6 py-5">
           <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
             {LEGAL_POLICIES.map((policy) => (
               <li key={policy.slug}>
