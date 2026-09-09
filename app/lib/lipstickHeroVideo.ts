@@ -1,5 +1,5 @@
 const VIDEO_COUNT: Record<string, number> = {
-  ROSSO: 2,
+  ROSSO: 3,
   NUDE: 1,
   VIOLA: 7,
   CHERRY: 5,

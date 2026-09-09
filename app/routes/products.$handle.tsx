@@ -13,6 +13,7 @@ import {ProductPrice} from '~/components/ProductPrice';
 import {ProductGallery} from '~/components/ProductGallery';
 import {ProductForm} from '~/components/ProductForm';
 import {YRating} from '~/components/YRating';
+import {ScrollReveal} from '~/components/ScrollReveal';
 import {ProductVideos} from '~/components/ProductVideos';
 import {WishlistHeart} from '~/components/WishlistHeart';
 import {ProductItem} from '~/components/ProductItem';
@@ -422,37 +423,36 @@ export default function Product() {
       )}
 
       {anima && (
-        <div className="mt-12 grid grid-cols-1 items-center gap-6 sm:mt-16 sm:grid-cols-2 sm:gap-10">
-          <div>
+        <div className="relative mt-12 aspect-[9/16] max-h-[700px] w-full overflow-hidden rounded bg-nero sm:mt-16">
+          {heroVideo && (
+            <video
+              key={heroVideo.src}
+              src={heroVideo.src}
+              poster={heroVideo.poster}
+              autoPlay
+              muted
+              playsInline
+              loop={lipstickHeroVideos.length < 2}
+              onEnded={
+                lipstickHeroVideos.length > 1
+                  ? () =>
+                      setHeroVideoIndex(
+                        (i) => (i + 1) % lipstickHeroVideos.length,
+                      )
+                  : undefined
+              }
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-nero/80 via-nero/10 to-transparent" />
+          <ScrollReveal className="absolute inset-x-0 bottom-0 p-6 sm:p-10">
             <p className="text-lg uppercase tracking-[0.25em] text-fuchsia sm:text-xl">
               {anima.storyHeading}
             </p>
-            <p className="mt-2 max-w-md text-xl leading-relaxed text-nero/80 sm:text-2xl">
+            <p className="mt-2 max-w-md text-xl leading-relaxed text-paper sm:text-2xl">
               {anima.story}
             </p>
-          </div>
-          <div className="aspect-[9/16] max-h-[600px] w-full overflow-hidden rounded bg-nero/5">
-            {heroVideo && (
-              <video
-                key={heroVideo.src}
-                src={heroVideo.src}
-                poster={heroVideo.poster}
-                autoPlay
-                muted
-                playsInline
-                loop={lipstickHeroVideos.length < 2}
-                onEnded={
-                  lipstickHeroVideos.length > 1
-                    ? () =>
-                        setHeroVideoIndex(
-                          (i) => (i + 1) % lipstickHeroVideos.length,
-                        )
-                    : undefined
-                }
-                className="h-full w-full object-cover"
-              />
-            )}
-          </div>
+          </ScrollReveal>
         </div>
       )}
 
