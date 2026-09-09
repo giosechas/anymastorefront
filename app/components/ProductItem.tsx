@@ -19,6 +19,18 @@ import {getColorTag} from '~/lib/productCopy';
 
 const IMAGE_ROTATE_MS = 3000;
 
+/** Where the brushed eye actually sits in each mascaraModelPhoto — these
+ * are per-anima crops, not a single reusable composition, so the hover
+ * zoom origin has to be looked up per anima instead of guessed once. */
+const MASCARA_EYE_ORIGIN: Record<string, string> = {
+  leopard: '78% -5%',
+  panther: '62% -8%',
+  candyRosa: '70% -5%',
+  candyTiffany: '60% -5%',
+  street: '65% -5%',
+  urban: '45% -5%',
+};
+
 export function ProductItem({
   product,
   loading,
@@ -120,7 +132,9 @@ export function ProductItem({
               src={modelPhoto.url}
               alt={modelPhoto.altText}
               style={{
-                transformOrigin: mascaraModelPhoto ? '50% 22%' : '50% 68%',
+                transformOrigin: mascaraModelPhoto
+                  ? MASCARA_EYE_ORIGIN[anima?.key ?? ''] ?? '50% 28%'
+                  : '50% 68%',
                 transition: 'opacity 250ms ease, transform 900ms cubic-bezier(0.16,1,0.3,1)',
               }}
               className={`absolute inset-0 z-[2] h-full w-full scale-100 object-cover opacity-0 group-hover:opacity-100 ${
