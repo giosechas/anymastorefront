@@ -36,6 +36,7 @@ import {
 } from '~/lib/lipstickModelPhoto';
 import {getGlossModelPhotos, getGlossModelVideos} from '~/lib/glossModelPhoto';
 import {getMascaraModelPhoto} from '~/lib/mascaraModelPhoto';
+import {getMascaraModelVideos} from '~/lib/mascaraModelVideo';
 import {getAnimaHeroVideo} from '~/lib/productHeroVideo';
 
 export const meta: Route.MetaFunction = ({data}) => {
@@ -192,13 +193,20 @@ export default function Product() {
     colorTag,
   );
   const glossModelVideos = getGlossModelVideos(product.productType, colorTag);
+  const mascaraModelVideos = getMascaraModelVideos(
+    product.productType,
+    anima?.handle,
+  );
   const colorModelVideos = lipstickModelVideos.length
     ? lipstickModelVideos
-    : glossModelVideos;
+    : glossModelVideos.length
+      ? glossModelVideos
+      : mascaraModelVideos;
   const [colorVideoIndex, setColorVideoIndex] = useState(() =>
     Math.floor(Math.random() * colorModelVideos.length),
   );
   const colorVideo = colorModelVideos[colorVideoIndex];
+  const guardaloAddossoPhoto = !colorVideo ? mascaraModelPhoto : undefined;
   const heroVideo = getAnimaHeroVideo(anima?.handle);
 
   return (
@@ -334,21 +342,31 @@ export default function Product() {
         </div>
       </div>
 
-      {colorVideo && (
+      {(colorVideo || guardaloAddossoPhoto) && (
         <div className="mt-12 grid grid-cols-1 items-center gap-6 sm:mt-16 sm:grid-cols-2 sm:gap-10">
           <div className="aspect-[9/16] max-h-[600px] w-full overflow-hidden rounded bg-nero/5">
-            <video
-              key={colorVideo.src}
-              src={colorVideo.src}
-              poster={colorVideo.poster}
-              autoPlay
-              muted
-              playsInline
-              onEnded={() =>
-                setColorVideoIndex((i) => (i + 1) % colorModelVideos.length)
-              }
-              className="h-full w-full object-cover"
-            />
+            {colorVideo ? (
+              <video
+                key={colorVideo.src}
+                src={colorVideo.src}
+                poster={colorVideo.poster}
+                autoPlay
+                muted
+                playsInline
+                onEnded={() =>
+                  setColorVideoIndex((i) => (i + 1) % colorModelVideos.length)
+                }
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              guardaloAddossoPhoto && (
+                <img
+                  src={guardaloAddossoPhoto.url}
+                  alt={guardaloAddossoPhoto.altText}
+                  className="h-full w-full object-cover"
+                />
+              )
+            )}
           </div>
           <div>
             <p className="text-lg uppercase tracking-[0.25em] text-fuchsia sm:text-xl">

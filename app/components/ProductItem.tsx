@@ -156,10 +156,10 @@ export function ProductItem({
             )}
           </div>
         </div>
-        <h4 className="mt-3 text-xs uppercase tracking-[0.05em] text-nero">
+        <h4 className="mt-3 text-[10px] uppercase tracking-[0.05em] text-nero no-underline transition-colors group-hover:text-gold">
           {product.title}
         </h4>
-        <small className="text-xs text-nero/60">
+        <small className="text-[10px] text-nero/60 no-underline transition-colors group-hover:text-gold">
           <Money data={product.priceRange.minVariantPrice} />
         </small>
       </Link>

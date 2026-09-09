@@ -64,6 +64,10 @@ const HERO_SLIDES = [
   {kind: 'image' as const, src: heroImage11},
   {kind: 'image' as const, src: heroImage12},
   {kind: 'video' as const, src: '/videos/hero/hero-campaign.mp4'},
+  {kind: 'video' as const, src: '/videos/hero/hero-rosso.mp4'},
+  {kind: 'video' as const, src: '/videos/hero/hero-nude.mp4'},
+  {kind: 'video' as const, src: '/videos/hero/hero-viola.mp4'},
+  {kind: 'video' as const, src: '/videos/hero/hero-cherry.mp4'},
 ];
 const HERO_IMAGE_ROTATE_MS = 4000;
 const HERO_HEADLINES = ['Reveal your Soul!', 'Non esiste una sola te'];
@@ -277,18 +281,21 @@ function Hero() {
           Shop Now
         </Link>
       </div>
-      <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 gap-2">
-        {HERO_SLIDES.map((slide, i) => (
-          <button
-            key={`dot-${i}`}
-            type="button"
-            aria-label={`Slide ${i + 1}`}
-            onClick={() => setActiveIndex(i)}
-            className={`h-1.5 rounded-full transition-all ${
-              i === activeIndex ? 'w-6 bg-gold' : 'w-1.5 bg-paper/40 hover:bg-paper/70'
-            }`}
+      <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 items-center gap-3">
+        <span className="text-[10px] tracking-[0.2em] text-paper/80">
+          {String(activeIndex + 1).padStart(2, '0')}
+        </span>
+        <div className="relative h-px w-24 overflow-hidden bg-paper/25">
+          <div
+            className="absolute inset-y-0 left-0 bg-gold transition-all duration-500"
+            style={{
+              width: `${((activeIndex + 1) / HERO_SLIDES.length) * 100}%`,
+            }}
           />
-        ))}
+        </div>
+        <span className="text-[10px] tracking-[0.2em] text-paper/40">
+          {String(HERO_SLIDES.length).padStart(2, '0')}
+        </span>
       </div>
     </section>
   );
