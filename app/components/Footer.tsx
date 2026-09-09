@@ -44,16 +44,20 @@ export function Footer({
                   publicStoreDomain={publicStoreDomain}
                 />
               )}
-              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+              <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-3">
                 <Link
                   to="/about"
                   className="text-xs uppercase tracking-[0.15em] text-paper/60 transition-colors hover:text-paper"
                 >
                   La Nostra Storia
                 </Link>
+                <FooterDot />
                 <LegalMenu />
+                <FooterDot />
                 <TrackOrderMenuItem />
+                <FooterDot />
                 <ReturnOrderMenuItem />
+                <FooterDot />
                 <Link
                   to="/lavora-con-noi"
                   className="text-xs uppercase tracking-[0.15em] text-paper/60 transition-colors hover:text-paper"
@@ -234,6 +238,14 @@ function activeLinkStyle({
     fontWeight: isActive ? 'bold' : undefined,
     color: isPending ? 'grey' : 'white',
   };
+}
+
+function FooterDot() {
+  return (
+    <span aria-hidden="true" className="text-paper/30">
+      ·
+    </span>
+  );
 }
 
 function LegalMenu() {

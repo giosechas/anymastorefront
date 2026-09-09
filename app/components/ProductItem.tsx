@@ -121,8 +121,9 @@ export function ProductItem({
               alt={modelPhoto.altText}
               style={{
                 transformOrigin: mascaraModelPhoto ? '50% 22%' : '50% 68%',
+                transition: 'opacity 250ms ease, transform 900ms cubic-bezier(0.16,1,0.3,1)',
               }}
-              className={`absolute inset-0 z-[2] h-full w-full scale-100 object-cover opacity-0 transition-[opacity,transform] duration-500 group-hover:opacity-100 ${
+              className={`absolute inset-0 z-[2] h-full w-full scale-100 object-cover opacity-0 group-hover:opacity-100 ${
                 mascaraModelPhoto ? 'group-hover:scale-[1.9]' : 'group-hover:scale-[1.15]'
               }`}
             />
