@@ -243,7 +243,7 @@ function activeLinkStyle({
 
 function FooterDot() {
   return (
-    <span aria-hidden="true" className="text-paper/30">
+    <span aria-hidden="true" className="text-nero/30">
       ·
     </span>
   );
@@ -258,7 +258,7 @@ function LegalMenu() {
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        className="flex items-center gap-1.5 text-xs uppercase tracking-[0.15em] text-paper/60 transition-colors hover:text-paper"
+        className="flex items-center gap-1.5 text-xs uppercase tracking-[0.15em] text-nero/60 transition-colors hover:text-nero"
       >
         Area Legale
         <span

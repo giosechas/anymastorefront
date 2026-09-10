@@ -31,7 +31,7 @@ function FooterPopover({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="text-xs uppercase tracking-[0.15em] text-paper/60 transition-colors hover:text-paper"
+        className="text-xs uppercase tracking-[0.15em] text-nero/60 transition-colors hover:text-nero"
       >
         {label}
       </button>
