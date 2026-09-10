@@ -12,15 +12,11 @@ import {
   getPackPath,
   type AnimaDefinition,
 } from '~/lib/animas';
-import heroImage1 from '~/assets/images/hero/hero-1.webp';
-import heroImage3 from '~/assets/images/hero/hero-3.webp';
-import heroImage5 from '~/assets/images/hero/hero-5.webp';
-import heroImage6 from '~/assets/images/hero/hero-6.webp';
-import heroImage8 from '~/assets/images/hero/hero-8.webp';
-import heroImage9 from '~/assets/images/hero/hero-9.webp';
-import heroImage10 from '~/assets/images/hero/hero-10.webp';
-import heroImage11 from '~/assets/images/hero/hero-11.webp';
-import heroImage12 from '~/assets/images/hero/hero-12.webp';
+import heroProduct1 from '~/assets/images/hero-product/product-1.webp';
+import heroProduct2 from '~/assets/images/hero-product/product-2.webp';
+import heroProduct3 from '~/assets/images/hero-product/product-3.webp';
+import heroProduct4 from '~/assets/images/hero-product/product-4.webp';
+import brandStoryBg from '~/assets/images/brand-story/all-models.webp';
 import sealPositive from '~/assets/images/seal-y-positive.png';
 import sealNegative from '~/assets/images/seal-y-negative.png';
 import philosophyTruth1 from '~/assets/images/philosophy/pool/truth1.webp';
@@ -54,15 +50,10 @@ const FOUNDERS_REGISTERED = 247;
 const FOUNDERS_TOTAL = 800;
 
 const HERO_SLIDES = [
-  {kind: 'image' as const, src: heroImage1},
-  {kind: 'image' as const, src: heroImage3},
-  {kind: 'image' as const, src: heroImage5},
-  {kind: 'image' as const, src: heroImage6},
-  {kind: 'image' as const, src: heroImage8},
-  {kind: 'image' as const, src: heroImage9},
-  {kind: 'image' as const, src: heroImage10},
-  {kind: 'image' as const, src: heroImage11},
-  {kind: 'image' as const, src: heroImage12},
+  {kind: 'image' as const, src: heroProduct1},
+  {kind: 'image' as const, src: heroProduct2},
+  {kind: 'image' as const, src: heroProduct3},
+  {kind: 'image' as const, src: heroProduct4},
   {kind: 'video' as const, src: '/videos/hero/hero-campaign.mp4'},
   {kind: 'video' as const, src: '/videos/hero/hero-rosso.mp4'},
   {kind: 'video' as const, src: '/videos/hero/hero-nude.mp4'},
@@ -537,19 +528,28 @@ function PhilosophyBlock({
 
 function BrandStoryTeaser() {
   return (
-    <section className="bg-paper px-6 py-14 text-center sm:py-28">
+    <section
+      data-header-theme="dark"
+      className="relative isolate overflow-hidden px-6 py-20 text-center sm:py-36"
+    >
+      <img
+        src={brandStoryBg}
+        alt=""
+        className="absolute inset-0 -z-10 h-full w-full object-cover object-top"
+      />
+      <div className="absolute inset-0 -z-10 bg-nero/55" />
       <ScrollReveal direction="up">
-        <blockquote className="font-display mx-auto max-w-2xl text-2xl uppercase tracking-[0.03em] text-nero sm:text-3xl">
+        <blockquote className="font-display mx-auto max-w-2xl text-2xl uppercase tracking-[0.03em] text-paper sm:text-3xl">
           <span className="text-fuchsia">&ldquo;</span>Non esiste una sola te.
           <span className="text-fuchsia">&rdquo;</span>
         </blockquote>
-        <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-nero/70">
+        <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-paper/80">
           Riveliamo le anyme attraverso il make-up. Non vendiamo rossetti.
           Creiamo gli oggetti con cui le persone si raccontano ogni giorno.
         </p>
         <Link
           to="/about"
-          className="mt-8 inline-block border-b border-nero pb-1 text-xs uppercase tracking-[0.2em] text-nero hover:text-gold hover:border-gold"
+          className="mt-8 inline-block border-b border-paper pb-1 text-xs uppercase tracking-[0.2em] text-paper hover:text-gold hover:border-gold"
         >
           Scopri la nostra storia
         </Link>
@@ -788,7 +788,7 @@ function FoundersSection() {
   return (
     <section
       data-header-theme="dark"
-      className="relative isolate flex min-h-[75vh] items-end overflow-hidden bg-nero text-paper sm:min-h-[85vh]"
+      className="relative isolate flex items-end overflow-hidden bg-nero text-paper"
     >
       <div ref={parallaxRef} className="absolute inset-0 -z-10 h-full w-full overflow-hidden">
         <div
@@ -811,20 +811,20 @@ function FoundersSection() {
 
       <ScrollReveal
         direction="up"
-        className="w-full px-6 py-14 sm:px-12 sm:py-20"
+        className="w-full px-6 py-8 sm:px-10 sm:py-10"
       >
-        <p className="mb-3 text-xs uppercase tracking-[0.4em] text-fuchsia">
+        <p className="mb-2 text-[10px] uppercase tracking-[0.4em] text-fuchsia">
           Posti limitati
         </p>
-        <h2 className="font-display text-4xl uppercase tracking-[0.03em] sm:text-5xl">
+        <h2 className="font-display text-xl uppercase tracking-[0.03em] sm:text-2xl">
           Diventa Anyma Prima
         </h2>
-        <p className="mt-4 max-w-md text-sm leading-relaxed text-paper/80">
+        <p className="mt-2 max-w-md text-xs leading-relaxed text-paper/80">
           Spedizione a vita, tessera numerata, 15% di benvenuto: solo per le
           prime 800 anyme.
         </p>
 
-        <div className="mt-8 max-w-sm">
+        <div className="mt-4 max-w-sm">
           <FoundersCounter />
         </div>
 
@@ -895,7 +895,7 @@ function FoundersEmailForm() {
 
   return (
     <form
-      className="mt-8 flex max-w-md flex-col gap-3 sm:flex-row"
+      className="mt-4 flex max-w-md flex-col gap-2 sm:flex-row"
       onSubmit={(e) => {
         e.preventDefault();
         setSubmitted(true);
@@ -907,11 +907,11 @@ function FoundersEmailForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="La tua email"
-        className="w-full border border-paper/30 bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50 focus:border-gold focus:outline-none"
+        className="w-full border border-paper/30 bg-transparent px-3 py-2 text-xs text-paper placeholder:text-paper/50 focus:border-gold focus:outline-none"
       />
       <button
         type="submit"
-        className="whitespace-nowrap border border-gold px-6 py-3 text-xs uppercase tracking-[0.2em] text-white transition-colors hover:bg-gold hover:text-nero"
+        className="whitespace-nowrap border border-gold px-5 py-2 text-[11px] uppercase tracking-[0.2em] text-white transition-colors hover:bg-gold hover:text-nero"
       >
         Riservati il posto
       </button>
