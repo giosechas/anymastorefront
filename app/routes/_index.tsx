@@ -17,8 +17,6 @@ import heroProduct2 from '~/assets/images/hero-product/product-2.webp';
 import heroProduct3 from '~/assets/images/hero-product/product-3.webp';
 import heroProduct4 from '~/assets/images/hero-product/product-4.webp';
 import brandStoryBg from '~/assets/images/brand-story/all-models.webp';
-import sealPositive from '~/assets/images/seal-y-positive.png';
-import sealNegative from '~/assets/images/seal-y-negative.png';
 import philosophyTruth1 from '~/assets/images/philosophy/pool/truth1.webp';
 import philosophyTruth2 from '~/assets/images/philosophy/pool/truth2.webp';
 import philosophyTruth3 from '~/assets/images/philosophy/pool/truth3.webp';
@@ -170,11 +168,9 @@ export default function Homepage() {
       {data.isShopLinked ? null : <MockShopNotice />}
       <Hero />
       <RecommendedProducts products={data.recommendedProducts} />
-      <SealDivider bg="light" />
       <AnimeGrid />
       <PhilosophySection />
       <BrandStoryTeaser />
-      <SealDivider bg="light" />
       <SocialSection />
       <FoundersSection />
     </div>
@@ -289,22 +285,6 @@ function Hero() {
         </span>
       </div>
     </section>
-  );
-}
-
-function SealDivider({bg}: {bg: 'light' | 'dark'}) {
-  const seal = bg === 'light' ? sealPositive : sealNegative;
-  const line = bg === 'light' ? 'bg-nero/15' : 'bg-paper/25';
-  const container = bg === 'light' ? 'bg-paper' : 'bg-nero';
-  return (
-    <ScrollReveal
-      direction="up"
-      className={`flex items-center justify-center gap-6 px-6 py-6 sm:py-10 ${container}`}
-    >
-      <span className={`h-px w-16 sm:w-24 ${line}`} />
-      <img src={seal} alt="" aria-hidden="true" className="h-8 w-auto sm:h-10" />
-      <span className={`h-px w-16 sm:w-24 ${line}`} />
-    </ScrollReveal>
   );
 }
 
