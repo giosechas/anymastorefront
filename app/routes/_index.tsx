@@ -510,7 +510,7 @@ function BrandStoryTeaser() {
   return (
     <section
       data-header-theme="dark"
-      className="relative isolate overflow-hidden px-6 py-20 text-center sm:py-36"
+      className="relative isolate overflow-hidden px-6 py-28 text-center sm:py-48"
     >
       <img
         src={brandStoryBg}
