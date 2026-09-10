@@ -378,10 +378,10 @@ export default function Product() {
             )}
           </div>
           <div>
-            <p className="text-lg uppercase tracking-[0.25em] text-fuchsia sm:text-xl">
+            <p className="font-display text-lg uppercase tracking-[0.25em] text-fuchsia sm:text-xl">
               Guardalo addosso
             </p>
-            <p className="mt-2 max-w-md text-base leading-relaxed text-nero/80 sm:text-xl">
+            <p className="mt-2 max-w-md text-xs leading-relaxed text-nero/80 sm:text-base">
               {shortDescription ?? product.description}
             </p>
           </div>
@@ -391,10 +391,10 @@ export default function Product() {
       {anima && (
         <div className="mt-12 grid grid-cols-1 items-center gap-6 sm:mt-16 sm:grid-cols-2 sm:gap-10">
           <div>
-            <p className="text-lg uppercase tracking-[0.25em] text-fuchsia sm:text-xl">
+            <p className="font-display text-lg uppercase tracking-[0.25em] text-fuchsia sm:text-xl">
               Un rituale completo
             </p>
-            <p className="mt-2 max-w-md text-base leading-relaxed text-nero/80 sm:text-xl">
+            <p className="mt-2 max-w-md text-xs leading-relaxed text-nero/80 sm:text-base">
               Rossetto, gloss e mascara pensati per completarsi. Scopri il
               trittico Anyma {anima.name} e porta a casa l&apos;intera
               esperienza.
@@ -446,10 +446,10 @@ export default function Product() {
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-nero/80 via-nero/10 to-transparent" />
           <ScrollReveal className="absolute inset-x-0 bottom-0 p-6 sm:p-10">
-            <p className="text-lg uppercase tracking-[0.25em] text-fuchsia sm:text-xl">
+            <p className="font-display text-lg uppercase tracking-[0.25em] text-fuchsia sm:text-xl">
               {anima.storyHeading}
             </p>
-            <p className="mt-2 max-w-md text-base leading-relaxed text-paper sm:text-xl">
+            <p className="mt-2 max-w-md text-xs leading-relaxed text-paper sm:text-base">
               {anima.story}
             </p>
           </ScrollReveal>
