@@ -436,24 +436,39 @@ function PhilosophyBlock({
   accent?: 'gold' | 'fuchsia';
   reverse?: boolean;
 }) {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [{current: activeIndex, prev: prevIndex}, setIndices] = useState<{
+    current: number;
+    prev: number | null;
+  }>({current: 0, prev: null});
   const [initialDelay] = useState(() => Math.random() * PHILOSOPHY_ROTATE_MS);
   const {ref: parallaxRef, offset} = useParallaxOffset<HTMLDivElement>(80);
 
   useEffect(() => {
     if (slides.length < 2) return;
     let intervalId: ReturnType<typeof setInterval>;
+    const advance = () =>
+      setIndices(({current}) => ({
+        current: (current + 1) % slides.length,
+        prev: current,
+      }));
     const timeoutId = setTimeout(() => {
-      setActiveIndex((i) => (i + 1) % slides.length);
-      intervalId = setInterval(() => {
-        setActiveIndex((i) => (i + 1) % slides.length);
-      }, PHILOSOPHY_ROTATE_MS);
+      advance();
+      intervalId = setInterval(advance, PHILOSOPHY_ROTATE_MS);
     }, initialDelay);
     return () => {
       clearTimeout(timeoutId);
       clearInterval(intervalId);
     };
   }, [slides.length, initialDelay]);
+
+  // "Push" carousel: the active slide sits at 0%, the slide it replaced
+  // slides out to -100%, and every other slide is parked at +100% ready
+  // to push in from the right on its turn.
+  function slideX(i: number) {
+    if (i === activeIndex) return 0;
+    if (i === prevIndex) return -100;
+    return 100;
+  }
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2">
@@ -475,18 +490,28 @@ function PhilosophyBlock({
                 muted
                 loop
                 playsInline
-                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-                  i === activeIndex ? 'opacity-100' : 'opacity-0'
-                }`}
+                style={{
+                  transform: `translateX(${slideX(i)}%)`,
+                  transition:
+                    i === activeIndex || i === prevIndex
+                      ? 'transform 700ms ease-in-out'
+                      : 'none',
+                }}
+                className="absolute inset-0 h-full w-full object-cover"
               />
             ) : (
               <img
                 key={slide.src}
                 src={slide.src}
                 alt=""
-                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-                  i === activeIndex ? 'opacity-100' : 'opacity-0'
-                }`}
+                style={{
+                  transform: `translateX(${slideX(i)}%)`,
+                  transition:
+                    i === activeIndex || i === prevIndex
+                      ? 'transform 700ms ease-in-out'
+                      : 'none',
+                }}
+                className="absolute inset-0 h-full w-full object-cover"
               />
             ),
           )}
