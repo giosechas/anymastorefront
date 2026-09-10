@@ -1,8 +1,7 @@
 import {Suspense, useState} from 'react';
 import {Await, Link, NavLink} from 'react-router';
 import type {FooterQuery, HeaderQuery} from 'storefrontapi.generated';
-import logoNegative from '~/assets/anyma-logo-negative.svg';
-import wordmarkWhite from '~/assets/anyma-logo-wordmark-white.png';
+import wordmarkBlack from '~/assets/anyma-logo-wordmark.png';
 import {LEGAL_POLICIES} from '~/lib/legalContent';
 import {
   TrackOrderMenuItem,
@@ -32,24 +31,14 @@ export function Footer({
       <Await resolve={footerPromise}>
         {(footer) => (
           <footer className="footer">
-            <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-6 py-8 text-center">
-              <img src={logoNegative} alt="Anyma Beauty" className="h-7 w-auto" />
-              <div className="flex flex-wrap items-center justify-center gap-x-3">
-                <p className="font-display text-sm uppercase tracking-[0.25em] text-paper/80">
-                  Rivela chi sei
-                </p>
-                {footer?.menu && header.shop.primaryDomain?.url && (
-                  <FooterMenu
-                    menu={footer.menu}
-                    primaryDomainUrl={header.shop.primaryDomain.url}
-                    publicStoreDomain={publicStoreDomain}
-                  />
-                )}
-              </div>
+            <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 bg-paper px-6 py-8 text-center">
+              <p className="font-display text-[17px] uppercase tracking-[0.25em] text-nero/80">
+                Rivela chi sei
+              </p>
               <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
                 <Link
                   to="/about"
-                  className="text-xs uppercase tracking-[0.15em] text-paper/60 transition-colors hover:text-paper"
+                  className="text-xs uppercase tracking-[0.15em] text-nero/60 transition-colors hover:text-nero"
                 >
                   La Nostra Storia
                 </Link>
@@ -62,21 +51,31 @@ export function Footer({
                 <FooterDot />
                 <Link
                   to="/lavora-con-noi"
-                  className="text-xs uppercase tracking-[0.15em] text-paper/60 transition-colors hover:text-paper"
+                  className="text-xs uppercase tracking-[0.15em] text-nero/60 transition-colors hover:text-nero"
                 >
                   Lavora con noi
                 </Link>
+                {footer?.menu && header.shop.primaryDomain?.url && (
+                  <>
+                    <FooterDot />
+                    <FooterMenu
+                      menu={footer.menu}
+                      primaryDomainUrl={header.shop.primaryDomain.url}
+                      publicStoreDomain={publicStoreDomain}
+                    />
+                  </>
+                )}
               </div>
             </div>
 
             {/* Bottom bar — minimal: wordmark + year, socials, legal name. */}
-            <div className="border-t border-paper/10">
+            <div className="border-t border-paper/10 bg-nero">
               <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-4 sm:flex-row">
                 <div className="flex items-center gap-2">
                   <img
-                    src={wordmarkWhite}
+                    src={wordmarkBlack}
                     alt="Anyma Beauty"
-                    className="h-4 w-auto opacity-70"
+                    className="h-4 w-auto opacity-70 invert"
                   />
                   <span className="text-[10px] text-paper/40">
                     {new Date().getFullYear()}
