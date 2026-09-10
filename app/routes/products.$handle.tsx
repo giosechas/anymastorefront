@@ -381,7 +381,7 @@ export default function Product() {
             <p className="text-lg uppercase tracking-[0.25em] text-fuchsia sm:text-xl">
               Guardalo addosso
             </p>
-            <p className="mt-2 max-w-md text-xl leading-relaxed text-nero/80 sm:text-2xl">
+            <p className="mt-2 max-w-md text-base leading-relaxed text-nero/80 sm:text-xl">
               {shortDescription ?? product.description}
             </p>
           </div>
@@ -394,7 +394,7 @@ export default function Product() {
             <p className="text-lg uppercase tracking-[0.25em] text-fuchsia sm:text-xl">
               Un rituale completo
             </p>
-            <p className="mt-2 max-w-md text-xl leading-relaxed text-nero/80 sm:text-2xl">
+            <p className="mt-2 max-w-md text-base leading-relaxed text-nero/80 sm:text-xl">
               Rossetto, gloss e mascara pensati per completarsi. Scopri il
               trittico Anyma {anima.name} e porta a casa l&apos;intera
               esperienza.
@@ -449,7 +449,7 @@ export default function Product() {
             <p className="text-lg uppercase tracking-[0.25em] text-fuchsia sm:text-xl">
               {anima.storyHeading}
             </p>
-            <p className="mt-2 max-w-md text-xl leading-relaxed text-paper sm:text-2xl">
+            <p className="mt-2 max-w-md text-base leading-relaxed text-paper sm:text-xl">
               {anima.story}
             </p>
           </ScrollReveal>
