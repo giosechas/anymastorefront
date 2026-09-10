@@ -1,23 +1,25 @@
-const VIDEO_COUNT: Record<string, number> = {
-  ROSSO: 3,
-  NUDE: 1,
-  VIOLA: 7,
-  CHERRY: 5,
+/** "Verità senza filtri" hero clips for lipstick PDPs — one clip per exact
+ * anima + color combination. Filmed footage doesn't cover every combo yet;
+ * missing ones fall back to a "video soon" placeholder in the UI. */
+const AVAILABLE: Record<string, string[]> = {
+  leopard: ['ROSSO', 'NUDE', 'CHERRY', 'VIOLA'],
+  panther: ['ROSSO', 'NUDE', 'CHERRY', 'VIOLA'],
+  candyRosa: ['ROSSO', 'NUDE', 'VIOLA'],
+  candyTiffany: ['NUDE', 'CHERRY', 'VIOLA'],
+  street: ['NUDE', 'VIOLA'],
+  urban: ['ROSSO', 'CHERRY', 'VIOLA'],
 };
 
-/** "Verità senza filtri" hero clips for lipstick PDPs, keyed by color so
- * the same footage plays regardless of which anima the color belongs to. */
-export function getLipstickHeroVideos(
+export function getLipstickHeroVideo(
   productType: string,
+  animaKey: string | undefined,
   colorTag: string | undefined,
-): {src: string; poster: string}[] {
-  if (productType !== 'Rossetto') return [];
-  const count = colorTag && VIDEO_COUNT[colorTag];
-  if (!count) return [];
-  const slug = colorTag!.toLowerCase();
+): {src: string; poster: string} | undefined {
+  if (productType !== 'Rossetto' || !animaKey || !colorTag) return undefined;
+  if (!AVAILABLE[animaKey]?.includes(colorTag)) return undefined;
 
-  return Array.from({length: count}, (_, i) => ({
-    src: `/videos/hero-lipstick/${slug}/${i + 1}.mp4`,
-    poster: `/videos/hero-lipstick/${slug}/posters/${i + 1}.jpg`,
-  }));
+  return {
+    src: `/videos/hero-lipstick/${animaKey}/${colorTag}.mp4`,
+    poster: `/videos/hero-lipstick/${animaKey}/posters/${colorTag}.jpg`,
+  };
 }

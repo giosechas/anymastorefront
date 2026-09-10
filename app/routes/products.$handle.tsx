@@ -39,8 +39,7 @@ import {
 import {getGlossModelPhotos, getGlossModelVideos} from '~/lib/glossModelPhoto';
 import {getMascaraModelPhoto} from '~/lib/mascaraModelPhoto';
 import {getMascaraModelVideos} from '~/lib/mascaraModelVideo';
-import {getAnimaHeroVideo} from '~/lib/productHeroVideo';
-import {getLipstickHeroVideos} from '~/lib/lipstickHeroVideo';
+import {getLipstickHeroVideo} from '~/lib/lipstickHeroVideo';
 
 export const meta: Route.MetaFunction = ({data}) => {
   return [
@@ -210,13 +209,11 @@ export default function Product() {
   );
   const colorVideo = colorModelVideos[colorVideoIndex];
   const guardaloAddossoPhoto = !colorVideo ? mascaraModelPhoto : undefined;
-  const lipstickHeroVideos = getLipstickHeroVideos(product.productType, colorTag);
-  const [heroVideoIndex, setHeroVideoIndex] = useState(() =>
-    Math.floor(Math.random() * lipstickHeroVideos.length),
+  const heroVideo = getLipstickHeroVideo(
+    product.productType,
+    anima?.key,
+    colorTag,
   );
-  const heroVideo = lipstickHeroVideos.length
-    ? lipstickHeroVideos[heroVideoIndex]
-    : getAnimaHeroVideo(anima?.handle);
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-10 sm:py-16">
@@ -424,25 +421,25 @@ export default function Product() {
 
       {anima && (
         <div className="relative mt-12 aspect-[9/16] max-h-[700px] w-full overflow-hidden rounded bg-nero sm:mt-16">
-          {heroVideo && (
+          {heroVideo ? (
             <video
               key={heroVideo.src}
               src={heroVideo.src}
               poster={heroVideo.poster}
               autoPlay
               muted
+              loop
               playsInline
-              loop={lipstickHeroVideos.length < 2}
-              onEnded={
-                lipstickHeroVideos.length > 1
-                  ? () =>
-                      setHeroVideoIndex(
-                        (i) => (i + 1) % lipstickHeroVideos.length,
-                      )
-                  : undefined
-              }
               className="absolute inset-0 h-full w-full object-cover"
             />
+          ) : (
+            product.productType === 'Rossetto' && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <p className="text-xs uppercase tracking-[0.3em] text-paper/40">
+                  Video in arrivo
+                </p>
+              </div>
+            )
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-nero/80 via-nero/10 to-transparent" />
           <ScrollReveal className="absolute inset-x-0 bottom-0 p-6 sm:p-10">
