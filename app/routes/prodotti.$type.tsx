@@ -2,7 +2,7 @@ import {useLoaderData} from 'react-router';
 import {useMemo, useState} from 'react';
 import type {Route} from './+types/prodotti.$type';
 import {ProductItem} from '~/components/ProductItem';
-import {getColorTag} from '~/lib/productCopy';
+import {getColorTag, COLOR_SWATCH_HEX} from '~/lib/productCopy';
 import type {ProductItemFragment} from 'storefrontapi.generated';
 
 type ViewMode = 'anima' | 'color';
@@ -109,23 +109,43 @@ export default function ProductsByType() {
       )}
 
       {groups.length > 1 && (
-        <div className="mx-auto flex max-w-6xl flex-wrap justify-center gap-1.5 px-6 pb-8">
-          {groups.map(([key]) => (
-            <button
-              key={key}
-              type="button"
-              onClick={() =>
-                setActiveFilter((current) => (current === key ? null : key))
-              }
-              className={`rounded-full border px-3.5 py-1.5 text-[11px] uppercase tracking-[0.1em] transition-colors ${
-                activeFilter === key
-                  ? 'border-gold bg-gold text-nero'
-                  : 'border-nero/20 text-nero/60 hover:border-nero/50'
-              }`}
-            >
-              {key}
-            </button>
-          ))}
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-2.5 px-6 pb-8">
+          {groups.map(([key]) =>
+            viewMode === 'color' ? (
+              <button
+                key={key}
+                type="button"
+                aria-label={key}
+                title={key}
+                onClick={() =>
+                  setActiveFilter((current) => (current === key ? null : key))
+                }
+                className={`h-8 w-8 rounded-full border-2 transition-transform hover:scale-110 ${
+                  activeFilter === key
+                    ? 'border-nero'
+                    : 'border-transparent hover:border-nero/30'
+                }`}
+                style={{
+                  backgroundColor: COLOR_SWATCH_HEX[key] ?? '#ccc',
+                }}
+              />
+            ) : (
+              <button
+                key={key}
+                type="button"
+                onClick={() =>
+                  setActiveFilter((current) => (current === key ? null : key))
+                }
+                className={`rounded-full border px-3.5 py-1.5 text-[11px] uppercase tracking-[0.1em] transition-colors ${
+                  activeFilter === key
+                    ? 'border-gold bg-gold text-nero'
+                    : 'border-nero/20 text-nero/60 hover:border-nero/50'
+                }`}
+              >
+                {key}
+              </button>
+            ),
+          )}
         </div>
       )}
 
