@@ -494,7 +494,7 @@ function PhilosophyBlock({
         </div>
       </div>
       <div className="flex flex-col items-center justify-center px-8 py-10 text-center sm:px-12 sm:py-16">
-        <p className="font-display max-w-xl text-balance text-2xl uppercase leading-[1.05] tracking-[0.02em] text-nero sm:text-5xl lg:text-6xl">
+        <p className="font-display max-w-xl text-balance text-[17px] uppercase leading-[1.05] tracking-[0.02em] text-nero sm:text-[41px] lg:text-[53px]">
           {quote}
           <br />
           <span className={accent === 'fuchsia' ? 'text-fuchsia' : 'text-gold'}>
