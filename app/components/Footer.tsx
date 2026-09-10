@@ -32,19 +32,21 @@ export function Footer({
       <Await resolve={footerPromise}>
         {(footer) => (
           <footer className="footer">
-            <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-6 py-14 text-center">
-              <img src={logoNegative} alt="Anyma Beauty" className="h-9 w-auto" />
-              <p className="font-display text-sm uppercase tracking-[0.25em] text-paper/80">
-                Rivela chi sei
-              </p>
-              {footer?.menu && header.shop.primaryDomain?.url && (
-                <FooterMenu
-                  menu={footer.menu}
-                  primaryDomainUrl={header.shop.primaryDomain.url}
-                  publicStoreDomain={publicStoreDomain}
-                />
-              )}
-              <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-3">
+            <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-6 py-8 text-center">
+              <img src={logoNegative} alt="Anyma Beauty" className="h-7 w-auto" />
+              <div className="flex flex-wrap items-center justify-center gap-x-3">
+                <p className="font-display text-sm uppercase tracking-[0.25em] text-paper/80">
+                  Rivela chi sei
+                </p>
+                {footer?.menu && header.shop.primaryDomain?.url && (
+                  <FooterMenu
+                    menu={footer.menu}
+                    primaryDomainUrl={header.shop.primaryDomain.url}
+                    publicStoreDomain={publicStoreDomain}
+                  />
+                )}
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
                 <Link
                   to="/about"
                   className="text-xs uppercase tracking-[0.15em] text-paper/60 transition-colors hover:text-paper"
@@ -69,7 +71,7 @@ export function Footer({
 
             {/* Bottom bar — minimal: wordmark + year, socials, legal name. */}
             <div className="border-t border-paper/10">
-              <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-6 sm:flex-row">
+              <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-4 sm:flex-row">
                 <div className="flex items-center gap-2">
                   <img
                     src={wordmarkWhite}

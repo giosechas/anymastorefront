@@ -1031,13 +1031,22 @@ button.reset:hover:not(:has(> *)) {
   justify-content: center;
   display: flex;
   flex-wrap: wrap;
-  grid-gap: 1rem;
-  padding: 1rem;
+  grid-gap: 0.75rem;
+  padding: 0;
 }
 
 .footer-menu a {
   color: var(--color-light);
   min-width: fit-content;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.footer-menu a:hover {
+  opacity: 1;
 }
 
 /*
