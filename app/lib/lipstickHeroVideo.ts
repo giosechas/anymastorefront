@@ -6,8 +6,8 @@ const AVAILABLE: Record<string, string[]> = {
   panther: ['ROSSO', 'NUDE', 'CHERRY', 'VIOLA'],
   candyRosa: ['ROSSO', 'NUDE', 'VIOLA'],
   candyTiffany: ['NUDE', 'CHERRY', 'VIOLA'],
-  street: ['NUDE', 'VIOLA'],
-  urban: ['ROSSO', 'CHERRY', 'VIOLA'],
+  street: ['NUDE', 'CHERRY', 'ROSSO'],
+  urban: ['ROSSO', 'CHERRY', 'VIOLA', 'NUDE'],
 };
 
 export function getLipstickHeroVideo(

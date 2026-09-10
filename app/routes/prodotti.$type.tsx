@@ -40,6 +40,7 @@ export async function loader({context, params}: Route.LoaderArgs) {
 export default function ProductsByType() {
   const {info, products} = useLoaderData<typeof loader>();
   const [viewMode, setViewMode] = useState<ViewMode>('anima');
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
 
   const groups = useMemo(() => {
     const byGroup = new Map<string, typeof products>();
@@ -56,6 +57,10 @@ export default function ProductsByType() {
       .sort(([a], [b]) => a.localeCompare(b));
   }, [products, viewMode]);
 
+  const visibleGroups = activeFilter
+    ? groups.filter(([key]) => key === activeFilter)
+    : groups;
+
   return (
     <div className="bg-paper">
       <header className="mx-auto max-w-3xl px-6 pb-6 pt-16 text-center sm:pt-24">
@@ -71,10 +76,13 @@ export default function ProductsByType() {
       </header>
 
       {products.length > 0 && (
-        <div className="mx-auto flex max-w-6xl justify-center gap-2 px-6 pb-8">
+        <div className="mx-auto flex max-w-6xl justify-center gap-2 px-6 pb-6">
           <button
             type="button"
-            onClick={() => setViewMode('anima')}
+            onClick={() => {
+              setViewMode('anima');
+              setActiveFilter(null);
+            }}
             className={`border px-5 py-2 text-xs uppercase tracking-[0.15em] transition-colors ${
               viewMode === 'anima'
                 ? 'border-nero bg-nero text-paper'
@@ -85,7 +93,10 @@ export default function ProductsByType() {
           </button>
           <button
             type="button"
-            onClick={() => setViewMode('color')}
+            onClick={() => {
+              setViewMode('color');
+              setActiveFilter(null);
+            }}
             className={`border px-5 py-2 text-xs uppercase tracking-[0.15em] transition-colors ${
               viewMode === 'color'
                 ? 'border-nero bg-nero text-paper'
@@ -97,13 +108,34 @@ export default function ProductsByType() {
         </div>
       )}
 
+      {groups.length > 1 && (
+        <div className="mx-auto flex max-w-6xl flex-wrap justify-center gap-1.5 px-6 pb-8">
+          {groups.map(([key]) => (
+            <button
+              key={key}
+              type="button"
+              onClick={() =>
+                setActiveFilter((current) => (current === key ? null : key))
+              }
+              className={`rounded-full border px-3.5 py-1.5 text-[11px] uppercase tracking-[0.1em] transition-colors ${
+                activeFilter === key
+                  ? 'border-gold bg-gold text-nero'
+                  : 'border-nero/20 text-nero/60 hover:border-nero/50'
+              }`}
+            >
+              {key}
+            </button>
+          ))}
+        </div>
+      )}
+
       <div className="mx-auto max-w-6xl px-6 pb-24">
         {products.length === 0 ? (
           <p className="text-center text-sm text-nero/60">
             Nessun prodotto trovato per questa categoria.
           </p>
         ) : (
-          groups.map(([groupKey, groupProducts]) => (
+          visibleGroups.map(([groupKey, groupProducts]) => (
             <div key={groupKey} className="mb-12">
               <p className="mb-4 text-xs uppercase tracking-[0.2em] text-nero/50">
                 {groupKey}

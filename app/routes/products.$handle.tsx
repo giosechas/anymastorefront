@@ -420,7 +420,7 @@ export default function Product() {
       )}
 
       {anima && (
-        <div className="relative mt-12 aspect-[9/16] max-h-[700px] w-full overflow-hidden rounded bg-nero sm:mt-16">
+        <div className="relative mt-12 aspect-[2/1] w-full overflow-hidden rounded bg-nero sm:mt-16">
           {heroVideo ? (
             <video
               key={heroVideo.src}
