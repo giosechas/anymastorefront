@@ -23,6 +23,7 @@ export default function About() {
       <StorySectionVoid />
       <StorySectionTruth />
       <StorySectionCraft />
+      <LabSection />
       <StorySectionClosing />
     </div>
   );
@@ -271,6 +272,88 @@ function StorySectionCraft() {
           className="col-span-2 aspect-[16/9] w-full overflow-hidden rounded sm:col-span-1 sm:aspect-[3/4]"
         >
           <ParallaxImage src={lineup} strength={50} className="h-full" />
+        </ScrollReveal>
+      </div>
+    </section>
+  );
+}
+
+function LabSection() {
+  return (
+    <section className="bg-paper px-6 py-16 sm:px-12 sm:py-24">
+      <ScrollReveal direction="up" className="mx-auto max-w-2xl text-left">
+        <p className="mb-3 text-xs uppercase tracking-[0.35em] text-gold">
+          I nostri laboratori
+        </p>
+        <h2 className="font-display text-3xl uppercase leading-tight tracking-[0.02em] text-nero sm:text-4xl">
+          Creato a Milano. Curato per te.
+        </h2>
+        <p className="mt-4 text-sm leading-relaxed text-nero/70">
+          Ogni formula nasce nei nostri laboratori esclusivi nel cuore di
+          Milano, dove la tradizione cosmetica italiana incontra gli
+          standard più rigorosi dell&rsquo;Unione Europea.
+        </p>
+        <p className="mt-6 text-sm leading-relaxed text-nero/80">
+          Non ci limitiamo a scegliere ingredienti. Li studiamo, li
+          testiamo, li riformuliamo fino a quando ogni texture, ogni
+          colore, ogni nota olfattiva risponde a un unico criterio: essere
+          all&rsquo;altezza dell&rsquo;anima che lo conterrà.
+        </p>
+        <p className="mt-6 text-sm leading-relaxed text-nero/80">
+          I nostri laboratori sono il luogo dove il rossetto cessa di
+          essere un prodotto e diventa uno strumento. Dove il finish di un
+          lip gloss viene calibrato alla luce naturale, non sotto i neon di
+          un ufficio. Dove un mascara viene testato nella vita reale, non
+          solo in laboratorio.
+        </p>
+        <p className="mt-6 text-sm leading-relaxed text-nero/80">
+          Ogni formula ANYMA BEAUTY è conforme al Regolamento (CE) n.
+          1223/2009 dell&rsquo;Unione Europea, il quadro normativo più
+          severo al mondo in materia di sicurezza cosmetica. Ma la
+          conformità è il punto di partenza, non il traguardo. Noi andiamo
+          oltre: selezioniamo materie prime italiane ed europee, evitiamo
+          scorciatoie industriali e trattiamo ogni lotto come se fosse
+          l&rsquo;unico.
+        </p>
+        <p className="mt-6 text-sm leading-relaxed text-nero/80">
+          Il risultato è una formula che non ha bisogno di raccontarsi,
+          perché si sente. Al primo tocco. Al primo gesto. Al primo sguardo
+          allo specchio.
+        </p>
+        <p className="font-display mt-6 text-base uppercase tracking-[0.02em] text-nero">
+          Stessa cura. Stessa formula. Anime diverse.
+        </p>
+      </ScrollReveal>
+
+      <div className="mx-auto mt-12 grid max-w-3xl grid-cols-2 gap-3 sm:gap-4">
+        <ScrollReveal
+          direction="up"
+          className="aspect-[9/16] w-full overflow-hidden rounded"
+        >
+          <video
+            src="/videos/lab/lab-1.mp4"
+            poster="/videos/lab/posters/lab-1.jpg"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="h-full w-full object-cover"
+          />
+        </ScrollReveal>
+        <ScrollReveal
+          direction="down"
+          delay={120}
+          className="aspect-[9/16] w-full overflow-hidden rounded"
+        >
+          <video
+            src="/videos/lab/lab-2.mp4"
+            poster="/videos/lab/posters/lab-2.jpg"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="h-full w-full object-cover"
+          />
         </ScrollReveal>
       </div>
     </section>

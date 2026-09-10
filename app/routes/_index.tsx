@@ -52,7 +52,6 @@ const HERO_SLIDES = [
   {kind: 'image' as const, src: heroProduct2},
   {kind: 'image' as const, src: heroProduct3},
   {kind: 'image' as const, src: heroProduct4},
-  {kind: 'video' as const, src: '/videos/hero/hero-campaign.mp4'},
   {kind: 'video' as const, src: '/videos/hero/hero-rosso.mp4'},
   {kind: 'video' as const, src: '/videos/hero/hero-nude.mp4'},
   {kind: 'video' as const, src: '/videos/hero/hero-viola.mp4'},
