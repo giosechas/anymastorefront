@@ -6,6 +6,7 @@ import {ProductItem} from '~/components/ProductItem';
 import {MockShopNotice} from '~/components/MockShopNotice';
 import {ScrollReveal} from '~/components/ScrollReveal';
 import {useParallaxOffset} from '~/hooks/useParallaxOffset';
+import {getTikTokVideos, type TikTokVideo} from '~/lib/tiktok';
 import {
   ANIME,
   getAnimaGalleryImages,
@@ -110,8 +111,14 @@ function loadDeferredData({context}: Route.LoaderArgs) {
       return null;
     });
 
+  const tiktokVideos = getTikTokVideos(context.env).catch((error: Error) => {
+    console.error(error);
+    return [];
+  });
+
   return {
     recommendedProducts,
+    tiktokVideos,
   };
 }
 
@@ -172,7 +179,7 @@ export default function Homepage() {
       <AnimeGrid />
       <PhilosophySection />
       <BrandStoryTeaser />
-      <SocialSection />
+      <SocialSection tiktokVideos={data.tiktokVideos} />
       <FoundersSection />
     </div>
   );
@@ -544,7 +551,7 @@ function BrandStoryTeaser() {
           <span className="text-fuchsia">&ldquo;</span>Non esiste una sola te.
           <span className="text-fuchsia">&rdquo;</span>
         </blockquote>
-        <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-paper/80">
+        <p className="mx-auto mt-6 max-w-xl text-[9px] leading-relaxed text-paper/80">
           Riveliamo le anyme attraverso il make-up. Non vendiamo rossetti.
           Creiamo gli oggetti con cui le persone si raccontano ogni giorno.
         </p>
@@ -700,15 +707,15 @@ const TIKTOK_WALL_CLIPS = [
   {name: 'locker-room', src: '/videos/tiktok-wall/locker-room.mp4', poster: '/videos/tiktok-wall/posters/locker-room.jpg'},
 ];
 
-function SocialSection() {
-  const col1 = useParallaxOffset<HTMLDivElement>(-70);
-  const col2 = useParallaxOffset<HTMLDivElement>(55);
-  const col3 = useParallaxOffset<HTMLDivElement>(-40);
-
-  const columns = [
-    {...col1, clips: TIKTOK_WALL_CLIPS.slice(0, 2)},
-    {...col2, clips: TIKTOK_WALL_CLIPS.slice(2, 4)},
-    {...col3, clips: TIKTOK_WALL_CLIPS.slice(4, 6)},
+function SocialSection({
+  tiktokVideos,
+}: {
+  tiktokVideos: Promise<TikTokVideo[]>;
+}) {
+  const parallaxCols = [
+    useParallaxOffset<HTMLDivElement>(-70),
+    useParallaxOffset<HTMLDivElement>(55),
+    useParallaxOffset<HTMLDivElement>(-40),
   ];
 
   return (
@@ -740,37 +747,93 @@ function SocialSection() {
 
         <ScrollReveal direction="right" delay={100}>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {columns.map((col, i) => (
-              <div
-                key={i}
-                ref={col.ref}
-                className={`flex flex-col gap-3 will-change-transform ${
-                  i === 2 ? 'hidden sm:flex' : ''
-                }`}
-                style={{transform: `translateY(${col.offset}px)`}}
-              >
-                {col.clips.map((clip) => (
-                  <div
-                    key={clip.name}
-                    className="aspect-[9/16] overflow-hidden rounded bg-paper/10"
-                  >
-                    <video
-                      src={clip.src}
-                      poster={clip.poster}
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      className="h-full w-full object-cover"
+            <Suspense
+              fallback={
+                <TikTokWallColumns parallaxCols={parallaxCols} clips={TIKTOK_WALL_CLIPS} />
+              }
+            >
+              <Await resolve={tiktokVideos}>
+                {(videos) =>
+                  videos.length > 0 ? (
+                    <TikTokWallColumns
+                      parallaxCols={parallaxCols}
+                      liveVideos={videos}
                     />
-                  </div>
-                ))}
-              </div>
-            ))}
+                  ) : (
+                    <TikTokWallColumns
+                      parallaxCols={parallaxCols}
+                      clips={TIKTOK_WALL_CLIPS}
+                    />
+                  )
+                }
+              </Await>
+            </Suspense>
           </div>
         </ScrollReveal>
       </div>
     </section>
+  );
+}
+
+function TikTokWallColumns({
+  parallaxCols,
+  clips,
+  liveVideos,
+}: {
+  parallaxCols: ReturnType<typeof useParallaxOffset<HTMLDivElement>>[];
+  clips?: typeof TIKTOK_WALL_CLIPS;
+  liveVideos?: TikTokVideo[];
+}) {
+  const tiles = liveVideos
+    ? liveVideos.slice(0, 6).map((video) => (
+        <a
+          key={video.id}
+          href={video.shareUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="block aspect-[9/16] overflow-hidden rounded bg-paper/10"
+        >
+          <img
+            src={video.coverImageUrl}
+            alt={video.description}
+            className="h-full w-full object-cover"
+          />
+        </a>
+      ))
+    : (clips ?? []).map((clip) => (
+        <div
+          key={clip.name}
+          className="aspect-[9/16] overflow-hidden rounded bg-paper/10"
+        >
+          <video
+            src={clip.src}
+            poster={clip.poster}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="h-full w-full object-cover"
+          />
+        </div>
+      ));
+
+  const groups = [tiles.slice(0, 2), tiles.slice(2, 4), tiles.slice(4, 6)];
+
+  return (
+    <>
+      {groups.map((group, i) => (
+        <div
+          key={i}
+          ref={parallaxCols[i].ref}
+          className={`flex flex-col gap-3 will-change-transform ${
+            i === 2 ? 'hidden sm:flex' : ''
+          }`}
+          style={{transform: `translateY(${parallaxCols[i].offset}px)`}}
+        >
+          {group}
+        </div>
+      ))}
+    </>
   );
 }
 
