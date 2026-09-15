@@ -18,7 +18,7 @@
 
 const TOKEN_URL = 'https://open.tiktokapis.com/v2/oauth/token/';
 const VIDEO_LIST_URL = 'https://open.tiktokapis.com/v2/video/list/';
-const SCOPES = 'user.info.basic,video.list';
+const SCOPES = 'video.list';
 
 export function getTikTokAuthorizeUrl(env: Env, redirectUri: string) {
   const params = new URLSearchParams({
