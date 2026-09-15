@@ -21,6 +21,7 @@ import philosophyTruth1 from '~/assets/images/philosophy/pool/truth1.webp';
 import philosophyTruth2 from '~/assets/images/philosophy/pool/truth2.webp';
 import philosophyTruth3 from '~/assets/images/philosophy/pool/truth3.webp';
 import philosophyTruth4 from '~/assets/images/philosophy/pool/truth4.webp';
+import philosophyTruth5 from '~/assets/images/philosophy/pool/truth5.webp';
 import philosophyIdentity1 from '~/assets/images/philosophy/pool/identity1.webp';
 import philosophyIdentity2 from '~/assets/images/philosophy/pool/identity2.webp';
 import philosophyIdentity3 from '~/assets/images/philosophy/pool/identity3.webp';
@@ -31,6 +32,7 @@ const PHILOSOPHY_TRUTH_IMAGES = [
   philosophyTruth2,
   philosophyTruth3,
   philosophyTruth4,
+  philosophyTruth5,
 ];
 const PHILOSOPHY_IDENTITY_IMAGES = [
   philosophyIdentity1,
@@ -441,7 +443,6 @@ function PhilosophyBlock({
     prev: number | null;
   }>({current: 0, prev: null});
   const [initialDelay] = useState(() => Math.random() * PHILOSOPHY_ROTATE_MS);
-  const {ref: parallaxRef, offset} = useParallaxOffset<HTMLDivElement>(80);
 
   useEffect(() => {
     if (slides.length < 2) return;
@@ -473,13 +474,9 @@ function PhilosophyBlock({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2">
       <div
-        ref={parallaxRef}
-        className={`relative aspect-[3/4] overflow-hidden sm:aspect-auto ${reverse ? 'sm:order-2' : ''}`}
+        className={`relative aspect-[9/16] overflow-hidden ${reverse ? 'sm:order-2' : ''}`}
       >
-        <div
-          className="absolute inset-0 h-[160%] w-full will-change-transform"
-          style={{top: '-30%', transform: `translateY(${offset}px)`}}
-        >
+        <div className="absolute inset-0 h-full w-full">
           {slides.map((slide, i) =>
             slide.kind === 'video' ? (
               <video
