@@ -15,6 +15,7 @@ import {
 } from '~/components/Header';
 import {CartMain} from '~/components/CartMain';
 import {CookieBanner} from '~/components/CookieBanner';
+import {useLocale, useT} from '~/lib/i18n';
 
 interface PageLayoutProps {
   cart: Promise<CartApiQueryFragment | null>;
@@ -58,9 +59,10 @@ export function PageLayout({
 }
 
 function CartAside({cart}: {cart: PageLayoutProps['cart']}) {
+  const t = useT();
   return (
-    <Aside type="cart" heading="CART">
-      <Suspense fallback={<p>Loading cart ...</p>}>
+    <Aside type="cart" heading={t('account.cartHeading')}>
+      <Suspense fallback={<p>{t('account.loadingCart')}</p>}>
         <Await resolve={cart}>
           {(cart) => {
             return <CartMain cart={cart} layout="aside" />;
@@ -78,10 +80,12 @@ function MobileMenuAside({
   header: PageLayoutProps['header'];
   publicStoreDomain: PageLayoutProps['publicStoreDomain'];
 }) {
+  const {href} = useLocale();
+  const t = useT();
   return (
     header.menu &&
     header.shop.primaryDomain?.url && (
-      <Aside type="mobile" heading="MENU">
+      <Aside type="mobile" heading={t('account.menuHeading')}>
         <HeaderMenu
           menu={header.menu}
           primaryDomainUrl={header.shop.primaryDomain.url}
@@ -90,8 +94,8 @@ function MobileMenuAside({
         <div className="header-menu-mobile-lang">
           <LanguageSwitcher />
         </div>
-        <Link to="/account/login" className="header-menu-register">
-          Registrati
+        <Link to={href('/account/login')} className="header-menu-register">
+          {t('account.registrati')}
         </Link>
       </Aside>
     )

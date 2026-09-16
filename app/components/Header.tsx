@@ -13,25 +13,21 @@ import {FlagIcon} from '~/components/FlagIcon';
 import {useReducedMotion} from '~/hooks/useReducedMotion';
 import {ANIME, getPackPath} from '~/lib/animas';
 import {useWishlist} from '~/lib/wishlist';
-import {LOCALES, LOCALE_COOKIE, type LocaleCode} from '~/lib/locale';
+import {LOCALES, localizePath, stripLocalePrefix} from '~/lib/locale';
+import {useLocale, useT} from '~/lib/i18n';
 import logoPositive from '~/assets/anyma-logo-wordmark.png';
 import logoWhite from '~/assets/anyma-logo-wordmark-white.png';
-
-const MARQUEE_ITEMS = [
-  {icon: '🎁', text: 'Sconto esclusivo per chi si iscrive'},
-  {icon: '🚚', text: 'Spedizione in 48h'},
-];
 
 // Shopify menu titles hidden from the header nav — "Home" is redundant
 // with the logo (which links home) and "Catalogo" is off for now.
 const HIDDEN_MENU_TITLES = ['home', 'catalogo'];
 
 // Mirrors the slug map in routes/prodotti.$type.tsx.
-const PRODUCT_TYPES = [
-  {slug: 'rossetti', label: 'Rossetti'},
-  {slug: 'gloss', label: 'Lip Gloss'},
-  {slug: 'mascara', label: 'Mascara & Eyeliner'},
-];
+const PRODUCT_TYPE_SLUGS = [
+  {slug: 'rossetti', labelKey: 'header.rossetti'},
+  {slug: 'gloss', labelKey: 'header.lipGloss'},
+  {slug: 'mascara', labelKey: 'header.mascaraEyeliner'},
+] as const;
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -52,6 +48,7 @@ export function Header({
 }: HeaderProps) {
   const {shop} = header;
   const location = useLocation();
+  const {href} = useLocale();
   const [onDark, setOnDark] = useState(false);
 
   useEffect(() => {
@@ -102,7 +99,7 @@ export function Header({
       <HeaderMenuMobileToggle />
       <NavLink
         prefetch="intent"
-        to="/"
+        to={href('/')}
         end
         aria-label={shop.name}
         className="header-logo"
@@ -122,6 +119,11 @@ const MARQUEE_ROTATE_MS = 3500;
 const MARQUEE_TRANSITION_MS = 450;
 
 export function MarqueeBar() {
+  const t = useT();
+  const items = [
+    {icon: '🎁', text: t('header.marqueeDiscount')},
+    {icon: '🚚', text: t('header.marqueeShipping')},
+  ];
   const [index, setIndex] = useState(0);
   const [exitingIndex, setExitingIndex] = useState<number | null>(null);
   const reducedMotion = useReducedMotion();
@@ -134,10 +136,11 @@ export function MarqueeBar() {
           rotationKey.current += 1;
           setExitingIndex(current);
         }
-        return (current + 1) % MARQUEE_ITEMS.length;
+        return (current + 1) % items.length;
       });
     }, MARQUEE_ROTATE_MS);
     return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reducedMotion]);
 
   useEffect(() => {
@@ -149,7 +152,7 @@ export function MarqueeBar() {
     return () => clearTimeout(timeout);
   }, [exitingIndex]);
 
-  const item = MARQUEE_ITEMS[index];
+  const item = items[index];
 
   return (
     <div className="marquee-bar" aria-hidden="true">
@@ -159,8 +162,8 @@ export function MarqueeBar() {
           data-phase="exit"
           key={`exit-${rotationKey.current}`}
         >
-          <span>{MARQUEE_ITEMS[exitingIndex].icon}</span>
-          <span>{MARQUEE_ITEMS[exitingIndex].text}</span>
+          <span>{items[exitingIndex].icon}</span>
+          <span>{items[exitingIndex].text}</span>
         </span>
       )}
       <span className="marquee-bar-item" data-phase="enter" key={index}>
@@ -181,6 +184,8 @@ export function HeaderMenu({
   publicStoreDomain: HeaderProps['publicStoreDomain'];
 }) {
   const {close} = useAside();
+  const {href} = useLocale();
+  const t = useT();
 
   const visibleItems = (menu || FALLBACK_HEADER_MENU).items.filter(
     (item) => !HIDDEN_MENU_TITLES.includes(item.title.trim().toLowerCase()),
@@ -189,33 +194,33 @@ export function HeaderMenu({
   return (
     <nav className="header-menu-mobile" role="navigation">
       <div className="header-menu-item">
-        <span>Le Anyme</span>
+        <span>{t('header.leAnyme')}</span>
         <div className="header-menu-anime-mobile">
           <NavLink
             className="header-menu-anime-all"
             onClick={close}
             prefetch="intent"
-            to="/collections/all"
+            to={href('/collections/all')}
           >
-            Tutte le Anyme
+            {t('header.tutteLeAnyme')}
           </NavLink>
           {ANIME.map((anima) => (
             <NavLink
               key={anima.key}
               onClick={close}
               prefetch="intent"
-              to={`/collections/${anima.handle}`}
+              to={href(`/collections/${anima.handle}`)}
             >
               {anima.name}
             </NavLink>
           ))}
-          <p className="header-menu-anime-label">Pack per Anyme</p>
+          <p className="header-menu-anime-label">{t('header.packPerAnyme')}</p>
           {ANIME.map((anima) => (
             <NavLink
               key={`pack-${anima.key}`}
               onClick={close}
               prefetch="intent"
-              to={getPackPath(anima)}
+              to={href(getPackPath(anima))}
             >
               {anima.name}
             </NavLink>
@@ -223,16 +228,16 @@ export function HeaderMenu({
         </div>
       </div>
       <div className="header-menu-item">
-        <span>Cerca per prodotto</span>
+        <span>{t('header.cercaPerProdotto')}</span>
         <div className="header-menu-anime-mobile">
-          {PRODUCT_TYPES.map(({slug, label}) => (
+          {PRODUCT_TYPE_SLUGS.map(({slug, labelKey}) => (
             <NavLink
               key={slug}
               onClick={close}
               prefetch="intent"
-              to={`/prodotti/${slug}`}
+              to={href(`/prodotti/${slug}`)}
             >
-              {label}
+              {t(labelKey)}
             </NavLink>
           ))}
         </div>
@@ -242,9 +247,9 @@ export function HeaderMenu({
         end
         onClick={close}
         prefetch="intent"
-        to="/about"
+        to={href('/about')}
       >
-        La nostra storia
+        {t('header.laNostraStoria')}
       </NavLink>
       {visibleItems.map((item) => {
         if (!item.url) return null;
@@ -263,7 +268,7 @@ export function HeaderMenu({
             key={item.id}
             onClick={close}
             prefetch="intent"
-            to={url}
+            to={url.startsWith('/') ? href(url) : url}
           >
             {item.title}
           </NavLink>
@@ -278,6 +283,8 @@ function HeaderCtas({
   cart,
   onDark = false,
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'> & {onDark?: boolean}) {
+  const {href} = useLocale();
+  const t = useT();
   const iconStyle = {color: onDark ? '#fff' : 'var(--nero)'};
   return (
     <nav className="header-ctas" role="navigation">
@@ -287,8 +294,8 @@ function HeaderCtas({
             isLoggedIn ? (
               <NavLink
                 prefetch="intent"
-                to="/account"
-                aria-label="Account"
+                to={href('/account')}
+                aria-label={t('header.account')}
                 className="header-icon-btn"
                 style={iconStyle}
               >
@@ -318,32 +325,24 @@ function AccountIcon({filled = false}: {filled?: boolean}) {
 }
 
 export function LanguageSwitcher() {
-  const [current, setCurrent] = useState<LocaleCode>('IT');
-
-  useEffect(() => {
-    const match = document.cookie.match(
-      new RegExp(`${LOCALE_COOKIE}=([A-Z]{2})`),
-    );
-    if (match?.[1]) setCurrent(match[1] as LocaleCode);
-  }, []);
+  const {code: current} = useLocale();
+  const location = useLocation();
+  const bare = stripLocalePrefix(location.pathname);
 
   return (
     <div className="header-lang">
       {LOCALES.map(({code, label}) => (
-        <button
+        <NavLink
           key={code}
-          type="button"
+          to={`${localizePath(bare, code)}${location.search}`}
+          reloadDocument
           aria-label={label}
           aria-current={code === current}
           className="header-lang-item"
           data-active={code === current}
-          onClick={() => {
-            document.cookie = `${LOCALE_COOKIE}=${code}; path=/; max-age=31536000`;
-            window.location.reload();
-          }}
         >
           <FlagIcon code={code} />
-        </button>
+        </NavLink>
       ))}
     </div>
   );
@@ -351,11 +350,13 @@ export function LanguageSwitcher() {
 
 function WishlistToggle({onDark = false}: {onDark?: boolean}) {
   const count = useWishlist().length;
+  const {href} = useLocale();
+  const t = useT();
   return (
     <NavLink
       prefetch="intent"
-      to="/wishlist"
-      aria-label="Wishlist"
+      to={href('/wishlist')}
+      aria-label={t('header.wishlist')}
       className="header-icon-btn"
       style={{color: onDark ? '#fff' : 'var(--nero)'}}
     >
@@ -369,12 +370,13 @@ function WishlistToggle({onDark = false}: {onDark?: boolean}) {
 
 function HeaderMenuMobileToggle() {
   const {type, open, close} = useAside();
+  const t = useT();
   const isOpen = type === 'mobile';
   return (
     <button
       type="button"
       className="header-menu-mobile-toggle reset"
-      aria-label={isOpen ? 'Chiudi menu' : 'Apri menu'}
+      aria-label={isOpen ? t('header.chiudiMenu') : t('header.apriMenu')}
       aria-expanded={isOpen}
       onClick={() => (isOpen ? close() : open('mobile'))}
     >
@@ -396,10 +398,11 @@ function CartBadge({
 }) {
   const {open} = useAside();
   const {publish, shop, cart, prevCart} = useAnalytics();
+  const {href} = useLocale();
 
   return (
     <a
-      href="/cart"
+      href={href('/cart')}
       aria-label={`Cart${count > 0 ? ` (${count})` : ''}`}
       className="header-icon-btn"
       style={{color: onDark ? '#fff' : 'var(--nero)'}}

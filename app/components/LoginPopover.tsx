@@ -1,5 +1,6 @@
 import {useEffect, useRef, useState} from 'react';
 import {useLocation, useNavigate} from 'react-router';
+import {useLocale, useT} from '~/lib/i18n';
 
 const CLOSE_ANIMATION_MS = 170;
 const LOGIN_URL = '/account/login';
@@ -10,6 +11,8 @@ export function LoginPopover({transparent = false}: {transparent?: boolean}) {
   const [email, setEmail] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
+  const {href} = useLocale();
+  const t = useT();
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -42,8 +45,8 @@ export function LoginPopover({transparent = false}: {transparent?: boolean}) {
 
   function goToLogin(hint?: string) {
     const url = hint
-      ? `${LOGIN_URL}?login_hint=${encodeURIComponent(hint)}`
-      : LOGIN_URL;
+      ? `${href(LOGIN_URL)}?login_hint=${encodeURIComponent(hint)}`
+      : href(LOGIN_URL);
     void navigate(url);
   }
 
@@ -56,7 +59,7 @@ export function LoginPopover({transparent = false}: {transparent?: boolean}) {
     <div className="header-search">
       <button
         type="button"
-        aria-label="Accedi"
+        aria-label={t('login.accedi')}
         className="header-icon-btn"
         style={{color: transparent ? '#fff' : 'var(--nero)'}}
         onClick={() => (open ? requestClose() : setOpen(true))}
@@ -68,7 +71,7 @@ export function LoginPopover({transparent = false}: {transparent?: boolean}) {
         <>
           <button
             type="button"
-            aria-label="Chiudi accesso"
+            aria-label={t('login.chiudiAccesso')}
             className="search-popover-backdrop"
             data-closing={closing || undefined}
             onClick={requestClose}
@@ -78,12 +81,12 @@ export function LoginPopover({transparent = false}: {transparent?: boolean}) {
             data-closing={closing || undefined}
             role="dialog"
             aria-modal="true"
-            aria-label="Accedi al tuo account"
+            aria-label={t('login.accediAlTuoAccount')}
           >
-            <p className="login-popover-title">Accedi al tuo account</p>
+            <p className="login-popover-title">{t('login.accediAlTuoAccount')}</p>
             <form className="login-popover-form" onSubmit={handleSubmit}>
               <label className="login-popover-label" htmlFor="login-popover-email">
-                Email
+                {t('login.email')}
               </label>
               <input
                 id="login-popover-email"
@@ -98,15 +101,15 @@ export function LoginPopover({transparent = false}: {transparent?: boolean}) {
                 onChange={(e) => setEmail(e.target.value)}
               />
               <button type="submit" className="login-popover-submit">
-                Continua
+                {t('login.continua')}
               </button>
             </form>
             <div className="login-popover-links">
               <button type="button" onClick={() => goToLogin(email.trim() || undefined)}>
-                Non hai un account? <span>Registrati</span>
+                {t('login.nonHaiAccount')} <span>{t('login.registrati')}</span>
               </button>
               <button type="button" onClick={() => goToLogin(email.trim() || undefined)}>
-                Hai dimenticato la password?
+                {t('login.passwordDimenticata')}
               </button>
             </div>
           </div>

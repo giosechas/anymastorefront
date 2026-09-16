@@ -1,8 +1,9 @@
 import {Link, useLoaderData} from 'react-router';
-import type {Route} from './+types/blogs._index';
+import type {Route} from './+types/($locale).blogs._index';
 import {getPaginationVariables} from '@shopify/hydrogen';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import type {BlogsQuery} from 'storefrontapi.generated';
+import {useLocale} from '~/lib/i18n';
 
 type BlogNode = BlogsQuery['blogs']['nodes'][0];
 
@@ -52,6 +53,7 @@ function loadDeferredData({context}: Route.LoaderArgs) {
 
 export default function Blogs() {
   const {blogs} = useLoaderData<typeof loader>();
+  const {href} = useLocale();
 
   return (
     <div className="blogs">
@@ -63,7 +65,7 @@ export default function Blogs() {
               className="blog"
               key={blog.handle}
               prefetch="intent"
-              to={`/blogs/${blog.handle}`}
+              to={href(`/blogs/${blog.handle}`)}
             >
               <h2>{blog.title}</h2>
             </Link>

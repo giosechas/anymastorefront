@@ -7,6 +7,7 @@ import type {
 } from '@shopify/hydrogen/storefront-api-types';
 import {AddToCartButton} from './AddToCartButton';
 import {useAside} from './Aside';
+import {useLocale, useT} from '~/lib/i18n';
 import type {ProductFragment} from 'storefrontapi.generated';
 
 export function ProductForm({
@@ -20,6 +21,8 @@ export function ProductForm({
 }) {
   const navigate = useNavigate();
   const {open} = useAside();
+  const {href} = useLocale();
+  const t = useT();
   const [quantity, setQuantity] = useState(1);
   return (
     <div className="product-form">
@@ -55,7 +58,7 @@ export function ProductForm({
                       prefetch="intent"
                       preventScrollReset
                       replace
-                      to={`/products/${handle}?${variantUriQuery}`}
+                      to={href(`/products/${handle}?${variantUriQuery}`)}
                       style={{
                         border: selected
                           ? '1px solid black'
@@ -108,7 +111,7 @@ export function ProductForm({
       <div className="quantity-selector">
         <button
           type="button"
-          aria-label="Diminuisci quantità"
+          aria-label={t('cart.decreaseQuantity')}
           onClick={() => setQuantity((q) => Math.max(1, q - 1))}
         >
           −
@@ -116,7 +119,7 @@ export function ProductForm({
         <span aria-live="polite">{quantity}</span>
         <button
           type="button"
-          aria-label="Aumenta quantità"
+          aria-label={t('cart.increaseQuantity')}
           onClick={() => setQuantity((q) => q + 1)}
         >
           +
@@ -140,7 +143,9 @@ export function ProductForm({
             : []
         }
       >
-        {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
+        {selectedVariant?.availableForSale
+          ? t('product.addToCart')
+          : t('product.soldOut')}
       </AddToCartButton>
     </div>
   );

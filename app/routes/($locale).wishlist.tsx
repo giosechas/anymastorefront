@@ -1,9 +1,10 @@
 import {Suspense} from 'react';
 import {Await, Link, useLoaderData} from 'react-router';
 import {Money} from '@shopify/hydrogen';
-import type {Route} from './+types/wishlist';
+import type {Route} from './+types/($locale).wishlist';
 import {useWishlist, removeWishlistItem} from '~/lib/wishlist';
 import {ProductItem} from '~/components/ProductItem';
+import {useLocale, useT} from '~/lib/i18n';
 
 export const meta: Route.MetaFunction = () => {
   return [{title: 'Anyma Beauty | Wishlist'}];
@@ -21,34 +22,33 @@ export default function Wishlist() {
   const items = useWishlist();
   const {recommendedProducts} = useLoaderData<typeof loader>();
   const wishlistHandles = new Set(items.map((item) => item.handle));
+  const {href} = useLocale();
+  const t = useT();
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-16 sm:py-24">
       <p className="mb-3 text-xs uppercase tracking-[0.4em] text-gold">
-        La tua Wishlist
+        {t('wishlistPage.laTuaWishlist')}
       </p>
       <h1 className="font-display text-3xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
-        Wishlist
+        {t('wishlistPage.title')}
       </h1>
 
       {items.length === 0 ? (
         <div className="mt-10">
-          <p className="text-sm text-nero/70">
-            Non hai ancora salvato nessun prodotto. Tocca il cuore su un
-            prodotto per aggiungerlo qui.
-          </p>
+          <p className="text-sm text-nero/70">{t('wishlistPage.empty')}</p>
           <Link
-            to="/collections/all"
+            to={href('/collections/all')}
             className="mt-6 inline-block border border-nero px-6 py-3 text-xs uppercase tracking-[0.2em] text-nero transition-colors hover:bg-nero hover:text-paper"
           >
-            Scopri i prodotti
+            {t('wishlistPage.scopriIProdotti')}
           </Link>
         </div>
       ) : (
         <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {items.map((item) => (
             <div key={item.id} className="group relative">
-              <Link to={`/products/${item.handle}`} className="block">
+              <Link to={href(`/products/${item.handle}`)} className="block">
                 <div className="aspect-[4/5] bg-nero/5">
                   {item.image && (
                     <img
@@ -69,7 +69,7 @@ export default function Wishlist() {
               </Link>
               <button
                 type="button"
-                aria-label="Rimuovi dai preferiti"
+                aria-label={t('wishlist.remove')}
                 onClick={() => removeWishlistItem(item.id)}
                 className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-paper/80 text-gold backdrop-blur-sm transition-transform hover:scale-110"
               >
@@ -84,7 +84,7 @@ export default function Wishlist() {
 
       <div className="mt-16 border-t border-nero/10 pt-8">
         <h2 className="font-display text-lg uppercase tracking-[0.1em] text-nero">
-          Potrebbero piacerti anche
+          {t('wishlistPage.potrebberoPiacertiAnche')}
         </h2>
         <Suspense fallback={null}>
           <Await resolve={recommendedProducts}>

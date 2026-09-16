@@ -7,6 +7,7 @@ import {
   removeSearchTerm,
   useSearchHistory,
 } from '~/lib/searchHistory';
+import {useT} from '~/lib/i18n';
 
 const CLOSE_ANIMATION_MS = 170;
 
@@ -16,6 +17,7 @@ export function SearchPopover({transparent = false}: {transparent?: boolean}) {
   const location = useLocation();
   const navigate = useNavigate();
   const history = useSearchHistory();
+  const t = useT();
   const panelRef = useRef<HTMLDivElement>(null);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
@@ -60,7 +62,7 @@ export function SearchPopover({transparent = false}: {transparent?: boolean}) {
     <div className="header-search">
       <button
         type="button"
-        aria-label="Cerca"
+        aria-label={t('search.cerca')}
         className="header-icon-btn"
         style={{color: transparent ? '#fff' : 'var(--nero)'}}
         onClick={() => (open ? requestClose() : setOpen(true))}
@@ -72,7 +74,7 @@ export function SearchPopover({transparent = false}: {transparent?: boolean}) {
         <>
           <button
             type="button"
-            aria-label="Chiudi ricerca"
+            aria-label={t('search.chiudiRicerca')}
             className="search-popover-backdrop"
             data-closing={closing || undefined}
             onClick={requestClose}
@@ -83,7 +85,7 @@ export function SearchPopover({transparent = false}: {transparent?: boolean}) {
             data-closing={closing || undefined}
             role="dialog"
             aria-modal="true"
-            aria-label="Cerca"
+            aria-label={t('search.cerca')}
           >
             <SearchFormPredictive className="search-popover-form">
               {({fetchResults, inputRef}) => (
@@ -95,7 +97,7 @@ export function SearchPopover({transparent = false}: {transparent?: boolean}) {
                     name="q"
                     onChange={fetchResults}
                     onFocus={fetchResults}
-                    placeholder="Cerca prodotti, anime..."
+                    placeholder={t('search.placeholder')}
                     ref={inputRef}
                     type="search"
                     onKeyDown={(event) => {
@@ -126,18 +128,18 @@ export function SearchPopover({transparent = false}: {transparent?: boolean}) {
                     <div className="search-popover-results">
                       <div className="search-popover-history">
                         <p className="search-popover-section-label">
-                          Ricerche recenti
+                          {t('search.ricercheRecenti')}
                         </p>
                         <ul>
-                          {history.map((t) => (
-                            <li key={t}>
-                              <button type="button" onClick={() => runSearch(t)}>
-                                {t}
+                          {history.map((term) => (
+                            <li key={term}>
+                              <button type="button" onClick={() => runSearch(term)}>
+                                {term}
                               </button>
                               <button
                                 type="button"
-                                aria-label={`Rimuovi "${t}" dalla cronologia`}
-                                onClick={() => removeSearchTerm(t)}
+                                aria-label={t('search.rimuoviDallaCronologia', term)}
+                                onClick={() => removeSearchTerm(term)}
                               >
                                 ×
                               </button>
@@ -153,7 +155,7 @@ export function SearchPopover({transparent = false}: {transparent?: boolean}) {
                   return (
                     <div className="search-popover-results">
                       <p className="search-popover-status">
-                        Ricerca in corso…
+                        {t('search.ricercaInCorso')}
                       </p>
                     </div>
                   );
@@ -163,7 +165,7 @@ export function SearchPopover({transparent = false}: {transparent?: boolean}) {
                   return (
                     <div className="search-popover-results">
                       <p className="search-popover-status">
-                        Nessun risultato per «{term.current}»
+                        {t('search.nessunRisultato', term.current)}
                       </p>
                     </div>
                   );

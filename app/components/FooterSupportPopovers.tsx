@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import {useT} from '~/lib/i18n';
 
 const SUPPORT_EMAIL = 'info@anyma-beauty.com';
 
@@ -25,6 +26,7 @@ function FooterPopover({
   children: (close: () => void) => React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
+  const t = useT();
 
   return (
     <>
@@ -39,7 +41,7 @@ function FooterPopover({
         <>
           <button
             type="button"
-            aria-label="Chiudi"
+            aria-label={t('support.close')}
             className="search-popover-backdrop"
             onClick={() => setOpen(false)}
           />
@@ -63,35 +65,35 @@ function FooterPopover({
 export function TrackOrderMenuItem() {
   const [orderNumber, setOrderNumber] = useState('');
   const [email, setEmail] = useState('');
+  const t = useT();
 
   return (
-    <FooterPopover label="Monitora il tuo ordine" title="Monitora il tuo ordine">
+    <FooterPopover label={t('support.trackOrder')} title={t('support.trackOrder')}>
       {() => (
         <>
           <p className="mt-2 text-sm leading-relaxed text-nero/70">
-            Inserisci il numero d&apos;ordine e l&apos;email usata per
-            l&apos;acquisto: ti risponderemo con lo stato della spedizione.
+            {t('support.trackOrderBody')}
           </p>
           <div className="mt-4 flex flex-col gap-3">
             <input
               type="text"
               value={orderNumber}
               onChange={(e) => setOrderNumber(e.target.value)}
-              placeholder="Numero d'ordine (es. #1234)"
+              placeholder={t('support.orderNumberPlaceholder')}
               className="border border-nero/20 bg-transparent px-4 py-2.5 text-sm text-nero placeholder:text-nero/40 focus:border-nero focus:outline-none"
             />
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email dell'ordine"
+              placeholder={t('support.orderEmailPlaceholder')}
               className="border border-nero/20 bg-transparent px-4 py-2.5 text-sm text-nero placeholder:text-nero/40 focus:border-nero focus:outline-none"
             />
             <a
-              href={buildMailto('Monitora il mio ordine', orderNumber, email)}
+              href={buildMailto(t('support.trackOrderSubject'), orderNumber, email)}
               className="border border-nero bg-nero px-5 py-2.5 text-center text-xs uppercase tracking-[0.15em] text-paper transition-colors hover:bg-transparent hover:text-nero"
             >
-              Invia
+              {t('support.send')}
             </a>
           </div>
         </>
@@ -103,45 +105,43 @@ export function TrackOrderMenuItem() {
 export function ReturnOrderMenuItem() {
   const [orderNumber, setOrderNumber] = useState('');
   const [email, setEmail] = useState('');
+  const t = useT();
 
   return (
-    <FooterPopover label="Reso Online" title="Reso Online">
+    <FooterPopover label={t('support.returnOrder')} title={t('support.returnOrder')}>
       {() => (
         <>
           <p className="mt-2 text-sm font-medium text-nero/80">
-            Come posso restituire l&apos;articolo?
+            {t('support.returnOrderHeadline')}
           </p>
           <p className="mt-1 text-sm leading-relaxed text-nero/70">
-            Hai 14 giorni dal ricevimento per richiedere il reso. Il prodotto
-            deve essere sigillato e non utilizzato. Inserisci numero d&apos;ordine
-            ed email: ti risponderemo entro 48 ore con le istruzioni per la
-            spedizione di ritorno.
+            {t('support.returnOrderBody')}
           </p>
           <div className="mt-4 flex flex-col gap-3">
             <input
               type="text"
               value={orderNumber}
               onChange={(e) => setOrderNumber(e.target.value)}
-              placeholder="Numero d'ordine (es. #1234)"
+              placeholder={t('support.orderNumberPlaceholder')}
               className="border border-nero/20 bg-transparent px-4 py-2.5 text-sm text-nero placeholder:text-nero/40 focus:border-nero focus:outline-none"
             />
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email dell'ordine"
+              placeholder={t('support.orderEmailPlaceholder')}
               className="border border-nero/20 bg-transparent px-4 py-2.5 text-sm text-nero placeholder:text-nero/40 focus:border-nero focus:outline-none"
             />
             <a
               href={buildMailto(
-                'Richiesta di reso',
+                t('support.returnRequestSubject'),
                 orderNumber,
                 email,
-                'Prodotto/i da restituire: ',
+                t('support.returnItemsLabel'),
               )}
               className="border border-nero bg-nero px-5 py-2.5 text-center text-xs uppercase tracking-[0.15em] text-paper transition-colors hover:bg-transparent hover:text-nero"
             >
-              Invia richiesta
+              {t('support.sendRequest')}
             </a>
           </div>
         </>

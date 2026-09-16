@@ -1,5 +1,5 @@
 import {Await, useLoaderData, Link} from 'react-router';
-import type {Route} from './+types/_index';
+import type {Route} from './+types/($locale)._index';
 import {Suspense, useCallback, useEffect, useRef, useState} from 'react';
 import type {RecommendedProductsQuery} from 'storefrontapi.generated';
 import {ProductItem} from '~/components/ProductItem';
@@ -13,6 +13,9 @@ import {
   getPackPath,
   type AnimaDefinition,
 } from '~/lib/animas';
+import {pickLocale, getLocaleFromParam} from '~/lib/locale';
+import {useLocale, useT, useDict} from '~/lib/i18n';
+import {TRANSLATIONS} from '~/lib/translations';
 import heroProduct1 from '~/assets/images/hero-product/product-1.webp';
 import heroProduct2 from '~/assets/images/hero-product/product-2.webp';
 import heroProduct3 from '~/assets/images/hero-product/product-3.webp';
@@ -61,21 +64,14 @@ const HERO_SLIDES = [
   {kind: 'video' as const, src: '/videos/hero/hero-cherry.mp4'},
 ];
 const HERO_IMAGE_ROTATE_MS = 4000;
-const HERO_HEADLINES = ['Reveal your Soul!', 'Non esiste una sola te'];
-const HERO_TAGLINES = [
-  'Non coprire chi sei. Rivela la tua anima.',
-  'Il trucco che non chiede permesso.',
-  'Zero filtri. Zero scuse. Solo la tua verità.',
-  'La tua molteplicità è il tuo potere più grande.',
-];
 
-export const meta: Route.MetaFunction = () => {
+export const meta: Route.MetaFunction = ({params}) => {
+  const code = getLocaleFromParam(params.locale);
   return [
-    {title: 'Anyma Beauty | Rivela chi sei'},
+    {title: TRANSLATIONS[code].meta.homeTitle},
     {
       name: 'description',
-      content:
-        'Anyma Beauty, il make-up con personalità. Scegli la tua Anyma, poi il colore.',
+      content: TRANSLATIONS[code].meta.homeDescription,
     },
   ];
 };
@@ -186,13 +182,14 @@ export default function Homepage() {
 }
 
 function Hero() {
+  const dict = useDict();
+  const t = useT();
+  const {href} = useLocale();
   const [activeIndex, setActiveIndex] = useState(0);
-  const [headline] = useState(
-    () => HERO_HEADLINES[Math.floor(Math.random() * HERO_HEADLINES.length)],
-  );
-  const headlineWords = headline.split(' ');
+  const headlineWords = dict.hero.headline.split(' ');
   const [tagline] = useState(
-    () => HERO_TAGLINES[Math.floor(Math.random() * HERO_TAGLINES.length)],
+    () =>
+      dict.hero.taglines[Math.floor(Math.random() * dict.hero.taglines.length)],
   );
   const {ref: parallaxRef, offset} = useParallaxOffset<HTMLDivElement>(100);
 
@@ -267,13 +264,13 @@ function Hero() {
           href="#anime"
           className="border border-gold px-8 py-3 text-xs uppercase tracking-[0.2em] text-white transition-colors hover:bg-gold hover:text-nero"
         >
-          Scopri le tue Anyme
+          {t('hero.discoverAnyme')}
         </a>
         <Link
-          to="/collections/all"
+          to={href('/collections/all')}
           className="border border-white bg-white px-8 py-3 text-xs uppercase tracking-[0.2em] text-nero transition-colors hover:bg-transparent hover:text-white"
         >
-          Shop Now
+          {t('hero.shopNow')}
         </Link>
       </div>
       <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 items-center gap-3">
@@ -297,17 +294,18 @@ function Hero() {
 }
 
 function AnimeGrid() {
+  const t = useT();
   return (
     <section id="anime" className="mx-auto max-w-6xl px-6 py-12 sm:py-28">
       <div className="mb-8 text-center sm:mb-12">
         <p className="mb-3 text-xs uppercase tracking-[0.4em] text-gold">
-          Le 6 Anyme
+          {t('animaGrid.le6Anyme')}
         </p>
         <h2 className="font-display text-2xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
-          Scegli la tua Anyma
+          {t('animaGrid.scegliLaTuaAnyma')}
         </h2>
         <p className="mx-auto mt-4 max-w-md text-sm text-nero/70 sm:max-w-none sm:text-base sm:whitespace-nowrap">
-          Ogni Anyma ha la sua estetica. Il pack che scegli non è un contenitore: è un simbolo.
+          {t('animaGrid.subtitle')}
         </p>
       </div>
       <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
@@ -323,6 +321,8 @@ const ANIMA_TILE_ROTATE_MS = 5000;
 
 function AnimaTile({anima}: {anima: AnimaDefinition}) {
   const images = getAnimaGalleryImages(anima);
+  const {code, href} = useLocale();
+  const t = useT();
   const [activeIndex, setActiveIndex] = useState(0);
   // Randomized per-tile so the 6 tiles don't all flip in sync.
   const [initialDelay] = useState(() => Math.random() * ANIMA_TILE_ROTATE_MS);
@@ -353,7 +353,7 @@ function AnimaTile({anima}: {anima: AnimaDefinition}) {
       className={`group relative aspect-[4/5] overflow-hidden ${anima.swatch}`}
     >
       <Link
-        to={`/collections/${anima.handle}`}
+        to={href(`/collections/${anima.handle}`)}
         className="absolute inset-0 flex flex-col justify-end p-6"
       >
         {images.map((src, i) => (
@@ -371,15 +371,17 @@ function AnimaTile({anima}: {anima: AnimaDefinition}) {
           <h3 className="font-display text-2xl uppercase tracking-[0.05em] text-paper">
             {anima.name}
           </h3>
-          <p className="mt-1 text-xs text-paper/80">{anima.tagline}</p>
+          <p className="mt-1 text-xs text-paper/80">
+            {pickLocale(anima.tagline, code)}
+          </p>
         </div>
       </Link>
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-nero/0 opacity-0 transition-all duration-200 group-hover:bg-nero/40 group-hover:opacity-100">
         <Link
-          to={getPackPath(anima)}
+          to={href(getPackPath(anima))}
           className="pointer-events-auto border border-white bg-nero/80 px-6 py-3 text-xs uppercase tracking-[0.15em] text-white transition-colors hover:bg-nero"
         >
-          Compra il Pack
+          {t('animaGrid.compraIlPack')}
         </Link>
       </div>
     </div>
@@ -391,6 +393,7 @@ type PhilosophySlide =
   | {kind: 'video'; src: string; poster: string};
 
 function PhilosophySection() {
+  const t = useT();
   return (
     <section className="bg-paper">
       <PhilosophyBlock
@@ -409,8 +412,8 @@ function PhilosophySection() {
             poster: '/videos/philosophy/posters/reveal-lipstick.jpg',
           },
         ]}
-        quote="La bellezza non è coerenza."
-        subquote="È verità."
+        quote={t('philosophy.truthQuote')}
+        subquote={t('philosophy.truthSubquote')}
       />
       <PhilosophyBlock
         slides={[
@@ -423,8 +426,8 @@ function PhilosophySection() {
             poster: '/videos/philosophy/posters/identity-hand.jpg',
           },
         ]}
-        quote="La personalità"
-        subquote="non ha colore."
+        quote={t('philosophy.identityQuote')}
+        subquote={t('philosophy.identitySubquote')}
         accent="fuchsia"
         reverse
       />
@@ -535,6 +538,8 @@ function PhilosophyBlock({
 }
 
 function BrandStoryTeaser() {
+  const t = useT();
+  const {href} = useLocale();
   return (
     <section
       data-header-theme="dark"
@@ -548,18 +553,18 @@ function BrandStoryTeaser() {
       <div className="absolute inset-0 -z-10 bg-nero/55" />
       <ScrollReveal direction="up">
         <blockquote className="font-display mx-auto max-w-2xl text-2xl uppercase tracking-[0.03em] text-paper sm:text-3xl">
-          <span className="text-fuchsia">&ldquo;</span>Non esiste una sola te.
+          <span className="text-fuchsia">&ldquo;</span>
+          {t('brandStory.quote')}
           <span className="text-fuchsia">&rdquo;</span>
         </blockquote>
         <p className="mx-auto mt-6 max-w-xl text-[9px] leading-relaxed text-paper/80">
-          Riveliamo le anyme attraverso il make-up. Non vendiamo rossetti.
-          Creiamo gli oggetti con cui le persone si raccontano ogni giorno.
+          {t('brandStory.body')}
         </p>
         <Link
-          to="/about"
+          to={href('/about')}
           className="mt-8 inline-block border-b border-paper pb-1 text-xs uppercase tracking-[0.2em] text-paper hover:text-gold hover:border-gold"
         >
-          Scopri la nostra storia
+          {t('brandStory.cta')}
         </Link>
       </ScrollReveal>
     </section>
@@ -712,6 +717,7 @@ function SocialSection({
 }: {
   tiktokVideos: Promise<TikTokVideo[]>;
 }) {
+  const t = useT();
   const parallaxCols = [
     useParallaxOffset<HTMLDivElement>(-70),
     useParallaxOffset<HTMLDivElement>(55),
@@ -723,14 +729,13 @@ function SocialSection({
       <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-10 sm:grid-cols-2 sm:gap-16">
         <ScrollReveal direction="left">
           <p className="mb-3 text-xs uppercase tracking-[0.4em] text-gold">
-            Seguici
+            {t('social.seguici')}
           </p>
           <h2 className="font-display text-3xl uppercase tracking-[0.03em] text-paper sm:text-4xl">
-            Guardaci su <span className="text-fuchsia">TikTok</span>
+            {t('social.guardaciSu')} <span className="text-fuchsia">TikTok</span>
           </h2>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-paper/70">
-            Backstage, texture, anyme in movimento: la parte più vera del
-            brand vive sui social, prima ancora che sullo shop.
+            {t('social.body')}
           </p>
           <a
             href={TIKTOK_URL}
@@ -741,7 +746,7 @@ function SocialSection({
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
               <path d="M16.6 5.82c-.9-.86-1.47-2.03-1.6-3.32h-3.02v13.9c0 1.7-1.38 3.08-3.08 3.08a3.08 3.08 0 0 1-1.13-5.95 3.06 3.06 0 0 1 1.13-.21c.28 0 .55.03.81.09v-3.1a6.1 6.1 0 0 0-.81-.05A6.1 6.1 0 0 0 3.28 16.5 6.1 6.1 0 0 0 8.9 22.6a6.1 6.1 0 0 0 6.1-6.1V8.94a8.2 8.2 0 0 0 4.8 1.53V7.45c-1.13 0-2.19-.35-3.2-1.63Z" />
             </svg>
-            Segui {TIKTOK_HANDLE}
+            {t('social.segui', TIKTOK_HANDLE)}
           </a>
         </ScrollReveal>
 
@@ -838,6 +843,7 @@ function TikTokWallColumns({
 }
 
 function FoundersSection() {
+  const t = useT();
   const [activeIndex, setActiveIndex] = useState(0);
   const {ref: parallaxRef, offset} = useParallaxOffset<HTMLDivElement>(90);
 
@@ -878,14 +884,13 @@ function FoundersSection() {
         className="w-full px-6 py-8 sm:px-10 sm:py-10"
       >
         <p className="mb-2 text-[10px] uppercase tracking-[0.4em] text-fuchsia">
-          Posti limitati
+          {t('founders.postiLimitati')}
         </p>
         <h2 className="font-display text-xl uppercase tracking-[0.03em] sm:text-2xl">
-          Diventa Anyma Prima
+          {t('founders.title')}
         </h2>
         <p className="mt-2 max-w-md text-xs leading-relaxed text-paper/80">
-          Spedizione a vita, tessera numerata, 15% di benvenuto: solo per le
-          prime 800 anyme.
+          {t('founders.subtitle')}
         </p>
 
         <div className="mt-4 max-w-sm">
@@ -899,6 +904,7 @@ function FoundersSection() {
 }
 
 function FoundersCounter() {
+  const t = useT();
   const ref = useRef<HTMLDivElement>(null);
   const [count, setCount] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -932,7 +938,7 @@ function FoundersCounter() {
       <p className="flex items-baseline gap-2">
         <span className="font-display text-3xl text-fuchsia">{count}</span>
         <span className="text-xs uppercase tracking-[0.15em] text-paper/70">
-          su {FOUNDERS_TOTAL} anyme già dentro
+          {t('founders.countOf', FOUNDERS_TOTAL)}
         </span>
       </p>
       <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-paper/15">
@@ -946,13 +952,14 @@ function FoundersCounter() {
 }
 
 function FoundersEmailForm() {
+  const t = useT();
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
   if (submitted) {
     return (
       <p className="mt-8 text-sm uppercase tracking-[0.1em] text-gold">
-        Grazie, ti faremo sapere quando si apre il tuo posto.
+        {t('founders.thanks')}
       </p>
     );
   }
@@ -970,14 +977,14 @@ function FoundersEmailForm() {
         required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="La tua email"
+        placeholder={t('founders.emailPlaceholder')}
         className="w-full border border-paper/30 bg-transparent px-3 py-2 text-xs text-paper placeholder:text-paper/50 focus:border-gold focus:outline-none"
       />
       <button
         type="submit"
         className="whitespace-nowrap border border-gold px-5 py-2 text-[11px] uppercase tracking-[0.2em] text-white transition-colors hover:bg-gold hover:text-nero"
       >
-        Riservati il posto
+        {t('founders.reserveSpot')}
       </button>
     </form>
   );

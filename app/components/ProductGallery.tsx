@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {Image} from '@shopify/hydrogen';
 import type {ProductFragment} from 'storefrontapi.generated';
+import {useT} from '~/lib/i18n';
 
 type ImageSlide = {
   kind: 'image';
@@ -58,6 +59,7 @@ export function ProductGallery({
       : '2 / 3';
 
   const canZoom = active.kind !== 'video';
+  const t = useT();
 
   function handleMouseMove(event: React.MouseEvent<HTMLDivElement>) {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -120,7 +122,7 @@ export function ProductGallery({
           <>
             <button
               type="button"
-              aria-label="Foto precedente"
+              aria-label={t('gallery.previous')}
               onClick={() => goTo(activeIndex - 1)}
               className="absolute left-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-paper/80 text-nero backdrop-blur-sm transition-transform hover:scale-110"
             >
@@ -128,7 +130,7 @@ export function ProductGallery({
             </button>
             <button
               type="button"
-              aria-label="Foto successiva"
+              aria-label={t('gallery.next')}
               onClick={() => goTo(activeIndex + 1)}
               className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-paper/80 text-nero backdrop-blur-sm transition-transform hover:scale-110"
             >
@@ -144,7 +146,7 @@ export function ProductGallery({
             <button
               key={slide.id}
               type="button"
-              aria-label={`Vai alla foto ${i + 1}`}
+              aria-label={t('gallery.goTo', i + 1)}
               onClick={() => goTo(i)}
               className={`h-1.5 rounded-full transition-all ${
                 i === activeIndex

@@ -3,6 +3,7 @@ import {Await, Link, NavLink} from 'react-router';
 import type {FooterQuery, HeaderQuery} from 'storefrontapi.generated';
 import wordmarkBlack from '~/assets/anyma-logo-wordmark.png';
 import {LEGAL_POLICIES} from '~/lib/legalContent';
+import {useLocale, useT} from '~/lib/i18n';
 import {
   TrackOrderMenuItem,
   ReturnOrderMenuItem,
@@ -26,6 +27,8 @@ export function Footer({
   header,
   publicStoreDomain,
 }: FooterProps) {
+  const {href} = useLocale();
+  const t = useT();
   return (
     <Suspense>
       <Await resolve={footerPromise}>
@@ -33,14 +36,14 @@ export function Footer({
           <footer className="footer">
             <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 bg-paper px-6 py-8 text-center">
               <p className="font-display text-[17px] uppercase tracking-[0.25em] text-nero/80">
-                Rivela chi sei
+                {t('footer.rivelaChiSei')}
               </p>
               <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
                 <Link
-                  to="/about"
+                  to={href('/about')}
                   className="text-xs uppercase tracking-[0.15em] text-nero/60 transition-colors hover:text-nero"
                 >
-                  La Nostra Storia
+                  {t('footer.laNostraStoria')}
                 </Link>
                 <FooterDot />
                 <LegalMenu />
@@ -50,10 +53,10 @@ export function Footer({
                 <ReturnOrderMenuItem />
                 <FooterDot />
                 <Link
-                  to="/lavora-con-noi"
+                  to={href('/lavora-con-noi')}
                   className="text-xs uppercase tracking-[0.15em] text-nero/60 transition-colors hover:text-nero"
                 >
-                  Lavora con noi
+                  {t('footer.lavoraConNoi')}
                 </Link>
                 {footer?.menu && header.shop.primaryDomain?.url && (
                   <>
@@ -98,7 +101,7 @@ export function Footer({
                 {/* PLACEHOLDER: dati societari da confermare con il
                    commercialista/legale (Codice del Consumo art. 49). */}
                 <p className="text-[10px] text-paper/40">
-                  MAD SOLUTION S.R.L. · Tutti i diritti riservati
+                  MAD SOLUTION S.R.L. · {t('footer.rightsReserved')}
                 </p>
               </div>
             </div>
@@ -154,6 +157,7 @@ function FooterMenu({
   primaryDomainUrl: FooterProps['header']['shop']['primaryDomain']['url'];
   publicStoreDomain: string;
 }) {
+  const {href} = useLocale();
   return (
     <nav className="footer-menu" role="navigation">
       {(menu || FALLBACK_FOOTER_MENU).items.map((item) => {
@@ -176,7 +180,7 @@ function FooterMenu({
             key={item.id}
             prefetch="intent"
             style={activeLinkStyle}
-            to={url}
+            to={href(url)}
           >
             {item.title}
           </NavLink>
@@ -251,6 +255,7 @@ function FooterDot() {
 
 function LegalMenu() {
   const [open, setOpen] = useState(false);
+  const t = useT();
 
   return (
     <div className="relative inline-flex">
@@ -260,7 +265,7 @@ function LegalMenu() {
         aria-expanded={open}
         className="flex items-center gap-1.5 text-xs uppercase tracking-[0.15em] text-nero/60 transition-colors hover:text-nero"
       >
-        Area Legale
+        {t('footer.areaLegale')}
         <span
           className={`transition-transform ${open ? 'rotate-180' : ''}`}
           aria-hidden="true"

@@ -1,6 +1,7 @@
 import {Link, useLoaderData} from 'react-router';
-import type {Route} from './+types/policies.$handle';
+import type {Route} from './+types/($locale).policies.$handle';
 import {type Shop} from '@shopify/hydrogen/storefront-api-types';
+import {useLocale, useT} from '~/lib/i18n';
 
 type SelectedPolicies = keyof Pick<
   Shop,
@@ -43,13 +44,15 @@ export async function loader({params, context}: Route.LoaderArgs) {
 
 export default function Policy() {
   const {policy} = useLoaderData<typeof loader>();
+  const {href} = useLocale();
+  const t = useT();
 
   return (
     <div className="policy">
       <br />
       <br />
       <div>
-        <Link to="/policies">← Back to Policies</Link>
+        <Link to={href('/policies')}>{t('policiesPage.backToPolicies')}</Link>
       </div>
       <br />
       <h1>{policy.title}</h1>

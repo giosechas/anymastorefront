@@ -1,51 +1,36 @@
 import {useMemo, useState} from 'react';
 import {Link, useLoaderData} from 'react-router';
-import type {Route} from './+types/pack.$handle';
+import type {Route} from './+types/($locale).pack.$handle';
 import {Image, Money} from '@shopify/hydrogen';
 import {findAnimaByCollectionHandle, type AnimaKey} from '~/lib/animas';
-import {COLOR_SWATCH_HEX, getColorTag} from '~/lib/productCopy';
+import {COLOR_SWATCH_HEX, getColorTag, getColorLabel, getCategoryLabel} from '~/lib/productCopy';
+import {getLocaleFromParam} from '~/lib/locale';
+import {useLocale, useT} from '~/lib/i18n';
+import {TRANSLATIONS} from '~/lib/translations';
 
 /**
  * Condensed from copy-kit-anyma.md — only the 3 pre-launch trittici
  * (Leopard, Candy Rosa, Street) have this copy; the rest stay generic.
+ * Keys map to entries in translations.ts's `pack` namespace.
  */
-const TRITTICO_COPY: Partial<
-  Record<AnimaKey, {attitude: string; packaging: string}>
+const TRITTICO_COPY_KEYS: Partial<
+  Record<AnimaKey, {attitudeKey: string; packagingKey: string}>
 > = {
-  leopard: {
-    attitude:
-      'Leopard è l’anima di chi occupa il proprio spazio senza chiedere scusa: presenza magnetica, grinta che protegge la sensibilità invece di nasconderla.',
-    packaging:
-      'Sculture in alluminio e acrilico: velatura bronzo-dorata, macchie leopardate in rilievo, chevron dorato lucido.',
-  },
-  candyRosa: {
-    attitude:
-      'Candy Rosa è per i giorni in cui la dolcezza è la tua forza più grande: tenerezza ribelle che trasforma la sensibilità in energia gioiosa.',
-    packaging:
-      'Finitura oro rosa custom con tappi rosa opaco, motivo paisley pastello e chevron dorato.',
-  },
-  street: {
-    attitude:
-      'Street è l’anima di chi è a proprio agio ovunque, senza pose: bellezza reale, spontanea, in movimento.',
-    packaging:
-      'Texture denim azzurro con cuciture arancioni a contrasto e patch in pelle marrone, delimitata dal chevron dorato.',
-  },
+  leopard: {attitudeKey: 'attitudeLeopard', packagingKey: 'packagingLeopard'},
+  candyRosa: {attitudeKey: 'attitudeCandyRosa', packagingKey: 'packagingCandyRosa'},
+  street: {attitudeKey: 'attitudeStreet', packagingKey: 'packagingStreet'},
 };
 
-export const meta: Route.MetaFunction = ({data}) => {
+export const meta: Route.MetaFunction = ({data, params}) => {
+  const code = getLocaleFromParam(params.locale);
   return [
     {
-      title: `Anyma Beauty | Componi il tuo Pack ${data?.anima?.name ?? ''}`,
+      title: `Anyma Beauty | ${TRANSLATIONS[code].pack.componiIlTuoPack} ${data?.anima?.name ?? ''}`,
     },
   ];
 };
 
 const PACK_CATEGORIES = ['Rossetto', 'Lip Gloss', 'Mascara/Eyeliner'] as const;
-const CATEGORY_TITLE: Record<(typeof PACK_CATEGORIES)[number], string> = {
-  Rossetto: 'Rossetto',
-  'Lip Gloss': 'Lip Gloss',
-  'Mascara/Eyeliner': 'Mascara',
-};
 
 export async function loader({context, params}: Route.LoaderArgs) {
   const {handle} = params;
@@ -73,7 +58,15 @@ export async function loader({context, params}: Route.LoaderArgs) {
 
 export default function Pack() {
   const {anima, byCategory} = useLoaderData<typeof loader>();
-  const trittico = TRITTICO_COPY[anima.key];
+  const {code, href} = useLocale();
+  const t = useT();
+  const tritticoKeys = TRITTICO_COPY_KEYS[anima.key];
+  const trittico = tritticoKeys
+    ? {
+        attitude: t(`pack.${tritticoKeys.attitudeKey}`),
+        packaging: t(`pack.${tritticoKeys.packagingKey}`),
+      }
+    : undefined;
 
   const [selection, setSelection] = useState<Record<string, string>>(() => {
     const initial: Record<string, string> = {};
@@ -106,24 +99,23 @@ export default function Pack() {
       .filter(Boolean)
       .map((gid) => `${gid!.split('/').pop()}:1`)
       .join(',');
-    return `/cart/${lines}`;
-  }, [selectedProducts, allSelected]);
+    return href(`/cart/${lines}`);
+  }, [selectedProducts, allSelected, href]);
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-10 sm:py-16">
       <Link
-        to={`/collections/${anima.handle}`}
+        to={href(`/collections/${anima.handle}`)}
         className="text-xs uppercase tracking-[0.15em] text-nero/50 hover:text-nero"
       >
-        ← Anyma {anima.name}
+        ← {t('collection.anymaLabel', anima.name)}
       </Link>
 
       <h1 className="font-display mt-4 text-3xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
-        Componi il tuo Pack
+        {t('pack.componiIlTuoPack')}
       </h1>
       <p className="mt-2 text-sm text-nero/70">
-        Un rossetto, un gloss, un mascara: la tua Anyma {anima.name} in una
-        sola scatola.
+        {t('pack.subtitle', anima.name)}
       </p>
 
       {trittico && (
@@ -136,7 +128,7 @@ export default function Pack() {
         {PACK_CATEGORIES.map((category) => (
           <div key={category}>
             <p className="mb-3 text-xs uppercase tracking-[0.15em] text-nero/60">
-              {CATEGORY_TITLE[category]}
+              {getCategoryLabel(category, code)}
             </p>
             <div className="flex flex-wrap gap-4">
               {byCategory[category]?.map((product) => {
@@ -173,7 +165,7 @@ export default function Pack() {
                       }}
                     />
                     <span className="text-[10px] uppercase tracking-wide text-nero/70">
-                      {colorTag ?? ''}
+                      {colorTag ? getColorLabel(colorTag, code) : ''}
                     </span>
                   </button>
                 );
@@ -188,26 +180,25 @@ export default function Pack() {
           <>
             <p className="text-sm leading-relaxed text-nero/80">
               <span className="font-display uppercase tracking-[0.05em] text-nero">
-                Il packaging:
+                {t('pack.ilPackaging')}
               </span>{' '}
               {trittico.packaging}
             </p>
             <p className="mt-3 text-xs uppercase tracking-[0.1em] text-fuchsia">
-              Solo ~42 pezzi al mondo per questa combinazione, lotto di
-              pre-lancio di 800 unità.
+              {t('pack.scarcity')}
             </p>
           </>
         )}
         <ul className="mt-4 space-y-1.5 text-xs text-nero/70">
-          <li>Rituale completo: i tre gesti della tua giornata, un&rsquo;unica energia.</li>
-          <li>Spedizione sempre gratuita su tutto l&rsquo;ordine.</li>
-          <li>ANYMA Tote Bag in omaggio con ogni trittico.</li>
+          <li>{t('pack.bullet1')}</li>
+          <li>{t('pack.bullet2')}</li>
+          <li>{t('pack.bullet3')}</li>
         </ul>
       </div>
 
       <div className="mt-8 border-t border-nero/10 pt-6">
         <div className="flex items-center justify-between text-sm text-nero">
-          <span className="uppercase tracking-[0.1em]">Totale Pack</span>
+          <span className="uppercase tracking-[0.1em]">{t('pack.totalePack')}</span>
           <Money data={{amount: String(total), currencyCode: currency}} />
         </div>
 
@@ -216,7 +207,7 @@ export default function Pack() {
             href={checkoutHref}
             className="mt-6 block w-full border border-nero bg-nero px-8 py-4 text-center text-xs uppercase tracking-[0.2em] text-paper transition-colors hover:bg-transparent hover:text-nero"
           >
-            Vai al pagamento
+            {t('pack.vaiAlPagamento')}
           </a>
         ) : (
           <button
@@ -224,7 +215,7 @@ export default function Pack() {
             disabled
             className="mt-6 block w-full cursor-not-allowed border border-nero/30 bg-nero/10 px-8 py-4 text-center text-xs uppercase tracking-[0.2em] text-nero/40"
           >
-            Esaurito
+            {t('product.soldOut')}
           </button>
         )}
       </div>

@@ -1,5 +1,5 @@
 import {Link, redirect, useLoaderData} from 'react-router';
-import type {Route} from './+types/collections.$handle';
+import type {Route} from './+types/($locale).collections.$handle';
 import {getPaginationVariables, Analytics} from '@shopify/hydrogen';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
@@ -7,6 +7,8 @@ import {ProductItem} from '~/components/ProductItem';
 import type {ProductItemFragment} from 'storefrontapi.generated';
 import {ANIME, findAnimaByCollectionHandle} from '~/lib/animas';
 import {getAnimaAnimalVideo} from '~/lib/animaVideo';
+import {pickLocale} from '~/lib/locale';
+import {useLocale, useT} from '~/lib/i18n';
 
 export const meta: Route.MetaFunction = ({data}) => {
   const anima = data
@@ -75,6 +77,8 @@ export default function Collection() {
   const {collection} = useLoaderData<typeof loader>();
   const anima = findAnimaByCollectionHandle(collection.handle);
   const animalVideo = anima ? getAnimaAnimalVideo(anima.key) : undefined;
+  const {code, href} = useLocale();
+  const t = useT();
 
   return (
     <div className="bg-paper">
@@ -91,7 +95,7 @@ export default function Collection() {
         {anima && (
           <div className="mt-6">
             <p className="mb-2 text-[10px] uppercase tracking-[0.15em] text-nero/50">
-              Cambia la tua Anyma
+              {t('collection.cambiaLaTuaAnyma')}
             </p>
             <div className="flex flex-wrap justify-center gap-1.5">
               {ANIME.map((a) => {
@@ -108,7 +112,7 @@ export default function Collection() {
                 ) : (
                   <Link
                     key={a.key}
-                    to={`/collections/${a.handle}`}
+                    to={href(`/collections/${a.handle}`)}
                     className="rounded-full border px-2.5 py-1 text-[9px] uppercase tracking-[0.1em] opacity-70 transition-opacity hover:opacity-100"
                     style={{borderColor: a.color, color: a.color}}
                   >
@@ -127,18 +131,18 @@ export default function Collection() {
             <p
               className={`mb-3 flex items-center gap-2 text-xs uppercase tracking-[0.35em] text-gold ${animalVideo ? '' : 'sm:justify-center'}`}
             >
-              Anyma {anima.name}
+              {t('collection.anymaLabel', anima.name)}
               {anima.comingSoon && (
                 <span className="border border-fuchsia px-2 py-0.5 text-[10px] tracking-[0.15em] text-fuchsia">
-                  In arrivo
+                  {t('collection.inArrivo')}
                 </span>
               )}
             </p>
             <h2 className="font-display text-2xl uppercase tracking-[0.02em] text-fuchsia sm:text-3xl">
-              {anima.storyHeading}
+              {pickLocale(anima.storyHeading, code)}
             </h2>
             <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-nero/80 sm:mx-0">
-              {anima.story}
+              {pickLocale(anima.story, code)}
             </p>
           </div>
           {animalVideo && (

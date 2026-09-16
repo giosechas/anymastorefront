@@ -1,3 +1,5 @@
+import {useT} from '~/lib/i18n';
+
 const COMMUNITY_CLIPS = [
   {name: 'reveal', src: '/videos/community/reveal.mp4', poster: '/videos/community/posters/reveal.jpg'},
   {name: 'gloss-closeup', src: '/videos/community/gloss-closeup.mp4', poster: '/videos/community/posters/gloss-closeup.jpg'},
@@ -16,11 +18,12 @@ export function ProductVideos({
   videos?: {src: string; poster: string}[];
   tagline?: string;
 }) {
+  const t = useT();
   const clips = videos?.length ? videos : COMMUNITY_CLIPS;
   return (
     <section className="border-t border-nero/10 pt-8">
       <h2 className="font-display text-lg uppercase tracking-[0.1em] text-nero">
-        La community lo indossa
+        {t('communityVideos.title')}
       </h2>
       {tagline && (
         <p className="mt-2 max-w-md text-sm leading-relaxed text-nero/70">
@@ -42,7 +45,7 @@ export function ProductVideos({
         ))}
       </div>
       <p className="mt-3 text-xs text-nero/50">
-        Altri video della community arrivano presto, segui{' '}
+        {t('communityVideos.more')}{' '}
         <a
           href="https://www.tiktok.com/@anyma.beauty"
           target="_blank"
@@ -51,7 +54,7 @@ export function ProductVideos({
         >
           @anyma.beauty
         </a>{' '}
-        su TikTok.
+        {t('communityVideos.onTikTok')}
       </p>
     </section>
   );

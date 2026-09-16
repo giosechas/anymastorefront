@@ -1,6 +1,7 @@
 import {Link} from 'react-router';
 import {Image, Money, Pagination} from '@shopify/hydrogen';
 import {urlWithTrackingParams, type RegularSearchReturn} from '~/lib/search';
+import {useLocale, useT} from '~/lib/i18n';
 
 type SearchItems = RegularSearchReturn['result']['items'];
 type PartialSearchResult<ItemType extends keyof SearchItems> = Pick<
@@ -34,17 +35,19 @@ function SearchResultsArticles({
   term,
   articles,
 }: PartialSearchResult<'articles'>) {
+  const {href} = useLocale();
+  const t = useT();
   if (!articles?.nodes.length) {
     return null;
   }
 
   return (
     <div className="search-result">
-      <h2>Articoli</h2>
+      <h2>{t('search.articoli')}</h2>
       <div>
         {articles?.nodes?.map((article) => {
           const articleUrl = urlWithTrackingParams({
-            baseUrl: `/blogs/${article.handle}`,
+            baseUrl: href(`/blogs/${article.handle}`),
             trackingParams: article.trackingParameters,
             term,
           });
@@ -63,17 +66,19 @@ function SearchResultsArticles({
 }
 
 function SearchResultsPages({term, pages}: PartialSearchResult<'pages'>) {
+  const {href} = useLocale();
+  const t = useT();
   if (!pages?.nodes.length) {
     return null;
   }
 
   return (
     <div className="search-result">
-      <h2>Pagine</h2>
+      <h2>{t('search.pagine')}</h2>
       <div>
         {pages?.nodes?.map((page) => {
           const pageUrl = urlWithTrackingParams({
-            baseUrl: `/pages/${page.handle}`,
+            baseUrl: href(`/pages/${page.handle}`),
             trackingParams: page.trackingParameters,
             term,
           });
@@ -95,18 +100,20 @@ function SearchResultsProducts({
   term,
   products,
 }: PartialSearchResult<'products'>) {
+  const {href} = useLocale();
+  const t = useT();
   if (!products?.nodes.length) {
     return null;
   }
 
   return (
     <div className="search-result">
-      <h2>Prodotti</h2>
+      <h2>{t('search.prodotti')}</h2>
       <Pagination connection={products}>
         {({nodes, isLoading, NextLink, PreviousLink}) => {
           const ItemsMarkup = nodes.map((product) => {
             const productUrl = urlWithTrackingParams({
-              baseUrl: `/products/${product.handle}`,
+              baseUrl: href(`/products/${product.handle}`),
               trackingParams: product.trackingParameters,
               term,
             });
@@ -134,13 +141,13 @@ function SearchResultsProducts({
             <>
               <div className="search-results-pagination">
                 <PreviousLink>
-                  {isLoading ? 'Caricamento…' : <span>↑ Precedenti</span>}
+                  {isLoading ? t('search.caricamento') : <span>{t('search.precedenti')}</span>}
                 </PreviousLink>
               </div>
               <div className="search-results-grid">{ItemsMarkup}</div>
               <div className="search-results-pagination">
                 <NextLink>
-                  {isLoading ? 'Caricamento…' : <span>Altri prodotti ↓</span>}
+                  {isLoading ? t('search.caricamento') : <span>{t('search.altriProdotti')}</span>}
                 </NextLink>
               </div>
             </>
@@ -152,9 +159,10 @@ function SearchResultsProducts({
 }
 
 function SearchResultsEmpty() {
+  const t = useT();
   return (
     <p className="mt-10 text-sm text-nero/60">
-      Nessun risultato. Prova con un&rsquo;altra ricerca.
+      {t('search.nessunRisultatoGenerico')}
     </p>
   );
 }

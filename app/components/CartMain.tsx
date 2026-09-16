@@ -4,6 +4,7 @@ import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
 import {CartLineItem, type CartLine} from '~/components/CartLineItem';
 import {CartSummary} from './CartSummary';
+import {useLocale, useT} from '~/lib/i18n';
 
 export type CartLayout = 'page' | 'aside';
 
@@ -40,6 +41,7 @@ export function CartMain({layout, cart: originalCart}: CartMainProps) {
   // The useOptimisticCart hook applies pending actions to the cart
   // so the user immediately sees feedback when they modify the cart.
   const cart = useOptimisticCart(originalCart);
+  const t = useT();
 
   const linesCount = Boolean(cart?.lines?.nodes?.length || 0);
   const withDiscount =
@@ -52,12 +54,12 @@ export function CartMain({layout, cart: originalCart}: CartMainProps) {
   return (
     <section
       className={className}
-      aria-label={layout === 'page' ? 'Cart page' : 'Cart drawer'}
+      aria-label={layout === 'page' ? t('cart.cartPage') : t('cart.cartDrawer')}
     >
       <CartEmpty hidden={linesCount} layout={layout} />
       <div className="cart-details">
         <p id="cart-lines" className="sr-only">
-          Line items
+          {t('cart.lineItems')}
         </p>
         <div>
           <ul aria-labelledby="cart-lines">
@@ -93,16 +95,15 @@ function CartEmpty({
   layout?: CartMainProps['layout'];
 }) {
   const {close} = useAside();
+  const {href} = useLocale();
+  const t = useT();
   return (
     <div hidden={hidden}>
       <br />
-      <p>
-        Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you
-        started!
-      </p>
+      <p>{t('cart.emptyBody')}</p>
       <br />
-      <Link to="/collections" onClick={close} prefetch="viewport">
-        Continue shopping →
+      <Link to={href('/collections')} onClick={close} prefetch="viewport">
+        {t('cart.continueShopping')}
       </Link>
     </div>
   );

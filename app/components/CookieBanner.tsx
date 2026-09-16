@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import {Link} from 'react-router';
+import {useT} from '~/lib/i18n';
 
 const STORAGE_KEY = 'anyma-cookie-consent';
 
@@ -13,6 +14,7 @@ type Consent = 'accepted' | 'rejected';
  */
 export function CookieBanner() {
   const [visible, setVisible] = useState(false);
+  const t = useT();
 
   useEffect(() => {
     try {
@@ -57,18 +59,17 @@ export function CookieBanner() {
   return (
     <div
       role="dialog"
-      aria-label="Preferenze cookie"
+      aria-label={t('cookies.ariaLabel')}
       className="fixed inset-x-0 bottom-0 z-[70] border-t border-nero/10 bg-paper p-5 shadow-[0_-4px_24px_rgba(0,0,0,0.08)] sm:p-6"
     >
       <div className="mx-auto flex max-w-5xl flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="max-w-2xl text-xs leading-relaxed text-nero/70">
           {/* PLACEHOLDER: da rivedere con un legale prima del lancio. */}
-          Utilizziamo cookie tecnici necessari al funzionamento del sito e,
-          previo consenso, cookie di analisi e marketing. Consulta la{' '}
+          {t('cookies.body')}{' '}
           <Link to="/legale/privacy-policy" className="underline hover:text-gold">
-            Privacy Policy
+            {t('cookies.privacyPolicy')}
           </Link>{' '}
-          per maggiori informazioni.
+          {t('cookies.bodyEnd')}
         </p>
         <div className="flex shrink-0 gap-2">
           <button
@@ -76,14 +77,14 @@ export function CookieBanner() {
             onClick={() => choose('rejected')}
             className="border border-nero/30 px-5 py-2 text-xs uppercase tracking-[0.15em] text-nero/70 transition-colors hover:border-nero hover:text-nero"
           >
-            Rifiuta
+            {t('cookies.reject')}
           </button>
           <button
             type="button"
             onClick={() => choose('accepted')}
             className="border border-nero bg-nero px-5 py-2 text-xs uppercase tracking-[0.15em] text-paper transition-colors hover:bg-transparent hover:text-nero"
           >
-            Accetta tutto
+            {t('cookies.acceptAll')}
           </button>
         </div>
       </div>

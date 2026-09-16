@@ -1,4 +1,5 @@
 import sealPositive from '~/assets/images/seal-y-positive.png';
+import {useT} from '~/lib/i18n';
 
 /**
  * Anyma's review rating mark: 5 "Sello del Alma" Y-seals instead of stars.
@@ -12,6 +13,7 @@ export function YRating({
   rating?: number;
   count?: number;
 }) {
+  const t = useT();
   if (count === 0) {
     return (
       <div className="flex items-center gap-3">
@@ -26,7 +28,7 @@ export function YRating({
           ))}
         </div>
         <span className="text-xs uppercase tracking-[0.15em] text-nero/50">
-          Ancora nessuna recensione
+          {t('rating.noReviewsYet')}
         </span>
       </div>
     );
@@ -36,7 +38,7 @@ export function YRating({
     <div
       className="flex items-center gap-3"
       role="img"
-      aria-label={`${rating} su 5 Anyme`}
+      aria-label={t('rating.outOf5', rating)}
     >
       <div className="flex gap-1">
         {Array.from({length: 5}).map((_, i) => (
@@ -51,7 +53,7 @@ export function YRating({
         ))}
       </div>
       <span className="text-xs uppercase tracking-[0.15em] text-nero/60">
-        {rating.toFixed(1)} · {count} {count === 1 ? 'recensione' : 'recensioni'}
+        {t('rating.summary', rating.toFixed(1), count)}
       </span>
     </div>
   );

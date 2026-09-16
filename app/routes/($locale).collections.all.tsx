@@ -1,12 +1,16 @@
-import type {Route} from './+types/collections.all';
+import type {Route} from './+types/($locale).collections.all';
 import {useLoaderData} from 'react-router';
 import {getPaginationVariables, Image, Money} from '@shopify/hydrogen';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {ProductItem} from '~/components/ProductItem';
 import type {CollectionItemFragment} from 'storefrontapi.generated';
+import {getLocaleFromParam} from '~/lib/locale';
+import {useT} from '~/lib/i18n';
+import {TRANSLATIONS} from '~/lib/translations';
 
-export const meta: Route.MetaFunction = () => {
-  return [{title: `Hydrogen | Products`}];
+export const meta: Route.MetaFunction = ({params}) => {
+  const code = getLocaleFromParam(params.locale);
+  return [{title: TRANSLATIONS[code].allProducts.metaTitle}];
 };
 
 export async function loader(args: Route.LoaderArgs) {
@@ -49,10 +53,11 @@ function loadDeferredData({context}: Route.LoaderArgs) {
 
 export default function Collection() {
   const {products} = useLoaderData<typeof loader>();
+  const t = useT();
 
   return (
     <div className="collection">
-      <h1>Products</h1>
+      <h1>{t('allProducts.title')}</h1>
       <PaginatedResourceSection<CollectionItemFragment>
         connection={products}
         resourcesClassName="products-grid"

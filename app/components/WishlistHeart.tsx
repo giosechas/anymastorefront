@@ -1,4 +1,5 @@
 import {useIsWished, toggleWishlistItem, type WishlistItem} from '~/lib/wishlist';
+import {useT} from '~/lib/i18n';
 
 export function WishlistHeart({
   item,
@@ -8,11 +9,12 @@ export function WishlistHeart({
   className?: string;
 }) {
   const wished = useIsWished(item.id);
+  const t = useT();
 
   return (
     <button
       type="button"
-      aria-label={wished ? 'Rimuovi dai preferiti' : 'Aggiungi ai preferiti'}
+      aria-label={wished ? t('wishlist.remove') : t('wishlist.add')}
       aria-pressed={wished}
       onClick={(e) => {
         e.preventDefault();

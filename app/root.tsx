@@ -13,6 +13,8 @@ import {
 import type {Route} from './+types/root';
 import favicon from '~/assets/images/seal-y-positive.png';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
+import {LocaleProvider} from '~/lib/i18n';
+import type {LocaleCode} from '~/lib/locale';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import tailwindCss from './styles/tailwind.css?url';
@@ -144,9 +146,11 @@ function loadDeferredData({context}: Route.LoaderArgs) {
 
 export function Layout({children}: {children?: React.ReactNode}) {
   const nonce = useNonce();
+  const data = useRouteLoaderData<RootLoader>('root');
+  const htmlLang = data?.consent.language.toLowerCase() ?? 'it';
 
   return (
-    <html lang="it">
+    <html lang={htmlLang}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -178,9 +182,11 @@ export default function App() {
       shop={data.shop}
       consent={data.consent}
     >
-      <PageLayout {...data}>
-        <Outlet />
-      </PageLayout>
+      <LocaleProvider code={data.consent.language as LocaleCode}>
+        <PageLayout {...data}>
+          <Outlet />
+        </PageLayout>
+      </LocaleProvider>
     </Analytics.Provider>
   );
 }

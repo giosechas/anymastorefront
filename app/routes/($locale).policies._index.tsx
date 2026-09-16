@@ -1,6 +1,7 @@
 import {useLoaderData, Link} from 'react-router';
-import type {Route} from './+types/policies._index';
+import type {Route} from './+types/($locale).policies._index';
 import type {PoliciesQuery, PolicyItemFragment} from 'storefrontapi.generated';
+import {useLocale} from '~/lib/i18n';
 
 export async function loader({context}: Route.LoaderArgs) {
   const data: PoliciesQuery = await context.storefront.query(POLICIES_QUERY);
@@ -23,6 +24,7 @@ export async function loader({context}: Route.LoaderArgs) {
 
 export default function Policies() {
   const {policies} = useLoaderData<typeof loader>();
+  const {href} = useLocale();
 
   return (
     <div className="policies">
@@ -30,7 +32,7 @@ export default function Policies() {
       <div>
         {policies.map((policy) => (
           <fieldset key={policy.id}>
-            <Link to={`/policies/${policy.handle}`}>{policy.title}</Link>
+            <Link to={href(`/policies/${policy.handle}`)}>{policy.title}</Link>
           </fieldset>
         ))}
       </div>

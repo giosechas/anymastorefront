@@ -1,8 +1,11 @@
 import {useLoaderData} from 'react-router';
 import {useMemo, useState} from 'react';
-import type {Route} from './+types/prodotti.$type';
+import type {Route} from './+types/($locale).prodotti.$type';
 import {ProductItem} from '~/components/ProductItem';
-import {getColorTag, COLOR_SWATCH_HEX} from '~/lib/productCopy';
+import {getColorTag, getColorLabel, COLOR_SWATCH_HEX} from '~/lib/productCopy';
+import {getLocaleFromParam} from '~/lib/locale';
+import {useLocale, useT} from '~/lib/i18n';
+import {TRANSLATIONS} from '~/lib/translations';
 import type {ProductItemFragment} from 'storefrontapi.generated';
 
 type ViewMode = 'anima' | 'color';
@@ -12,15 +15,20 @@ function getAnimaName(title: string): string {
   return title.split('·')[0]?.replace(/^ANYMA\s+/i, '').trim() ?? '';
 }
 
-const TYPE_MAP: Record<string, {label: string; productType: string}> = {
-  rossetti: {label: 'Rossetti', productType: 'Rossetto'},
-  gloss: {label: 'Lip Gloss', productType: 'Lip Gloss'},
-  mascara: {label: 'Mascara & Eyeliner', productType: 'Mascara/Eyeliner'},
+const TYPE_MAP: Record<
+  string,
+  {labelKey: 'rossetti' | 'lipGloss' | 'mascaraEyeliner'; productType: string}
+> = {
+  rossetti: {labelKey: 'rossetti', productType: 'Rossetto'},
+  gloss: {labelKey: 'lipGloss', productType: 'Lip Gloss'},
+  mascara: {labelKey: 'mascaraEyeliner', productType: 'Mascara/Eyeliner'},
 };
 
 export const meta: Route.MetaFunction = ({params}) => {
+  const code = getLocaleFromParam(params.locale);
   const info = params.type ? TYPE_MAP[params.type] : undefined;
-  return [{title: `Anyma Beauty | ${info?.label ?? 'Prodotti'}`}];
+  const label = info ? TRANSLATIONS[code].header[info.labelKey] : undefined;
+  return [{title: `Anyma Beauty | ${label ?? 'Prodotti'}`}];
 };
 
 export async function loader({context, params}: Route.LoaderArgs) {
@@ -41,6 +49,9 @@ export default function ProductsByType() {
   const {info, products} = useLoaderData<typeof loader>();
   const [viewMode, setViewMode] = useState<ViewMode>('anima');
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const {code} = useLocale();
+  const t = useT();
+  const typeLabel = t(`header.${info.labelKey}`);
 
   const groups = useMemo(() => {
     const byGroup = new Map<string, typeof products>();
@@ -65,13 +76,13 @@ export default function ProductsByType() {
     <div className="bg-paper">
       <header className="mx-auto max-w-3xl px-6 pb-6 pt-16 text-center sm:pt-24">
         <p className="mb-4 text-xs uppercase tracking-[0.4em] text-gold">
-          Cerca per prodotto
+          {t('productsByType.cercaPerProdotto')}
         </p>
         <h1 className="font-display text-4xl uppercase tracking-[0.03em] text-nero sm:text-5xl">
-          {info.label}
+          {typeLabel}
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-nero/70">
-          Lo stesso gesto, in tutte le Anyme. Trova il tuo colore.
+          {t('productsByType.subtitle')}
         </p>
       </header>
 
@@ -89,7 +100,7 @@ export default function ProductsByType() {
                 : 'border-nero/30 text-nero/70 hover:border-nero'
             }`}
           >
-            Vedi per Anyma
+            {t('productsByType.vediPerAnyma')}
           </button>
           <button
             type="button"
@@ -103,7 +114,7 @@ export default function ProductsByType() {
                 : 'border-nero/30 text-nero/70 hover:border-nero'
             }`}
           >
-            Vedi per colore
+            {t('productsByType.vediPerColore')}
           </button>
         </div>
       )}
@@ -115,8 +126,8 @@ export default function ProductsByType() {
               <button
                 key={key}
                 type="button"
-                aria-label={key}
-                title={key}
+                aria-label={getColorLabel(key, code)}
+                title={getColorLabel(key, code)}
                 onClick={() =>
                   setActiveFilter((current) => (current === key ? null : key))
                 }
@@ -142,7 +153,7 @@ export default function ProductsByType() {
                     : 'border-nero/20 text-nero/60 hover:border-nero/50'
                 }`}
               >
-                {key}
+                {getColorLabel(key, code)}
               </button>
             ),
           )}
@@ -152,13 +163,13 @@ export default function ProductsByType() {
       <div className="mx-auto max-w-6xl px-6 pb-24">
         {products.length === 0 ? (
           <p className="text-center text-sm text-nero/60">
-            Nessun prodotto trovato per questa categoria.
+            {t('productsByType.nessunProdotto')}
           </p>
         ) : (
           visibleGroups.map(([groupKey, groupProducts]) => (
             <div key={groupKey} className="mb-12">
               <p className="mb-4 text-xs uppercase tracking-[0.2em] text-nero/50">
-                {groupKey}
+                {viewMode === 'color' ? getColorLabel(groupKey, code) : groupKey}
               </p>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                 {groupProducts.map((product, index) => (

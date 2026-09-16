@@ -4,7 +4,7 @@ import {
   useNavigation,
   useSearchParams,
 } from 'react-router';
-import type {Route} from './+types/account.orders._index';
+import type {Route} from './+types/($locale).account.orders._index';
 import {useRef} from 'react';
 import {
   Money,
@@ -18,6 +18,7 @@ import {
   type OrderFilterParams,
 } from '~/lib/orderFilters';
 import {CUSTOMER_ORDERS_QUERY} from '~/graphql/customer-account/CustomerOrdersQuery';
+import {useLocale, useT} from '~/lib/i18n';
 import type {
   CustomerOrdersFragment,
   OrderItemFragment,
@@ -93,22 +94,24 @@ function OrdersTable({
 }
 
 function EmptyOrders({hasFilters = false}: {hasFilters?: boolean}) {
+  const {href} = useLocale();
+  const t = useT();
   return (
     <div>
       {hasFilters ? (
         <>
-          <p>No orders found matching your search.</p>
+          <p>{t('account.noOrdersFiltered')}</p>
           <br />
           <p>
-            <Link to="/account/orders">Clear filters →</Link>
+            <Link to={href('/account/orders')}>{t('account.clearFilters')}</Link>
           </p>
         </>
       ) : (
         <>
-          <p>You haven&apos;t placed any orders yet.</p>
+          <p>{t('account.noOrdersYet')}</p>
           <br />
           <p>
-            <Link to="/collections">Start Shopping →</Link>
+            <Link to={href('/collections')}>{t('account.startShopping')}</Link>
           </p>
         </>
       )}
@@ -200,11 +203,13 @@ function OrderSearchForm({
 }
 
 function OrderItem({order}: {order: OrderItemFragment}) {
+  const {href} = useLocale();
+  const t = useT();
   const fulfillmentStatus = flattenConnection(order.fulfillments)[0]?.status;
   return (
     <>
       <fieldset>
-        <Link to={`/account/orders/${btoa(order.id)}`}>
+        <Link to={href(`/account/orders/${btoa(order.id)}`)}>
           <strong>#{order.number}</strong>
         </Link>
         <p>{new Date(order.processedAt).toDateString()}</p>
@@ -214,7 +219,7 @@ function OrderItem({order}: {order: OrderItemFragment}) {
         <p>{order.financialStatus}</p>
         {fulfillmentStatus && <p>{fulfillmentStatus}</p>}
         <Money data={order.totalPrice} />
-        <Link to={`/account/orders/${btoa(order.id)}`}>View Order →</Link>
+        <Link to={href(`/account/orders/${btoa(order.id)}`)}>{t('account.viewOrder')}</Link>
       </fieldset>
       <br />
     </>

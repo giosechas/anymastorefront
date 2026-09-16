@@ -1,5 +1,5 @@
 import {useLoaderData} from 'react-router';
-import type {Route} from './+types/search';
+import type {Route} from './+types/($locale).search';
 import {getPaginationVariables, Analytics} from '@shopify/hydrogen';
 import {SearchForm} from '~/components/SearchForm';
 import {SearchResults} from '~/components/SearchResults';
@@ -12,9 +12,13 @@ import type {
   RegularSearchQuery,
   PredictiveSearchQuery,
 } from 'storefrontapi.generated';
+import {getLocaleFromParam} from '~/lib/locale';
+import {useT} from '~/lib/i18n';
+import {TRANSLATIONS} from '~/lib/translations';
 
-export const meta: Route.MetaFunction = () => {
-  return [{title: `Anyma Beauty | Cerca`}];
+export const meta: Route.MetaFunction = ({params}) => {
+  const code = getLocaleFromParam(params.locale);
+  return [{title: `Anyma Beauty | ${TRANSLATIONS[code].search.cerca}`}];
 };
 
 export async function loader({request, context}: Route.LoaderArgs) {
@@ -38,6 +42,7 @@ export async function loader({request, context}: Route.LoaderArgs) {
  */
 export default function SearchPage() {
   const {type, term, result, error} = useLoaderData<typeof loader>();
+  const t = useT();
   if (type === 'predictive') return null;
 
   return (
@@ -46,7 +51,7 @@ export default function SearchPage() {
         Anyma Beauty
       </p>
       <h1 className="font-display text-3xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
-        Cerca
+        {t('search.cerca')}
       </h1>
 
       <SearchForm className="search-page-form">
@@ -55,11 +60,11 @@ export default function SearchPage() {
             <input
               defaultValue={term}
               name="q"
-              placeholder="Cerca prodotti, anime..."
+              placeholder={t('search.placeholder')}
               ref={inputRef}
               type="search"
             />
-            <button type="submit">Cerca</button>
+            <button type="submit">{t('search.cerca')}</button>
           </>
         )}
       </SearchForm>

@@ -1,6 +1,6 @@
 import {Suspense, useState} from 'react';
 import {Link, useLoaderData, Await} from 'react-router';
-import type {Route} from './+types/products.$handle';
+import type {Route} from './+types/($locale).products.$handle';
 import {
   getSelectedProductOptions,
   Analytics,
@@ -28,9 +28,13 @@ import {
 import {
   COLOR_SWATCH_HEX,
   getColorTag,
+  getColorLabel,
+  getCategoryLabel,
   getCommunityTagline,
   getShortDescription,
 } from '~/lib/productCopy';
+import {pickLocale} from '~/lib/locale';
+import {useLocale, useT} from '~/lib/i18n';
 import {getProductVideo} from '~/lib/productVideo';
 import {
   getLipstickModelPhotos,
@@ -156,6 +160,8 @@ function loadDeferredData(
 export default function Product() {
   const {product, anima, siblings, animaVariants, recommendedProducts} =
     useLoaderData<typeof loader>();
+  const {code, href} = useLocale();
+  const t = useT();
 
   const orderedAnimaVariants = ANIME.map((a) =>
     animaVariants.find((v) => v.anima.key === a.key),
@@ -174,8 +180,15 @@ export default function Product() {
   });
 
   const colorTag = getColorTag(product.tags);
-  const shortDescription = getShortDescription(product.productType, colorTag);
-  const displayTitle = product.title.split('·').pop()?.trim() ?? product.title;
+  const shortDescription = getShortDescription(
+    product.productType,
+    colorTag,
+    code,
+  );
+  const displayTitle =
+    code === 'IT'
+      ? (product.title.split('·').pop()?.trim() ?? product.title)
+      : `${getCategoryLabel(product.productType, code)} ${colorTag ? getColorLabel(colorTag, code) : ''}`.trim();
   const video = getProductVideo(product.productType, anima?.handle);
   const mascaraModelPhoto = getMascaraModelPhoto(
     product.productType,
@@ -254,10 +267,10 @@ export default function Product() {
               />
               {anima && (
                 <Link
-                  to={`/collections/${anima.handle}`}
+                  to={href(`/collections/${anima.handle}`)}
                   className="inline-block border border-gold px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-gold transition-colors hover:bg-gold hover:text-nero"
                 >
-                  Anyma {anima.name}
+                  {t('collection.anymaLabel', anima.name)}
                 </Link>
               )}
             </div>
@@ -265,7 +278,7 @@ export default function Product() {
             {orderedAnimaVariants.length > 1 && (
               <div className="mt-4">
                 <p className="mb-1.5 text-[10px] uppercase tracking-[0.15em] text-nero/50">
-                  Cambia Anyma, stesso colore
+                  {t('pdp.cambiaAnymaStessoColore')}
                 </p>
                 <div className="flex flex-wrap gap-1.5">
                   {orderedAnimaVariants.map(({anima: variantAnima, handle}) => {
@@ -282,7 +295,7 @@ export default function Product() {
                     ) : (
                       <Link
                         key={variantAnima.key}
-                        to={`/products/${handle}`}
+                        to={href(`/products/${handle}`)}
                         className="rounded-full border px-2.5 py-1 text-[9px] uppercase tracking-[0.1em] opacity-70 transition-opacity hover:opacity-100"
                         style={{
                           borderColor: variantAnima.color,
@@ -304,7 +317,7 @@ export default function Product() {
             {siblings.length > 1 && (
               <div className="mt-8">
                 <p className="mb-2 text-xs uppercase tracking-[0.15em] text-nero/60">
-                  Altri colori · Anyma {anima?.name}
+                  {t('pdp.altriColori', anima?.name ?? '')}
                 </p>
                 <div className="flex flex-wrap gap-3">
                   {siblings.map((sibling) => {
@@ -313,7 +326,7 @@ export default function Product() {
                     return (
                       <Link
                         key={sibling.handle}
-                        to={`/products/${sibling.handle}`}
+                        to={href(`/products/${sibling.handle}`)}
                         aria-label={sibling.title}
                         aria-current={isCurrent}
                         className={`h-8 w-8 rounded-full border-2 transition-transform hover:scale-110 ${
@@ -376,7 +389,7 @@ export default function Product() {
           </div>
           <div>
             <p className="font-display text-lg uppercase tracking-[0.25em] text-fuchsia sm:text-xl">
-              Guardalo addosso
+              {t('pdp.guardaloAddosso')}
             </p>
             <p className="mt-2 max-w-md text-xs leading-relaxed text-nero/80 sm:text-base">
               {shortDescription ?? product.description}
@@ -389,30 +402,28 @@ export default function Product() {
         <div className="mt-12 grid grid-cols-1 items-center gap-6 sm:mt-16 sm:grid-cols-2 sm:gap-10">
           <div>
             <p className="font-display text-lg uppercase tracking-[0.25em] text-fuchsia sm:text-xl">
-              Un rituale completo
+              {t('pdp.unRitualeCompleto')}
             </p>
             <p className="mt-2 max-w-md text-xs leading-relaxed text-nero/80 sm:text-base">
-              Rossetto, gloss e mascara pensati per completarsi. Scopri il
-              trittico Anyma {anima.name} e porta a casa l&apos;intera
-              esperienza.
+              {t('pdp.ritualeBody', anima.name)}
             </p>
           </div>
           <Link
-            to={getPackPath(anima)}
+            to={href(getPackPath(anima))}
             className="group relative block aspect-[16/9] overflow-hidden rounded bg-nero/5"
           >
             <img
               src={getAnimaGalleryImages(anima)[0]}
-              alt={`Trittico Anyma ${anima.name}`}
+              alt={t('pdp.trittico', anima.name)}
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-nero/30 transition-colors group-hover:bg-nero/40" />
             <div className="absolute inset-0 flex flex-col items-start justify-end p-5">
               <p className="text-xs uppercase tracking-[0.25em] text-white/80">
-                Trittico Anyma {anima.name}
+                {t('pdp.trittico', anima.name)}
               </p>
               <p className="mt-1 font-display text-lg uppercase tracking-[0.03em] text-white">
-                Componi il tuo Pack →
+                {t('pdp.componiIlTuoPack')}
               </p>
             </div>
           </Link>
@@ -436,7 +447,7 @@ export default function Product() {
             product.productType === 'Rossetto' && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <p className="text-xs uppercase tracking-[0.3em] text-paper/40">
-                  Video in arrivo
+                  {t('pdp.videoInArrivo')}
                 </p>
               </div>
             )
@@ -444,10 +455,10 @@ export default function Product() {
           <div className="absolute inset-0 bg-gradient-to-t from-nero/80 via-nero/10 to-transparent" />
           <ScrollReveal className="absolute inset-x-0 bottom-0 p-6 sm:p-10">
             <p className="font-display text-lg uppercase tracking-[0.25em] text-fuchsia sm:text-xl">
-              {anima.storyHeading}
+              {pickLocale(anima.storyHeading, code)}
             </p>
             <p className="mt-2 max-w-md text-xs leading-relaxed text-paper sm:text-base">
-              {anima.story}
+              {pickLocale(anima.story, code)}
             </p>
           </ScrollReveal>
         </div>
@@ -456,13 +467,13 @@ export default function Product() {
       <div className="mt-12">
         <ProductVideos
           videos={lipstickModelVideos.length ? lipstickModelVideos : undefined}
-          tagline={getCommunityTagline(product.productType, colorTag)}
+          tagline={getCommunityTagline(product.productType, colorTag, code)}
         />
       </div>
 
       <div className="mt-12 border-t border-nero/10 pt-8">
         <h2 className="font-display text-lg uppercase tracking-[0.1em] text-nero">
-          Ti potrebbero piacere anche
+          {t('pdp.tiPotrebberoAncePiacere')}
         </h2>
         <Suspense fallback={null}>
           <Await resolve={recommendedProducts}>

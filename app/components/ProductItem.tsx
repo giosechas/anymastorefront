@@ -15,7 +15,8 @@ import {findAnimaByTag} from '~/lib/animas';
 import {getMascaraModelPhoto} from '~/lib/mascaraModelPhoto';
 import {getLipstickModelPhotos} from '~/lib/lipstickModelPhoto';
 import {getGlossModelPhotos} from '~/lib/glossModelPhoto';
-import {getColorTag} from '~/lib/productCopy';
+import {getColorTag, getCategoryLabel, getColorLabel} from '~/lib/productCopy';
+import {useLocale, useT} from '~/lib/i18n';
 
 const IMAGE_ROTATE_MS = 3000;
 
@@ -43,6 +44,8 @@ export function ProductItem({
 }) {
   const variantUrl = useVariantUrl(product.handle);
   const {open} = useAside();
+  const {code} = useLocale();
+  const t = useT();
   // Only the product's open/closed shots for now — skip swatch smears,
   // video thumbnails, etc. until more categorized photography exists.
   const gallery = 'images' in product ? product.images.nodes.slice(0, 2) : [];
@@ -58,6 +61,15 @@ export function ProductItem({
       ? getMascaraModelPhoto(product.productType, anima?.handle)
       : undefined;
   const colorTag = 'tags' in product ? getColorTag(product.tags) : undefined;
+  const productType = 'productType' in product ? product.productType : undefined;
+  const displayTitle =
+    code === 'IT' || !productType
+      ? product.title
+      : `ANYMA ${anima?.name ?? ''} · ${getCategoryLabel(productType, code)} ${
+          colorTag ? getColorLabel(colorTag, code) : ''
+        }`
+          .replace(/\s+/g, ' ')
+          .trim();
   const lipstickModelPhotos =
     'productType' in product
       ? getLipstickModelPhotos(product.productType, colorTag)
@@ -120,7 +132,7 @@ export function ProductItem({
         <div className="relative aspect-[4/5] overflow-hidden bg-white">
           {image && (
             <Image
-              alt={image.altText || product.title}
+              alt={image.altText || displayTitle}
               data={image}
               loading={loading}
               sizes="(min-width: 45em) 400px, 100vw"
@@ -178,7 +190,7 @@ export function ProductItem({
           </div>
         </div>
         <h4 className="mt-3 text-[10px] uppercase tracking-[0.05em] text-nero no-underline transition-colors group-hover:text-gold">
-          {product.title}
+          {displayTitle}
         </h4>
         <small className="text-[10px] text-nero/60 no-underline transition-colors group-hover:text-gold">
           <Money data={product.priceRange.minVariantPrice} />
@@ -194,7 +206,7 @@ export function ProductItem({
               lines={[{merchandiseId: variant.id, quantity: 1, selectedVariant: variant}]}
               className="border border-paper bg-paper/0 px-5 py-2 text-[11px] uppercase tracking-[0.15em] text-paper transition-colors hover:bg-paper hover:text-nero disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {variant.availableForSale ? 'Aggiungi al carrello' : 'Esaurito'}
+              {variant.availableForSale ? t('product.addToCart') : t('product.soldOut')}
             </AddToCartButton>
           </div>
         </div>
