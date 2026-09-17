@@ -256,7 +256,7 @@ function Hero() {
               i === textIndex ? 'opacity-100 duration-[1200ms]' : 'pointer-events-none opacity-0 duration-[800ms]'
             }`}
           >
-            <h1 className="font-display text-balance text-[38px] italic leading-[1.05] tracking-[0.04em] text-fuchsia [text-shadow:0_2px_10px_rgba(0,0,0,0.35)] sm:text-[50px] md:text-[62px]">
+            <h1 className="font-display text-balance text-[33px] italic leading-[1.05] tracking-[0.04em] text-fuchsia [text-shadow:0_2px_10px_rgba(0,0,0,0.35)] sm:text-[45px] md:text-[57px]">
               {slide.title}
             </h1>
             <p className="mt-3 max-w-md text-[14px] leading-relaxed text-paper [text-shadow:0_1px_8px_rgba(0,0,0,0.5)] sm:text-[20px]">
