@@ -241,9 +241,9 @@ function Hero() {
           ))}
         </div>
       </div>
-      <div className="absolute inset-0 -z-10 bg-nero/10" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-nero/7 via-nero/38 to-nero/18" />
-      <h1 className="font-display max-w-4xl text-balance text-[43px] italic leading-[1.05] tracking-[0.04em] text-fuchsia [text-shadow:0_2px_10px_rgba(0,0,0,0.35)] sm:text-[55px] md:text-[67px]">
+      <div className="absolute inset-0 -z-10 bg-nero/7" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-nero/5 via-nero/27 to-nero/13" />
+      <h1 className="font-display max-w-4xl text-balance text-[38px] italic leading-[1.05] tracking-[0.04em] text-fuchsia [text-shadow:0_2px_10px_rgba(0,0,0,0.35)] sm:text-[50px] md:text-[62px]">
         {headlineWords.map((word, i) => (
           <span key={i}>
             <span
