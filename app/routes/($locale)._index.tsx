@@ -241,9 +241,9 @@ function Hero() {
           ))}
         </div>
       </div>
-      <div className="absolute inset-0 -z-10 bg-nero/15" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-nero/10 via-nero/55 to-nero/25" />
-      <h1 className="font-display max-w-4xl text-balance text-5xl italic leading-[1.05] tracking-[0.04em] text-fuchsia [text-shadow:0_2px_16px_rgba(0,0,0,0.55)] sm:text-6xl md:text-7xl">
+      <div className="absolute inset-0 -z-10 bg-nero/10" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-nero/7 via-nero/38 to-nero/18" />
+      <h1 className="font-display max-w-4xl text-balance text-[43px] italic leading-[1.05] tracking-[0.04em] text-fuchsia [text-shadow:0_2px_10px_rgba(0,0,0,0.35)] sm:text-[55px] md:text-[67px]">
         {headlineWords.map((word, i) => (
           <span key={i}>
             <span
@@ -256,7 +256,7 @@ function Hero() {
           </span>
         ))}
       </h1>
-      <p className="mt-3 max-w-md text-[19px] leading-relaxed text-paper [text-shadow:0_1px_8px_rgba(0,0,0,0.5)] sm:text-[25px]">
+      <p className="mt-3 max-w-md text-[14px] leading-relaxed text-paper [text-shadow:0_1px_8px_rgba(0,0,0,0.5)] sm:text-[20px]">
         {tagline}
       </p>
       <div className="mt-10 flex flex-wrap items-center justify-start gap-4">
