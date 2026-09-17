@@ -208,7 +208,7 @@ function Hero() {
   return (
     <section
       data-header-theme="dark"
-      className="bleed-under-header relative isolate flex min-h-[70vh] flex-col items-center justify-center overflow-hidden bg-nero px-6 py-20 text-center text-paper sm:min-h-[86vh] sm:py-6"
+      className="bleed-under-header relative isolate flex min-h-[70vh] flex-col items-start justify-end overflow-hidden bg-nero px-6 py-20 text-left text-paper sm:min-h-[86vh] sm:py-6"
     >
       <div ref={parallaxRef} className="absolute inset-0 -z-10 h-full w-full overflow-hidden">
         <div
@@ -256,10 +256,10 @@ function Hero() {
           </span>
         ))}
       </h1>
-      <p className="mt-3 max-w-md text-2xl leading-relaxed text-paper [text-shadow:0_1px_8px_rgba(0,0,0,0.5)] sm:text-3xl">
+      <p className="mt-3 max-w-md text-[19px] leading-relaxed text-paper [text-shadow:0_1px_8px_rgba(0,0,0,0.5)] sm:text-[25px]">
         {tagline}
       </p>
-      <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+      <div className="mt-10 flex flex-wrap items-center justify-start gap-4">
         <a
           href="#anime"
           className="border border-gold px-8 py-3 text-xs uppercase tracking-[0.2em] text-white transition-colors hover:bg-gold hover:text-nero"
@@ -273,7 +273,7 @@ function Hero() {
           {t('hero.shopNow')}
         </Link>
       </div>
-      <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 items-center gap-3">
+      <div className="absolute bottom-8 right-6 flex items-center gap-3">
         <span className="text-[10px] tracking-[0.2em] text-paper/80">
           {String(activeIndex + 1).padStart(2, '0')}
         </span>
