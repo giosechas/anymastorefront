@@ -685,7 +685,7 @@ function ProductRow({
         {[...products, ...products].map((product, i) => (
           <div
             key={`${product.id}-${i}`}
-            className="w-[50%] shrink-0 sm:w-[28%] lg:w-[22%]"
+            className="w-[65%] shrink-0 sm:w-[36%] lg:w-[29%]"
           >
             <ProductItem product={product} />
           </div>
