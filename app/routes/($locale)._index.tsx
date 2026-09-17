@@ -64,6 +64,7 @@ const HERO_SLIDES = [
   {kind: 'video' as const, src: '/videos/hero/hero-cherry.mp4'},
 ];
 const HERO_IMAGE_ROTATE_MS = 4000;
+const HERO_TEXT_ROTATE_MS = 5000;
 
 export const meta: Route.MetaFunction = ({params}) => {
   const code = getLocaleFromParam(params.locale);
@@ -186,11 +187,8 @@ function Hero() {
   const t = useT();
   const {href} = useLocale();
   const [activeIndex, setActiveIndex] = useState(0);
-  const headlineWords = dict.hero.headline.split(' ');
-  const [tagline] = useState(
-    () =>
-      dict.hero.taglines[Math.floor(Math.random() * dict.hero.taglines.length)],
-  );
+  const [textIndex, setTextIndex] = useState(0);
+  const heroSlides = dict.hero.slides;
   const {ref: parallaxRef, offset} = useParallaxOffset<HTMLDivElement>(100);
 
   useEffect(() => {
@@ -204,6 +202,13 @@ function Hero() {
     }, HERO_IMAGE_ROTATE_MS);
     return () => clearInterval(id);
   }, []);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setTextIndex((i) => (i + 1) % heroSlides.length);
+    }, HERO_TEXT_ROTATE_MS);
+    return () => clearInterval(id);
+  }, [heroSlides.length]);
 
   return (
     <section
@@ -243,22 +248,23 @@ function Hero() {
       </div>
       <div className="absolute inset-0 -z-10 bg-nero/7" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-nero/5 via-nero/27 to-nero/13" />
-      <h1 className="font-display max-w-4xl text-balance text-[38px] italic leading-[1.05] tracking-[0.04em] text-fuchsia [text-shadow:0_2px_10px_rgba(0,0,0,0.35)] sm:text-[50px] md:text-[62px]">
-        {headlineWords.map((word, i) => (
-          <span key={i}>
-            <span
-              className="hero-word"
-              style={{animationDelay: `${150 + i * 90}ms`}}
-            >
-              {word}
-            </span>
-            {i < headlineWords.length - 1 && ' '}
-          </span>
+      <div className="grid max-w-4xl">
+        {heroSlides.map((slide, i) => (
+          <div
+            key={i}
+            className={`col-start-1 row-start-1 transition-opacity ease-in-out ${
+              i === textIndex ? 'opacity-100 duration-[1200ms]' : 'pointer-events-none opacity-0 duration-[800ms]'
+            }`}
+          >
+            <h1 className="font-display text-balance text-[38px] italic leading-[1.05] tracking-[0.04em] text-fuchsia [text-shadow:0_2px_10px_rgba(0,0,0,0.35)] sm:text-[50px] md:text-[62px]">
+              {slide.title}
+            </h1>
+            <p className="mt-3 max-w-md text-[14px] leading-relaxed text-paper [text-shadow:0_1px_8px_rgba(0,0,0,0.5)] sm:text-[20px]">
+              {slide.tagline}
+            </p>
+          </div>
         ))}
-      </h1>
-      <p className="mt-3 max-w-md text-[14px] leading-relaxed text-paper [text-shadow:0_1px_8px_rgba(0,0,0,0.5)] sm:text-[20px]">
-        {tagline}
-      </p>
+      </div>
       <div className="mt-10 flex flex-wrap items-center justify-start gap-4">
         <a
           href="#anime"
@@ -268,7 +274,7 @@ function Hero() {
         </a>
         <Link
           to={href('/collections/all')}
-          className="border border-white bg-white px-8 py-3 text-xs uppercase tracking-[0.2em] text-nero transition-colors hover:bg-transparent hover:text-white"
+          className="border border-white bg-white px-8 py-3 text-xs uppercase tracking-[0.2em] text-nero transition-colors hover:border-fuchsia hover:bg-fuchsia hover:text-white"
         >
           {t('hero.shopNow')}
         </Link>

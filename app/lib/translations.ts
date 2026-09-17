@@ -124,12 +124,37 @@ export const TRANSLATIONS = {
       soldOut: 'Esaurito',
     },
     hero: {
-      headline: 'Non esiste una sola te',
-      taglines: [
-        'Non coprire chi sei. Rivela la tua anima.',
-        'Il trucco che non chiede permesso.',
-        'Zero filtri. Zero scuse. Solo la tua verità.',
-        'La tua molteplicità è il tuo potere più grande.',
+      slides: [
+        {
+          title: 'IL PRIMO BEAUTY IDENTITARIO',
+          tagline: 'Non scegli un semplice cosmetico: scegli chi vuoi essere oggi.',
+        },
+        {
+          title: 'LA BELLEZZA NON È COERENZA. È VERITÀ.',
+          tagline: 'La tua molteplicità è il tuo potere più grande. Rivelala senza scuse.',
+        },
+        {
+          title: 'CHI VUOI ESSERE OGGI?',
+          tagline: 'Scegli la tua anima. Il tuo oggetto in alluminio ti seguirà.',
+        },
+        {
+          title: 'QUESTO NON È TRUCCO. È IL TUO RITUALE.',
+          tagline:
+            'Trasformiamo il gesto quotidiano davanti allo specchio in un atto di pura autodeterminazione.',
+        },
+        {
+          title: "OGGETTI D'ARTE CHE PARLANO DI TE",
+          tagline: 'Alluminio massiccio, finitura goldrose e la firma fisica della tua identità.',
+        },
+        {
+          title: 'TI DIAMO GLI STRUMENTI PER DIVENTARE',
+          tagline:
+            'Un giorno fiera come Leopard, un giorno libera come Street, un giorno leggera come Candy.',
+        },
+        {
+          title: 'REVEAL YOUR SOUL',
+          tagline: 'Oggetti identitari creati in Italia per dare voce a tutte le versioni di te.',
+        },
       ],
       discoverAnyme: 'Scopri le tue Anyme',
       shopNow: 'Shop Now',
@@ -453,12 +478,37 @@ export const TRANSLATIONS = {
       soldOut: 'Sold out',
     },
     hero: {
-      headline: 'Reveal your Soul!',
-      taglines: [
-        "Don't cover who you are. Reveal your soul.",
-        'Make-up that asks no permission.',
-        'Zero filters. Zero excuses. Only your truth.',
-        'Your multiplicity is your greatest power.',
+      slides: [
+        {
+          title: 'THE FIRST IDENTITY BEAUTY',
+          tagline: "You're not choosing a simple cosmetic: you're choosing who you want to be today.",
+        },
+        {
+          title: "BEAUTY IS NOT CONSISTENCY. IT'S TRUTH.",
+          tagline: 'Your multiplicity is your greatest power. Reveal it without apologies.',
+        },
+        {
+          title: 'WHO DO YOU WANT TO BE TODAY?',
+          tagline: 'Choose your soul. Your aluminum object will follow.',
+        },
+        {
+          title: "THIS ISN'T MAKE-UP. IT'S YOUR RITUAL.",
+          tagline:
+            'We turn the everyday gesture in front of the mirror into an act of pure self-determination.',
+        },
+        {
+          title: 'OBJECTS OF ART THAT SPEAK ABOUT YOU',
+          tagline: 'Solid aluminum, goldrose finish, and the physical signature of your identity.',
+        },
+        {
+          title: 'WE GIVE YOU THE TOOLS TO BECOME',
+          tagline:
+            'One day fierce like Leopard, one day free like Street, one day light like Candy.',
+        },
+        {
+          title: 'REVEAL YOUR SOUL',
+          tagline: 'Identity objects made in Italy to give voice to every version of you.',
+        },
       ],
       discoverAnyme: 'Discover your Anyme',
       shopNow: 'Shop Now',
@@ -782,12 +832,37 @@ export const TRANSLATIONS = {
       soldOut: 'Agotado',
     },
     hero: {
-      headline: 'Revela tu Alma',
-      taglines: [
-        'No cubras quién eres. Revela tu alma.',
-        'El maquillaje que no pide permiso.',
-        'Cero filtros. Cero excusas. Solo tu verdad.',
-        'Tu multiplicidad es tu mayor poder.',
+      slides: [
+        {
+          title: 'EL PRIMER BEAUTY IDENTITARIO',
+          tagline: 'No eliges un simple cosmético: eliges quién quieres ser hoy.',
+        },
+        {
+          title: 'LA BELLEZA NO ES COHERENCIA. ES VERDAD.',
+          tagline: 'Tu multiplicidad es tu mayor poder. Revélala sin excusas.',
+        },
+        {
+          title: '¿QUIÉN QUIERES SER HOY?',
+          tagline: 'Elige tu alma. Tu objeto en aluminio te seguirá.',
+        },
+        {
+          title: 'ESTO NO ES MAQUILLAJE. ES TU RITUAL.',
+          tagline:
+            'Transformamos el gesto cotidiano ante el espejo en un acto de pura autodeterminación.',
+        },
+        {
+          title: 'OBJETOS DE ARTE QUE HABLAN DE TI',
+          tagline: 'Aluminio macizo, acabado goldrose y la firma física de tu identidad.',
+        },
+        {
+          title: 'TE DAMOS LAS HERRAMIENTAS PARA CONVERTIRTE',
+          tagline:
+            'Un día fiera como Leopard, un día libre como Street, un día ligera como Candy.',
+        },
+        {
+          title: 'REVEAL YOUR SOUL',
+          tagline: 'Objetos identitarios creados en Italia para dar voz a todas las versiones de ti.',
+        },
       ],
       discoverAnyme: 'Descubre tus Anyme',
       shopNow: 'Comprar ahora',
