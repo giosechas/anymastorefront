@@ -64,7 +64,7 @@ const HERO_SLIDES = [
   {kind: 'video' as const, src: '/videos/hero/hero-cherry.mp4'},
 ];
 const HERO_IMAGE_ROTATE_MS = 4000;
-const HERO_TEXT_ROTATE_MS = 5000;
+const HERO_TEXT_ROTATE_MS = 8000;
 
 export const meta: Route.MetaFunction = ({params}) => {
   const code = getLocaleFromParam(params.locale);
