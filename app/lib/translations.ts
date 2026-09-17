@@ -126,33 +126,33 @@ export const TRANSLATIONS = {
     hero: {
       slides: [
         {
-          title: 'IL PRIMO BEAUTY IDENTITARIO',
+          title: 'Il primo beauty identitario',
           tagline: 'Non scegli un semplice cosmetico: scegli chi vuoi essere oggi.',
         },
         {
-          title: 'LA BELLEZZA NON È COERENZA. È VERITÀ.',
+          title: 'La bellezza non è coerenza. È verità.',
           tagline: 'La tua molteplicità è il tuo potere più grande. Rivelala senza scuse.',
         },
         {
-          title: 'CHI VUOI ESSERE OGGI?',
+          title: 'Chi vuoi essere oggi?',
           tagline: 'Scegli la tua anima. Il tuo oggetto in alluminio ti seguirà.',
         },
         {
-          title: 'QUESTO NON È TRUCCO. È IL TUO RITUALE.',
+          title: 'Questo non è trucco. È il tuo rituale.',
           tagline:
             'Trasformiamo il gesto quotidiano davanti allo specchio in un atto di pura autodeterminazione.',
         },
         {
-          title: "OGGETTI D'ARTE CHE PARLANO DI TE",
+          title: "Oggetti d'arte che parlano di te",
           tagline: 'Alluminio massiccio, finitura goldrose e la firma fisica della tua identità.',
         },
         {
-          title: 'TI DIAMO GLI STRUMENTI PER DIVENTARE',
+          title: 'Ti diamo gli strumenti per diventare',
           tagline:
             'Un giorno fiera come Leopard, un giorno libera come Street, un giorno leggera come Candy.',
         },
         {
-          title: 'REVEAL YOUR SOUL',
+          title: 'Reveal your soul',
           tagline: 'Oggetti identitari creati in Italia per dare voce a tutte le versioni di te.',
         },
       ],
@@ -480,33 +480,33 @@ export const TRANSLATIONS = {
     hero: {
       slides: [
         {
-          title: 'THE FIRST IDENTITY BEAUTY',
+          title: 'The first identity beauty',
           tagline: "You're not choosing a simple cosmetic: you're choosing who you want to be today.",
         },
         {
-          title: "BEAUTY IS NOT CONSISTENCY. IT'S TRUTH.",
+          title: "Beauty is not consistency. It's truth.",
           tagline: 'Your multiplicity is your greatest power. Reveal it without apologies.',
         },
         {
-          title: 'WHO DO YOU WANT TO BE TODAY?',
+          title: 'Who do you want to be today?',
           tagline: 'Choose your soul. Your aluminum object will follow.',
         },
         {
-          title: "THIS ISN'T MAKE-UP. IT'S YOUR RITUAL.",
+          title: "This isn't make-up. It's your ritual.",
           tagline:
             'We turn the everyday gesture in front of the mirror into an act of pure self-determination.',
         },
         {
-          title: 'OBJECTS OF ART THAT SPEAK ABOUT YOU',
+          title: 'Objects of art that speak about you',
           tagline: 'Solid aluminum, goldrose finish, and the physical signature of your identity.',
         },
         {
-          title: 'WE GIVE YOU THE TOOLS TO BECOME',
+          title: 'We give you the tools to become',
           tagline:
             'One day fierce like Leopard, one day free like Street, one day light like Candy.',
         },
         {
-          title: 'REVEAL YOUR SOUL',
+          title: 'Reveal your soul',
           tagline: 'Identity objects made in Italy to give voice to every version of you.',
         },
       ],
@@ -834,33 +834,33 @@ export const TRANSLATIONS = {
     hero: {
       slides: [
         {
-          title: 'EL PRIMER BEAUTY IDENTITARIO',
+          title: 'El primer beauty identitario',
           tagline: 'No eliges un simple cosmético: eliges quién quieres ser hoy.',
         },
         {
-          title: 'LA BELLEZA NO ES COHERENCIA. ES VERDAD.',
+          title: 'La belleza no es coherencia. Es verdad.',
           tagline: 'Tu multiplicidad es tu mayor poder. Revélala sin excusas.',
         },
         {
-          title: '¿QUIÉN QUIERES SER HOY?',
+          title: '¿Quién quieres ser hoy?',
           tagline: 'Elige tu alma. Tu objeto en aluminio te seguirá.',
         },
         {
-          title: 'ESTO NO ES MAQUILLAJE. ES TU RITUAL.',
+          title: 'Esto no es maquillaje. Es tu ritual.',
           tagline:
             'Transformamos el gesto cotidiano ante el espejo en un acto de pura autodeterminación.',
         },
         {
-          title: 'OBJETOS DE ARTE QUE HABLAN DE TI',
+          title: 'Objetos de arte que hablan de ti',
           tagline: 'Aluminio macizo, acabado goldrose y la firma física de tu identidad.',
         },
         {
-          title: 'TE DAMOS LAS HERRAMIENTAS PARA CONVERTIRTE',
+          title: 'Te damos las herramientas para convertirte',
           tagline:
             'Un día fiera como Leopard, un día libre como Street, un día ligera como Candy.',
         },
         {
-          title: 'REVEAL YOUR SOUL',
+          title: 'Reveal your soul',
           tagline: 'Objetos identitarios creados en Italia para dar voz a todas las versiones de ti.',
         },
       ],
