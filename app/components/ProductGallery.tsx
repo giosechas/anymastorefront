@@ -61,27 +61,33 @@ export function ProductGallery({
   const canZoom = active.kind !== 'video';
   const t = useT();
 
-  function handleMouseMove(event: React.MouseEvent<HTMLDivElement>) {
+  function updateZoomOrigin(event: React.MouseEvent<HTMLDivElement>) {
     const rect = event.currentTarget.getBoundingClientRect();
     const x = ((event.clientX - rect.left) / rect.width) * 100;
     const y = ((event.clientY - rect.top) / rect.height) * 100;
     setZoomOrigin(`${x}% ${y}%`);
   }
 
+  function handleClick(event: React.MouseEvent<HTMLDivElement>) {
+    if (!canZoom) return;
+    updateZoomOrigin(event);
+    setIsZooming((zooming) => !zooming);
+  }
+
   function goTo(index: number) {
     setActiveIndex((index + slides.length) % slides.length);
+    setIsZooming(false);
   }
 
   return (
     <div className="flex flex-col items-center gap-3">
       <div
         className={`relative w-full overflow-hidden bg-nero/5 ${
-          canZoom ? 'sm:cursor-zoom-in' : ''
+          canZoom ? (isZooming ? 'cursor-zoom-out' : 'cursor-zoom-in') : ''
         }`}
         style={{aspectRatio: activeAspectRatio}}
-        onMouseEnter={() => canZoom && setIsZooming(true)}
-        onMouseLeave={() => setIsZooming(false)}
-        onMouseMove={canZoom ? handleMouseMove : undefined}
+        onClick={handleClick}
+        onMouseMove={canZoom && isZooming ? updateZoomOrigin : undefined}
       >
         {active.kind === 'video' ? (
           <video
@@ -123,7 +129,10 @@ export function ProductGallery({
             <button
               type="button"
               aria-label={t('gallery.previous')}
-              onClick={() => goTo(activeIndex - 1)}
+              onClick={(e) => {
+                e.stopPropagation();
+                goTo(activeIndex - 1);
+              }}
               className="absolute left-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-paper/80 text-nero backdrop-blur-sm transition-transform hover:scale-110"
             >
               <ChevronIcon direction="left" />
@@ -131,7 +140,10 @@ export function ProductGallery({
             <button
               type="button"
               aria-label={t('gallery.next')}
-              onClick={() => goTo(activeIndex + 1)}
+              onClick={(e) => {
+                e.stopPropagation();
+                goTo(activeIndex + 1);
+              }}
               className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-paper/80 text-nero backdrop-blur-sm transition-transform hover:scale-110"
             >
               <ChevronIcon direction="right" />
