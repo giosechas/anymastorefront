@@ -62,14 +62,13 @@ export function ProductItem({
       : undefined;
   const colorTag = 'tags' in product ? getColorTag(product.tags) : undefined;
   const productType = 'productType' in product ? product.productType : undefined;
-  const displayTitle =
-    code === 'IT' || !productType
-      ? product.title
-      : `ANYMA ${anima?.name ?? ''} · ${getCategoryLabel(productType, code)} ${
-          colorTag ? getColorLabel(colorTag, code) : ''
-        }`
-          .replace(/\s+/g, ' ')
-          .trim();
+  const displayTitle = !productType
+    ? product.title
+    : `ANYMA ${anima?.name ?? ''} · ${getCategoryLabel(productType, code)} ${
+        colorTag ? getColorLabel(colorTag, code) : ''
+      }`
+        .replace(/\s+/g, ' ')
+        .trim();
   const lipstickModelPhotos =
     'productType' in product
       ? getLipstickModelPhotos(product.productType, colorTag)
@@ -160,7 +159,7 @@ export function ProductItem({
               item={{
                 id: product.id,
                 handle: product.handle,
-                title: product.title,
+                title: displayTitle,
                 image: image
                   ? {url: image.url, altText: image.altText}
                   : undefined,

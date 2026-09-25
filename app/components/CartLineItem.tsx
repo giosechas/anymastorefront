@@ -5,7 +5,9 @@ import {useVariantUrl} from '~/lib/variants';
 import {Link} from 'react-router';
 import {ProductPrice} from './ProductPrice';
 import {useAside} from './Aside';
-import {useT} from '~/lib/i18n';
+import {useLocale, useT} from '~/lib/i18n';
+import {getColorTag, getCategoryLabel, getColorLabel} from '~/lib/productCopy';
+import {findAnimaByTag} from '~/lib/animas';
 import type {
   CartApiQueryFragment,
   CartLineFragment,
@@ -32,9 +34,20 @@ export function CartLineItem({
   const {product, title, image, selectedOptions} = merchandise;
   const lineItemUrl = useVariantUrl(product.handle, selectedOptions);
   const {close} = useAside();
+  const {code} = useLocale();
   const t = useT();
   const lineItemChildren = childrenMap[id];
   const childrenLabelId = `cart-line-children-${id}`;
+  const colorTag = 'tags' in product ? getColorTag(product.tags) : undefined;
+  const anima = 'tags' in product ? findAnimaByTag(product.tags) : undefined;
+  const displayTitle =
+    'productType' in product && product.productType
+      ? `ANYMA ${anima?.name ?? ''} · ${getCategoryLabel(product.productType, code)} ${
+          colorTag ? getColorLabel(colorTag, code) : ''
+        }`
+          .replace(/\s+/g, ' ')
+          .trim()
+      : product.title;
 
   return (
     <li key={id} className="cart-line">
@@ -61,7 +74,7 @@ export function CartLineItem({
             }}
           >
             <p>
-              <strong>{product.title}</strong>
+              <strong>{displayTitle}</strong>
             </p>
           </Link>
           <ProductPrice price={line?.cost?.totalAmount} />
@@ -69,7 +82,7 @@ export function CartLineItem({
             {selectedOptions.map((option) => (
               <li key={option.name}>
                 <small>
-                  {option.name}: {option.value}
+                  {option.name}: {getColorLabel(option.value, code)}
                 </small>
               </li>
             ))}
@@ -81,7 +94,7 @@ export function CartLineItem({
       {lineItemChildren ? (
         <div>
           <p id={childrenLabelId} className="sr-only">
-            {t('cart.lineItemsWith', product.title)}
+            {t('cart.lineItemsWith', displayTitle)}
           </p>
           <ul aria-labelledby={childrenLabelId} className="cart-line-children">
             {lineItemChildren.map((childLine) => (

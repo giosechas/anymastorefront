@@ -29,11 +29,16 @@ import {
   COLOR_SWATCH_HEX,
   getColorTag,
   getColorLabel,
-  getCategoryLabel,
+  getComposedTitle,
   getCommunityTagline,
-  getShortDescription,
 } from '~/lib/productCopy';
-import {pickLocale} from '~/lib/locale';
+import {
+  getSkuStory,
+  getSkuPackaging,
+  getSkuFinishAroma,
+  getComingSoonColors,
+} from '~/lib/skuData';
+import {pickLocale, getLocaleFromParam} from '~/lib/locale';
 import {useLocale, useT} from '~/lib/i18n';
 import {getProductVideo} from '~/lib/productVideo';
 import {
@@ -45,9 +50,21 @@ import {getMascaraModelPhoto} from '~/lib/mascaraModelPhoto';
 import {getMascaraModelVideos} from '~/lib/mascaraModelVideo';
 import {getLipstickHeroVideo} from '~/lib/lipstickHeroVideo';
 
-export const meta: Route.MetaFunction = ({data}) => {
+export const meta: Route.MetaFunction = ({data, params}) => {
+  const code = getLocaleFromParam(params.locale);
+  const colorTag = data ? getColorTag(data.product.tags) : undefined;
+  const title = data
+    ? getComposedTitle(data.product.productType, colorTag, code)
+    : '';
+  const story = data
+    ? getSkuStory(data.product.productType, colorTag, data.anima?.tag, code)
+    : undefined;
   return [
-    {title: `Anyma Beauty | ${data?.product.title ?? ''}`},
+    {title: `Anyma Beauty | ${title}`},
+    {
+      name: 'description',
+      content: (story ?? data?.product.description ?? '').slice(0, 160),
+    },
     {
       rel: 'canonical',
       href: `/products/${data?.product.handle}`,
@@ -180,15 +197,17 @@ export default function Product() {
   });
 
   const colorTag = getColorTag(product.tags);
-  const shortDescription = getShortDescription(
+  const story = getSkuStory(product.productType, colorTag, anima?.tag, code);
+  const packaging = getSkuPackaging(product.productType, colorTag, anima?.tag);
+  const finishAroma = getSkuFinishAroma(
     product.productType,
     colorTag,
-    code,
+    anima?.tag,
   );
-  const displayTitle =
-    code === 'IT'
-      ? (product.title.split('·').pop()?.trim() ?? product.title)
-      : `${getCategoryLabel(product.productType, code)} ${colorTag ? getColorLabel(colorTag, code) : ''}`.trim();
+  const comingSoonColors = getComingSoonColors(product.productType).filter(
+    (c) => c.tag !== colorTag,
+  );
+  const displayTitle = getComposedTitle(product.productType, colorTag, code);
   const video = getProductVideo(product.productType, anima?.handle);
   const mascaraModelPhoto = getMascaraModelPhoto(
     product.productType,
@@ -240,9 +259,25 @@ export default function Product() {
         <div className="flex flex-col sm:justify-between">
           <div>
             <div className="flex items-start justify-between gap-3">
-              <h1 className="font-display text-2xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
-                {displayTitle}
-              </h1>
+              <div>
+                <h1 className="font-display text-2xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
+                  {displayTitle}
+                </h1>
+                {finishAroma && (finishAroma.finish || finishAroma.aroma) && (
+                  <p className="mt-1 text-[11px] uppercase tracking-[0.1em] text-nero/50">
+                    {[
+                      finishAroma.finish
+                        ? `${t('pdp.finish')}: ${finishAroma.finish}`
+                        : null,
+                      finishAroma.aroma
+                        ? `${t('pdp.aroma')}: ${finishAroma.aroma}`
+                        : null,
+                    ]
+                      .filter(Boolean)
+                      .join(' · ')}
+                  </p>
+                )}
+              </div>
               <WishlistHeart
                 className="static shrink-0 bg-transparent"
                 item={{
@@ -311,8 +346,34 @@ export default function Product() {
             )}
 
             <p className="mt-5 max-w-md text-base leading-relaxed text-nero/80 sm:text-lg">
-              {shortDescription ?? product.description}
+              {story ?? product.description}
             </p>
+
+            {packaging && (packaging.open || packaging.closed) && (
+              <details className="group mt-5 max-w-md">
+                <summary className="cursor-pointer text-xs uppercase tracking-[0.15em] text-nero/50 transition-colors hover:text-nero">
+                  {t('pdp.anatomiaDelProdotto')}
+                </summary>
+                <div className="mt-3 space-y-3 text-xs leading-relaxed text-nero/70">
+                  {packaging.closed && (
+                    <p>
+                      <span className="font-medium text-nero/90">
+                        {t('pdp.packagingChiuso')}:
+                      </span>{' '}
+                      {packaging.closed}
+                    </p>
+                  )}
+                  {packaging.open && (
+                    <p>
+                      <span className="font-medium text-nero/90">
+                        {t('pdp.packagingAperto')}:
+                      </span>{' '}
+                      {packaging.open}
+                    </p>
+                  )}
+                </div>
+              </details>
+            )}
 
             {siblings.length > 1 && (
               <div className="mt-8">
@@ -342,7 +403,28 @@ export default function Product() {
                       />
                     );
                   })}
+                  {comingSoonColors.map(({tag: comingSoonTag}) => (
+                    <span
+                      key={comingSoonTag}
+                      title={`${getColorLabel(comingSoonTag, code)} · ${t('pdp.inArrivo')}`}
+                      aria-label={`${getColorLabel(comingSoonTag, code)} · ${t('pdp.inArrivo')}`}
+                      className="relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-dashed border-nero/25"
+                      style={{
+                        backgroundColor: `${COLOR_SWATCH_HEX[comingSoonTag] ?? '#ccc'}55`,
+                      }}
+                    >
+                      <span className="absolute inset-0 rounded-full backdrop-blur-[1px]" />
+                    </span>
+                  ))}
                 </div>
+                {comingSoonColors.length > 0 && (
+                  <p className="mt-2 text-[10px] uppercase tracking-[0.15em] text-nero/40">
+                    {comingSoonColors
+                      .map((c) => getColorLabel(c.tag, code))
+                      .join(', ')}{' '}
+                    · {t('pdp.inArrivo')}
+                  </p>
+                )}
               </div>
             )}
 
@@ -392,7 +474,7 @@ export default function Product() {
               {t('pdp.guardaloAddosso')}
             </p>
             <p className="mt-2 max-w-md text-xs leading-relaxed text-nero/80 sm:text-base">
-              {shortDescription ?? product.description}
+              {story ?? product.description}
             </p>
           </div>
         </div>

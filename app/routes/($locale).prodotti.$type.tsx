@@ -3,6 +3,7 @@ import {useMemo, useState} from 'react';
 import type {Route} from './+types/($locale).prodotti.$type';
 import {ProductItem} from '~/components/ProductItem';
 import {getColorTag, getColorLabel, COLOR_SWATCH_HEX} from '~/lib/productCopy';
+import {getComingSoonColors} from '~/lib/skuData';
 import {getLocaleFromParam} from '~/lib/locale';
 import {useLocale, useT} from '~/lib/i18n';
 import {TRANSLATIONS} from '~/lib/translations';
@@ -72,6 +73,8 @@ export default function ProductsByType() {
     ? groups.filter(([key]) => key === activeFilter)
     : groups;
 
+  const comingSoonColors = getComingSoonColors(info.productType);
+
   return (
     <div className="bg-paper">
       <header className="mx-auto max-w-3xl px-6 pb-6 pt-16 text-center sm:pt-24">
@@ -120,7 +123,7 @@ export default function ProductsByType() {
       )}
 
       {groups.length > 1 && (
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-2.5 px-6 pb-8">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-2.5 px-6 pb-3">
           {groups.map(([key]) =>
             viewMode === 'color' ? (
               <button
@@ -157,7 +160,25 @@ export default function ProductsByType() {
               </button>
             ),
           )}
+          {viewMode === 'color' &&
+            comingSoonColors.map(({tag}) => (
+              <span
+                key={tag}
+                title={`${getColorLabel(tag, code)} · ${t('pdp.inArrivo')}`}
+                className="relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-dashed border-nero/25"
+                style={{backgroundColor: `${COLOR_SWATCH_HEX[tag] ?? '#ccc'}55`}}
+              >
+                <span className="absolute inset-0 rounded-full backdrop-blur-[1px]" />
+              </span>
+            ))}
         </div>
+      )}
+
+      {viewMode === 'color' && comingSoonColors.length > 0 && (
+        <p className="mx-auto mb-8 max-w-6xl px-6 text-center text-[10px] uppercase tracking-[0.15em] text-nero/40">
+          {comingSoonColors.map((c) => getColorLabel(c.tag, code)).join(', ')}{' '}
+          · {t('pdp.inArrivo')}
+        </p>
       )}
 
       <div className="mx-auto max-w-6xl px-6 pb-24">

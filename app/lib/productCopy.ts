@@ -1,71 +1,6 @@
 import type {LocaleCode} from '~/lib/locale';
 
 /**
- * Short, personal product copy in Anyma's voice (identity over features).
- * Keyed by productType (Shopify "Type") + color tag, since color meaning
- * doesn't change across animas — only the packaging does.
- */
-const SHORT_DESCRIPTIONS: Record<LocaleCode, Record<string, Record<string, string>>> = {
-  IT: {
-    Rossetto: {
-      NUDE: 'Un nude che non si nasconde: pigmento pieno, texture setosa, finish che dura tutto il giorno senza pesare sulle labbra.',
-      ROSSO: 'Il rosso che parla prima ancora che tu apra bocca. Pigmentazione intensa, texture cremosa, presenza assoluta.',
-      VIOLA: 'Un viola magnetico per chi non chiede permesso. Colore pieno dal primo passaggio, finish vellutato.',
-      CHERRY: 'Succoso, intenso, impossibile da ignorare. Il cherry che trasforma un gesto quotidiano in una dichiarazione.',
-    },
-    'Lip Gloss': {
-      PINK: 'Shine luminoso, colore che si costruisce a strati. Il pink che illumina senza gridare.',
-      YELLOW: 'Un tocco di luce dorata, effetto specchio, comfort totale sulle labbra. Per chi gioca con la luce.',
-    },
-    'Mascara/Eyeliner': {
-      BLACK: 'Volume e allungamento in un solo gesto. Nero intenso, formula leggera, sguardo che non passa inosservato.',
-      LILLA: 'Un lilla inaspettato per uno sguardo fuori dagli schemi. Definizione netta, colore che sorprende.',
-    },
-  },
-  EN: {
-    Rossetto: {
-      NUDE: "A nude that doesn't hide: full pigment, silky texture, an all-day finish that never weighs your lips down.",
-      ROSSO: 'The red that speaks before you even open your mouth. Intense pigment, creamy texture, absolute presence.',
-      VIOLA: 'A magnetic purple for those who ask no permission. Full color from the first swipe, velvet finish.',
-      CHERRY: "Juicy, intense, impossible to ignore. The cherry that turns an everyday gesture into a statement.",
-    },
-    'Lip Gloss': {
-      PINK: 'A luminous shine that builds in layers. The pink that lights up without shouting.',
-      YELLOW: 'A touch of golden light, mirror effect, total lip comfort. For those who play with light.',
-    },
-    'Mascara/Eyeliner': {
-      BLACK: 'Volume and length in a single gesture. Intense black, lightweight formula, a gaze that doesn\'t go unnoticed.',
-      LILLA: 'An unexpected lilac for a look that breaks the mold. Sharp definition, a color that surprises.',
-    },
-  },
-  ES: {
-    Rossetto: {
-      NUDE: 'Un nude que no se esconde: pigmento total, textura sedosa, acabado que dura todo el día sin pesar en los labios.',
-      ROSSO: 'El rojo que habla antes de que abras la boca. Pigmentación intensa, textura cremosa, presencia absoluta.',
-      VIOLA: 'Un violeta magnético para quien no pide permiso. Color total desde el primer trazo, acabado aterciopelado.',
-      CHERRY: 'Jugoso, intenso, imposible de ignorar. El cherry que convierte un gesto cotidiano en una declaración.',
-    },
-    'Lip Gloss': {
-      PINK: 'Brillo luminoso, color que se construye en capas. El pink que ilumina sin gritar.',
-      YELLOW: 'Un toque de luz dorada, efecto espejo, confort total en los labios. Para quien juega con la luz.',
-    },
-    'Mascara/Eyeliner': {
-      BLACK: 'Volumen y alargamiento en un solo gesto. Negro intenso, fórmula ligera, una mirada que no pasa desapercibida.',
-      LILLA: 'Un lila inesperado para una mirada fuera de lo común. Definición nítida, un color que sorprende.',
-    },
-  },
-};
-
-export function getShortDescription(
-  productType: string,
-  colorTag: string | undefined,
-  locale: LocaleCode = 'IT',
-): string | undefined {
-  if (!colorTag) return undefined;
-  return SHORT_DESCRIPTIONS[locale]?.[productType]?.[colorTag];
-}
-
-/**
  * A second, more philosophical line for "La community lo indossa" — distinct
  * in tone from the short description above, so the two sections don't repeat
  * the same thought in different words.
@@ -115,6 +50,8 @@ export const COLOR_SWATCH_HEX: Record<string, string> = {
   YELLOW: '#F4C542',
   BLACK: '#1A1A1A',
   LILLA: '#B9A3D9',
+  // Announced, no live product yet (see getComingSoonColors in skuData.ts).
+  CHOCOLATE: '#5C3A21',
 };
 
 const KNOWN_COLORS = Object.keys(COLOR_SWATCH_HEX);
@@ -124,36 +61,41 @@ export function getColorTag(tags: string[]): string | undefined {
   return tags.find((t) => KNOWN_COLORS.includes(t.toUpperCase()))?.toUpperCase();
 }
 
+// These are brand/shade names (like "Nude" or "Cherry" already were) —
+// same spelling in every locale, not translated.
 const COLOR_LABEL: Record<LocaleCode, Record<string, string>> = {
   IT: {
     NUDE: 'Nude',
-    ROSSO: 'Rosso',
-    VIOLA: 'Viola',
+    ROSSO: 'Red Metal',
+    VIOLA: 'Violet',
     CHERRY: 'Cherry',
     PINK: 'Pink',
-    YELLOW: 'Yellow',
-    BLACK: 'Black',
-    LILLA: 'Lilla',
+    YELLOW: 'Light Gold',
+    BLACK: 'Super Black',
+    LILLA: 'Pervinca',
+    CHOCOLATE: 'Chocolate',
   },
   EN: {
     NUDE: 'Nude',
-    ROSSO: 'Red',
-    VIOLA: 'Purple',
+    ROSSO: 'Red Metal',
+    VIOLA: 'Violet',
     CHERRY: 'Cherry',
     PINK: 'Pink',
-    YELLOW: 'Yellow',
-    BLACK: 'Black',
-    LILLA: 'Lilac',
+    YELLOW: 'Light Gold',
+    BLACK: 'Super Black',
+    LILLA: 'Pervinca',
+    CHOCOLATE: 'Chocolate',
   },
   ES: {
     NUDE: 'Nude',
-    ROSSO: 'Rojo',
-    VIOLA: 'Violeta',
+    ROSSO: 'Red Metal',
+    VIOLA: 'Violet',
     CHERRY: 'Cherry',
     PINK: 'Pink',
-    YELLOW: 'Yellow',
-    BLACK: 'Black',
-    LILLA: 'Lila',
+    YELLOW: 'Light Gold',
+    BLACK: 'Super Black',
+    LILLA: 'Pervinca',
+    CHOCOLATE: 'Chocolate',
   },
 };
 
@@ -188,4 +130,17 @@ export function getCategoryLabel(
   locale: LocaleCode = 'IT',
 ): string {
   return CATEGORY_LABELS[locale]?.[productType] ?? productType;
+}
+
+/** "Lipstick Red Metal" style title built from the translated category +
+ * color labels, used instead of Shopify's raw (Italian) product title so
+ * renamed colors show correctly in every locale. */
+export function getComposedTitle(
+  productType: string,
+  colorTag: string | undefined,
+  locale: LocaleCode = 'IT',
+): string {
+  const category = getCategoryLabel(productType, locale);
+  const color = colorTag ? getColorLabel(colorTag, locale) : '';
+  return `${category} ${color}`.trim();
 }
