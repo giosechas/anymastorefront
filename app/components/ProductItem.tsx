@@ -15,7 +15,7 @@ import {findAnimaByTag} from '~/lib/animas';
 import {getMascaraModelPhoto} from '~/lib/mascaraModelPhoto';
 import {getLipstickModelPhotos} from '~/lib/lipstickModelPhoto';
 import {getGlossModelPhotos} from '~/lib/glossModelPhoto';
-import {getColorTag, getCategoryLabel, getColorLabel} from '~/lib/productCopy';
+import {getColorTag, getCatalogTitle} from '~/lib/productCopy';
 import {useLocale, useT} from '~/lib/i18n';
 
 const IMAGE_ROTATE_MS = 3000;
@@ -64,11 +64,7 @@ export function ProductItem({
   const productType = 'productType' in product ? product.productType : undefined;
   const displayTitle = !productType
     ? product.title
-    : `ANYMA ${anima?.name ?? ''} · ${getCategoryLabel(productType, code)} ${
-        colorTag ? getColorLabel(colorTag, code) : ''
-      }`
-        .replace(/\s+/g, ' ')
-        .trim();
+    : getCatalogTitle(productType, colorTag, anima?.name, code);
   const lipstickModelPhotos =
     'productType' in product
       ? getLipstickModelPhotos(product.productType, colorTag)

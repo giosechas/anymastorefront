@@ -49,6 +49,20 @@ const TAG_TO_SKU_COLOR: Record<string, string> = {
   PINK: 'PINK',
 };
 
+/** Shopify's `productType` -> this dataset's `category`, exposed for
+ * modules (e.g. pdpContent.ts) that key their own tables by category. */
+export function getCategoryKey(
+  productType: string,
+): AnymaSku['category'] | undefined {
+  return PRODUCT_TYPE_TO_CATEGORY[productType];
+}
+
+/** The live Shopify color tag -> this dataset's brand color name, exposed
+ * for modules that key their own tables by the new brand color name. */
+export function getSkuColorKey(colorTag: string | undefined): string | undefined {
+  return colorTag ? TAG_TO_SKU_COLOR[colorTag] ?? colorTag : undefined;
+}
+
 function findSku(
   productType: string,
   colorTag: string | undefined,
@@ -79,18 +93,6 @@ export function getSkuStory(
     {IT: sku.story_it, EN: sku.story_en, ES: sku.story_es}[locale] ??
     sku.story_it
   );
-}
-
-/** The technical packaging copy (open/closed tube), for the collapsible
- * "Anatomia del prodotto" section. English only in the source data. */
-export function getSkuPackaging(
-  productType: string,
-  colorTag: string | undefined,
-  animaTag: string | undefined,
-): {open?: string; closed?: string} | undefined {
-  const sku = findSku(productType, colorTag, animaTag);
-  if (!sku) return undefined;
-  return {open: sku.open, closed: sku.closed};
 }
 
 /** Finish (e.g. "Pearly Gloss") and scent, shown under the color name. */

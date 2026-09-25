@@ -16,7 +16,7 @@ import {YRating} from '~/components/YRating';
 import {ScrollReveal} from '~/components/ScrollReveal';
 import {ProductVideos} from '~/components/ProductVideos';
 import {WishlistHeart} from '~/components/WishlistHeart';
-import {ProductItem} from '~/components/ProductItem';
+import {ProductCarousel} from '~/components/ProductCarousel';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {
   ANIME,
@@ -34,10 +34,15 @@ import {
 } from '~/lib/productCopy';
 import {
   getSkuStory,
-  getSkuPackaging,
   getSkuFinishAroma,
   getComingSoonColors,
 } from '~/lib/skuData';
+import {
+  getPdpDescrizione,
+  getPdpApplicazione,
+  getPdpFormula,
+  getPdpAnatomia,
+} from '~/lib/pdpContent';
 import {pickLocale, getLocaleFromParam} from '~/lib/locale';
 import {useLocale, useT} from '~/lib/i18n';
 import {getProductVideo} from '~/lib/productVideo';
@@ -198,12 +203,18 @@ export default function Product() {
 
   const colorTag = getColorTag(product.tags);
   const story = getSkuStory(product.productType, colorTag, anima?.tag, code);
-  const packaging = getSkuPackaging(product.productType, colorTag, anima?.tag);
+  // A shorter, distinct caption for "Guardalo addosso" — just the story's
+  // first sentence, so it doesn't repeat the full poetic text verbatim.
+  const shortStory = story?.split(/(?<=[.!?])\s+/)[0] ?? product.description;
   const finishAroma = getSkuFinishAroma(
     product.productType,
     colorTag,
     anima?.tag,
   );
+  const descrizione = getPdpDescrizione(product.productType, colorTag, code);
+  const applicazione = getPdpApplicazione(product.productType, code);
+  const formula = getPdpFormula(product.productType, code);
+  const anatomia = getPdpAnatomia(product.productType, code);
   const comingSoonColors = getComingSoonColors(product.productType).filter(
     (c) => c.tag !== colorTag,
   );
@@ -263,18 +274,9 @@ export default function Product() {
                 <h1 className="font-display text-2xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
                   {displayTitle}
                 </h1>
-                {finishAroma && (finishAroma.finish || finishAroma.aroma) && (
+                {finishAroma?.finish && (
                   <p className="mt-1 text-[11px] uppercase tracking-[0.1em] text-nero/50">
-                    {[
-                      finishAroma.finish
-                        ? `${t('pdp.finish')}: ${finishAroma.finish}`
-                        : null,
-                      finishAroma.aroma
-                        ? `${t('pdp.aroma')}: ${finishAroma.aroma}`
-                        : null,
-                    ]
-                      .filter(Boolean)
-                      .join(' · ')}
+                    {finishAroma.finish}
                   </p>
                 )}
               </div>
@@ -349,31 +351,27 @@ export default function Product() {
               {story ?? product.description}
             </p>
 
-            {packaging && (packaging.open || packaging.closed) && (
-              <details className="group mt-5 max-w-md">
-                <summary className="cursor-pointer text-xs uppercase tracking-[0.15em] text-nero/50 transition-colors hover:text-nero">
-                  {t('pdp.anatomiaDelProdotto')}
-                </summary>
-                <div className="mt-3 space-y-3 text-xs leading-relaxed text-nero/70">
-                  {packaging.closed && (
-                    <p>
-                      <span className="font-medium text-nero/90">
-                        {t('pdp.packagingChiuso')}:
-                      </span>{' '}
-                      {packaging.closed}
-                    </p>
-                  )}
-                  {packaging.open && (
-                    <p>
-                      <span className="font-medium text-nero/90">
-                        {t('pdp.packagingAperto')}:
-                      </span>{' '}
-                      {packaging.open}
-                    </p>
-                  )}
-                </div>
-              </details>
-            )}
+            <div className="mt-6 max-w-md divide-y divide-nero/10 border-y border-nero/10">
+              {descrizione && (
+                <PdpAccordion title={t('pdp.descrizione')}>
+                  {descrizione}
+                </PdpAccordion>
+              )}
+              {applicazione && (
+                <PdpAccordion title={t('pdp.applicazione')}>
+                  {applicazione}
+                </PdpAccordion>
+              )}
+              {formula && (
+                <PdpAccordion title={t('pdp.formula')}>{formula}</PdpAccordion>
+              )}
+              {anatomia && (
+                <PdpAccordion title={t('pdp.anatomia')}>{anatomia}</PdpAccordion>
+              )}
+              <PdpAccordion title={t('pdp.ingredienti')}>
+                {t('pdp.ingredientiInArrivo')}
+              </PdpAccordion>
+            </div>
 
             {siblings.length > 1 && (
               <div className="mt-8">
@@ -427,18 +425,15 @@ export default function Product() {
                 )}
               </div>
             )}
-
-            <div className="mt-8">
-              <YRating />
-            </div>
           </div>
 
-          <div className="mt-8 sm:mt-4">
+          <div className="mt-8 space-y-6 sm:mt-4">
             <ProductForm
               productOptions={productOptions}
               selectedVariant={selectedVariant}
               buttonClassName="w-full border border-nero bg-nero px-8 py-4 text-xs uppercase tracking-[0.2em] text-paper transition-colors hover:bg-transparent hover:text-nero disabled:cursor-not-allowed disabled:opacity-40"
             />
+            <YRating />
           </div>
         </div>
       </div>
@@ -474,7 +469,7 @@ export default function Product() {
               {t('pdp.guardaloAddosso')}
             </p>
             <p className="mt-2 max-w-md text-xs leading-relaxed text-nero/80 sm:text-base">
-              {story ?? product.description}
+              {shortStory}
             </p>
           </div>
         </div>
@@ -562,10 +557,8 @@ export default function Product() {
             {(items) => {
               if (!items || items.length === 0) return null;
               return (
-                <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                  {items.slice(0, 8).map((item) => (
-                    <ProductItem key={item.id} product={item} />
-                  ))}
+                <div className="mt-4">
+                  <ProductCarousel products={items.slice(0, 8)} />
                 </div>
               );
             }}
@@ -589,6 +582,36 @@ export default function Product() {
         }}
       />
     </div>
+  );
+}
+
+/** One expandable row in the Descrizione/Applicazione/Formula/Anatomia/
+ * Ingredienti stack below the poetic story. */
+function PdpAccordion({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <details className="group py-3">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-xs uppercase tracking-[0.15em] text-nero/70 transition-colors hover:text-nero [&::-webkit-details-marker]:hidden">
+        {title}
+        <svg
+          viewBox="0 0 24 24"
+          className="h-3 w-3 shrink-0 text-nero/40 transition-transform duration-200 group-open:rotate-180"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </summary>
+      <div className="mt-2 pb-1 text-xs leading-relaxed text-nero/70">
+        {children}
+      </div>
+    </details>
   );
 }
 

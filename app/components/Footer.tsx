@@ -98,10 +98,8 @@ export function Footer({
                     </a>
                   ))}
                 </div>
-                {/* PLACEHOLDER: dati societari da confermare con il
-                   commercialista/legale (Codice del Consumo art. 49). */}
                 <p className="text-[10px] text-paper/40">
-                  MAD SOLUTION S.R.L. · {t('footer.rightsReserved')}
+                  {t('footer.rightsReserved')}
                 </p>
               </div>
             </div>

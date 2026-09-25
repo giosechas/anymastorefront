@@ -132,7 +132,7 @@ export function getCategoryLabel(
   return CATEGORY_LABELS[locale]?.[productType] ?? productType;
 }
 
-/** "Lipstick Red Metal" style title built from the translated category +
+/** "Lip Gloss - Light Gold" style title built from the translated category +
  * color labels, used instead of Shopify's raw (Italian) product title so
  * renamed colors show correctly in every locale. */
 export function getComposedTitle(
@@ -142,5 +142,19 @@ export function getComposedTitle(
 ): string {
   const category = getCategoryLabel(productType, locale);
   const color = colorTag ? getColorLabel(colorTag, locale) : '';
-  return `${category} ${color}`.trim();
+  return color ? `${category} - ${color}` : category;
+}
+
+/** "ANYMA Leopard · Lip Gloss - Light Gold" style title used on catalog
+ * cards and in the cart, combining the anima name with the composed
+ * category+color title. */
+export function getCatalogTitle(
+  productType: string,
+  colorTag: string | undefined,
+  animaName: string | undefined,
+  locale: LocaleCode = 'IT',
+): string {
+  return `ANYMA ${animaName ?? ''} · ${getComposedTitle(productType, colorTag, locale)}`
+    .replace(/\s+/g, ' ')
+    .trim();
 }

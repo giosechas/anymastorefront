@@ -6,7 +6,7 @@ import {Link} from 'react-router';
 import {ProductPrice} from './ProductPrice';
 import {useAside} from './Aside';
 import {useLocale, useT} from '~/lib/i18n';
-import {getColorTag, getCategoryLabel, getColorLabel} from '~/lib/productCopy';
+import {getColorTag, getColorLabel, getCatalogTitle} from '~/lib/productCopy';
 import {findAnimaByTag} from '~/lib/animas';
 import type {
   CartApiQueryFragment,
@@ -42,11 +42,7 @@ export function CartLineItem({
   const anima = 'tags' in product ? findAnimaByTag(product.tags) : undefined;
   const displayTitle =
     'productType' in product && product.productType
-      ? `ANYMA ${anima?.name ?? ''} · ${getCategoryLabel(product.productType, code)} ${
-          colorTag ? getColorLabel(colorTag, code) : ''
-        }`
-          .replace(/\s+/g, ' ')
-          .trim()
+      ? getCatalogTitle(product.productType, colorTag, anima?.name, code)
       : product.title;
 
   return (
