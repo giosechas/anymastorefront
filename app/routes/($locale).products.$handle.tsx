@@ -365,10 +365,6 @@ export default function Product() {
               </div>
             )}
 
-            <p className="mt-5 max-w-md text-[11px] leading-relaxed text-nero/80 sm:text-[13px]">
-              {story ?? product.description}
-            </p>
-
             <PdpDetailTabs tabs={pdpTabs} />
 
             {siblings.length > 1 && (
@@ -589,7 +585,7 @@ type PdpTab = {key: string; label: string; content: React.ReactNode};
  * story: small labels laid out side by side, each opening the same
  * accordion panel underneath when picked. */
 function PdpDetailTabs({tabs}: {tabs: PdpTab[]}) {
-  const [openKey, setOpenKey] = useState<string | null>(null);
+  const [openKey, setOpenKey] = useState<string | null>(tabs[0]?.key ?? null);
   const openTab = tabs.find((tab) => tab.key === openKey);
 
   return (
