@@ -215,6 +215,24 @@ export default function Product() {
   const applicazione = getPdpApplicazione(product.productType, code);
   const formula = getPdpFormula(product.productType, code);
   const anatomia = getPdpAnatomia(product.productType, code);
+  const rawPdpTabs: (PdpTab | null)[] = [
+    descrizione
+      ? {key: 'descrizione', label: t('pdp.descrizione'), content: descrizione}
+      : null,
+    applicazione
+      ? {key: 'applicazione', label: t('pdp.applicazione'), content: applicazione}
+      : null,
+    formula ? {key: 'formula', label: t('pdp.formula'), content: formula} : null,
+    anatomia
+      ? {key: 'anatomia', label: t('pdp.anatomia'), content: anatomia}
+      : null,
+    {
+      key: 'ingredienti',
+      label: t('pdp.ingredienti'),
+      content: t('pdp.ingredientiInArrivo'),
+    },
+  ];
+  const pdpTabs = rawPdpTabs.filter((tab): tab is PdpTab => tab !== null);
   const comingSoonColors = getComingSoonColors(product.productType).filter(
     (c) => c.tag !== colorTag,
   );
@@ -347,31 +365,11 @@ export default function Product() {
               </div>
             )}
 
-            <p className="mt-5 max-w-md text-base leading-relaxed text-nero/80 sm:text-lg">
+            <p className="mt-5 max-w-md text-[11px] leading-relaxed text-nero/80 sm:text-[13px]">
               {story ?? product.description}
             </p>
 
-            <div className="mt-6 max-w-md divide-y divide-nero/10 border-y border-nero/10">
-              {descrizione && (
-                <PdpAccordion title={t('pdp.descrizione')}>
-                  {descrizione}
-                </PdpAccordion>
-              )}
-              {applicazione && (
-                <PdpAccordion title={t('pdp.applicazione')}>
-                  {applicazione}
-                </PdpAccordion>
-              )}
-              {formula && (
-                <PdpAccordion title={t('pdp.formula')}>{formula}</PdpAccordion>
-              )}
-              {anatomia && (
-                <PdpAccordion title={t('pdp.anatomia')}>{anatomia}</PdpAccordion>
-              )}
-              <PdpAccordion title={t('pdp.ingredienti')}>
-                {t('pdp.ingredientiInArrivo')}
-              </PdpAccordion>
-            </div>
+            <PdpDetailTabs tabs={pdpTabs} />
 
             {siblings.length > 1 && (
               <div className="mt-8">
@@ -585,33 +583,41 @@ export default function Product() {
   );
 }
 
-/** One expandable row in the Descrizione/Applicazione/Formula/Anatomia/
- * Ingredienti stack below the poetic story. */
-function PdpAccordion({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
+type PdpTab = {key: string; label: string; content: React.ReactNode};
+
+/** Descrizione/Applicazione/Formula/Anatomia/Ingredienti below the poetic
+ * story: small labels laid out side by side, each opening the same
+ * accordion panel underneath when picked. */
+function PdpDetailTabs({tabs}: {tabs: PdpTab[]}) {
+  const [openKey, setOpenKey] = useState<string | null>(null);
+  const openTab = tabs.find((tab) => tab.key === openKey);
+
   return (
-    <details className="group py-3">
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-xs uppercase tracking-[0.15em] text-nero/70 transition-colors hover:text-nero [&::-webkit-details-marker]:hidden">
-        {title}
-        <svg
-          viewBox="0 0 24 24"
-          className="h-3 w-3 shrink-0 text-nero/40 transition-transform duration-200 group-open:rotate-180"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </summary>
-      <div className="mt-2 pb-1 text-xs leading-relaxed text-nero/70">
-        {children}
+    <div className="mt-6 max-w-md border-y border-nero/10 py-3">
+      <div className="flex flex-wrap gap-x-4 gap-y-1.5">
+        {tabs.map((tab) => (
+          <button
+            key={tab.key}
+            type="button"
+            onClick={() =>
+              setOpenKey((current) => (current === tab.key ? null : tab.key))
+            }
+            className={`border-b pb-0.5 text-[9px] uppercase tracking-[0.12em] transition-colors ${
+              openKey === tab.key
+                ? 'border-nero text-nero'
+                : 'border-transparent text-nero/55 hover:text-nero'
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
-    </details>
+      {openTab && (
+        <div className="mt-3 text-xs leading-relaxed text-nero/70">
+          {openTab.content}
+        </div>
+      )}
+    </div>
   );
 }
 

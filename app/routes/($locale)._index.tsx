@@ -16,28 +16,15 @@ import {
 import {pickLocale, getLocaleFromParam} from '~/lib/locale';
 import {useLocale, useT, useDict} from '~/lib/i18n';
 import {TRANSLATIONS} from '~/lib/translations';
-import heroProduct1 from '~/assets/images/hero-product/product-1.webp';
-import heroProduct2 from '~/assets/images/hero-product/product-2.webp';
-import heroProduct3 from '~/assets/images/hero-product/product-3.webp';
-import heroProduct4 from '~/assets/images/hero-product/product-4.webp';
 import brandStoryBg from '~/assets/images/brand-story/all-models.webp';
 import philosophyTruth1 from '~/assets/images/philosophy/pool/truth1.webp';
-import philosophyTruth2 from '~/assets/images/philosophy/pool/truth2.webp';
-import philosophyTruth3 from '~/assets/images/philosophy/pool/truth3.webp';
-import philosophyTruth4 from '~/assets/images/philosophy/pool/truth4.webp';
 import philosophyTruth5 from '~/assets/images/philosophy/pool/truth5.webp';
 import philosophyIdentity1 from '~/assets/images/philosophy/pool/identity1.webp';
 import philosophyIdentity2 from '~/assets/images/philosophy/pool/identity2.webp';
 import philosophyIdentity3 from '~/assets/images/philosophy/pool/identity3.webp';
 import founderImage1 from '~/assets/images/founders/founder-1.webp';
 
-const PHILOSOPHY_TRUTH_IMAGES = [
-  philosophyTruth1,
-  philosophyTruth2,
-  philosophyTruth3,
-  philosophyTruth4,
-  philosophyTruth5,
-];
+const PHILOSOPHY_TRUTH_IMAGES = [philosophyTruth1, philosophyTruth5];
 const PHILOSOPHY_IDENTITY_IMAGES = [
   philosophyIdentity1,
   philosophyIdentity2,
@@ -53,12 +40,8 @@ const FOUNDERS_ROTATE_MS = 6000;
 const FOUNDERS_REGISTERED = 247;
 const FOUNDERS_TOTAL = 800;
 
-const HERO_SLIDES = [
-  {kind: 'image' as const, src: heroProduct1},
-  {kind: 'image' as const, src: heroProduct2},
-  {kind: 'image' as const, src: heroProduct3},
-  {kind: 'image' as const, src: heroProduct4},
-  {kind: 'video' as const, src: '/videos/hero/hero-rosso.mp4'},
+const HERO_SLIDES: Array<{kind: 'image' | 'video'; src: string}> = [
+  {kind: 'video', src: '/videos/hero/hero-rosso.mp4'},
   {kind: 'video' as const, src: '/videos/hero/hero-nude.mp4'},
   {kind: 'video' as const, src: '/videos/hero/hero-viola.mp4'},
   {kind: 'video' as const, src: '/videos/hero/hero-cherry.mp4'},
