@@ -209,13 +209,13 @@ export function HeaderMenu({
               key={anima.key}
               onClick={close}
               prefetch="intent"
-              to={href(`/collections/${anima.handle}`)}
+              to={href(anima.comingSoon ? '/prossimamente' : `/collections/${anima.handle}`)}
             >
               {anima.name}
             </NavLink>
           ))}
           <p className="header-menu-anime-label">{t('header.packPerAnyme')}</p>
-          {ANIME.map((anima) => (
+          {ANIME.filter((a) => !a.comingSoon).map((anima) => (
             <NavLink
               key={`pack-${anima.key}`}
               onClick={close}

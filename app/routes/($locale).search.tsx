@@ -13,6 +13,7 @@ import type {
   PredictiveSearchQuery,
 } from 'storefrontapi.generated';
 import {getLocaleFromParam} from '~/lib/locale';
+import {isComingSoonProduct} from '~/lib/animas';
 import {useT} from '~/lib/i18n';
 import {TRANSLATIONS} from '~/lib/translations';
 
@@ -98,6 +99,7 @@ const SEARCH_PRODUCT_FRAGMENT = `#graphql
     id
     publishedAt
     title
+    tags
     trackingParameters
     vendor
     selectedOrFirstAvailableVariant(
@@ -248,6 +250,15 @@ async function regularSearch({
     throw new Error('No search data returned from Shopify API');
   }
 
+  if (items.products?.nodes) {
+    items.products.nodes = items.products.nodes.filter(
+      (p) => {
+        const tags = (p as unknown as {tags?: string[]}).tags;
+        return !tags || !isComingSoonProduct(tags);
+      },
+    );
+  }
+
   const total = Object.values(items).reduce(
     (acc: number, {nodes}: {nodes: Array<unknown>}) => acc + nodes.length,
     0,
@@ -315,6 +326,7 @@ const PREDICTIVE_SEARCH_PRODUCT_FRAGMENT = `#graphql
     id
     title
     handle
+    tags
     trackingParameters
     selectedOrFirstAvailableVariant(
       selectedOptions: []
@@ -425,6 +437,15 @@ async function predictiveSearch({
 
   if (!items) {
     throw new Error('No predictive search data returned from Shopify API');
+  }
+
+  if (items.products) {
+    items.products = items.products.filter(
+      (p) => {
+        const tags = (p as unknown as {tags?: string[]}).tags;
+        return !tags || !isComingSoonProduct(tags);
+      },
+    );
   }
 
   const total = Object.values(items).reduce(

@@ -11,6 +11,7 @@ import {
   ANIME,
   getAnimaGalleryImages,
   getPackPath,
+  isComingSoonProduct,
   type AnimaDefinition,
 } from '~/lib/animas';
 import {pickLocale, getLocaleFromParam} from '~/lib/locale';
@@ -83,11 +84,14 @@ function loadDeferredData({context}: Route.LoaderArgs) {
     .query(RECOMMENDED_PRODUCTS_QUERY)
     .then((data) => {
       if (!data?.products?.nodes) return data;
+      const visible = data.products.nodes.filter(
+        (p: {tags: string[]}) => !isComingSoonProduct(p.tags),
+      );
       return {
         ...data,
         products: {
           ...data.products,
-          nodes: diversifyProducts(data.products.nodes),
+          nodes: diversifyProducts(visible),
         },
       };
     })
@@ -353,9 +357,10 @@ function AnimaTile({anima}: {anima: AnimaDefinition}) {
       onMouseEnter={handleMouseEnter}
     >
       <Link
-        to={anima.comingSoon ? '#' : href(`/collections/${anima.handle}`)}
+        to={anima.comingSoon
+          ? href('/prossimamente')
+          : href(`/collections/${anima.handle}`)}
         className="absolute inset-0 flex flex-col justify-end p-6"
-        onClick={anima.comingSoon ? (e) => e.preventDefault() : undefined}
       >
         {images.map((src, i) => (
           <img
@@ -364,12 +369,13 @@ function AnimaTile({anima}: {anima: AnimaDefinition}) {
             alt=""
             className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
               i === activeIndex ? 'opacity-100' : 'opacity-0'
-            } ${anima.comingSoon ? 'blur-sm' : ''}`}
+            }`}
+            style={anima.comingSoon ? {filter: 'blur(8px) saturate(0.5)'} : undefined}
           />
         ))}
         <div className="absolute inset-0 bg-gradient-to-t from-nero/70 via-nero/5 to-transparent" />
         {anima.comingSoon && (
-          <div className="absolute inset-0 flex items-center justify-center bg-nero/30">
+          <div className="absolute inset-0 flex items-center justify-center bg-nero/40">
             <span className="font-display text-2xl uppercase tracking-[0.15em] text-paper sm:text-3xl">
               {code === 'ES' ? 'Muy Pronto' : code === 'EN' ? 'Coming Soon' : 'Prossimamente'}
             </span>

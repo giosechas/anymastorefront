@@ -7,6 +7,7 @@ import type {CollectionItemFragment} from 'storefrontapi.generated';
 import {getLocaleFromParam} from '~/lib/locale';
 import {useT} from '~/lib/i18n';
 import {TRANSLATIONS} from '~/lib/translations';
+import {ANIME} from '~/lib/animas';
 
 export const meta: Route.MetaFunction = ({params}) => {
   const code = getLocaleFromParam(params.locale);
@@ -33,9 +34,13 @@ async function loadCriticalData({context, request}: Route.LoaderArgs) {
     pageBy: 8,
   });
 
+  const excludeQuery = ANIME.filter((a) => a.comingSoon)
+    .map((a) => `NOT tag:"${a.tag}"`)
+    .join(' AND ');
+
   const [{products}] = await Promise.all([
     storefront.query(CATALOG_QUERY, {
-      variables: {...paginationVariables},
+      variables: {...paginationVariables, query: excludeQuery},
     }),
     // Add other queries here, so that they are loaded in parallel
   ]);
@@ -118,8 +123,9 @@ const CATALOG_QUERY = `#graphql
     $last: Int
     $startCursor: String
     $endCursor: String
+    $query: String
   ) @inContext(country: $country, language: $language) {
-    products(first: $first, last: $last, before: $startCursor, after: $endCursor) {
+    products(first: $first, last: $last, before: $startCursor, after: $endCursor, query: $query) {
       nodes {
         ...CollectionItem
       }

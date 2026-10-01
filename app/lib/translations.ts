@@ -363,6 +363,28 @@ export const TRANSLATIONS = {
       metaTitle: 'Anyma Beauty | Tutti i Prodotti',
       title: 'Tutti i Prodotti',
     },
+    prossimamente: {
+      metaTitle: 'Anyma Beauty | Prossimamente',
+      heroTitle: 'Tre anime stanno arrivando.',
+      heroSubtitle: 'Non le abbiamo ancora create. Le stiamo ascoltando.',
+      body1:
+        'ANYMA BEAUTY non produce collezioni: crea anime. E un\'anima non nasce in una riunione di marketing — nasce quando è pronta.',
+      body2:
+        'Panther, Urban e Candy Tiffany esistono già nel nostro immaginario. Sappiamo che texture avranno, che storia racconteranno, che donna le sceglierà senza pensarci due volte. Ma prima di produrle, vogliamo ascoltare te.',
+      body3:
+        'Le prime tre anime — Leopard, Candy Rosa e Street — sono il primo capitolo. Sono nelle mani delle nostre Anime Prime, le prime donne che hanno scelto di far parte di questo progetto. Il loro feedback, le loro storie, il modo in cui vivono i nostri prodotti: tutto questo sta disegnando il prossimo capitolo.',
+      body4:
+        'Quando Panther, Urban e Candy Tiffany saranno pronte, non sarà perché abbiamo deciso noi. Sarà perché voi ce l\'avete chiesto.',
+      cta: 'Vuoi essere tra le prime a sapere quando arrivano?',
+      emailPlaceholder: 'Lascia la tua email',
+      subscribe: 'Avvisami',
+      thanks: 'Grazie! Ti avviseremo.',
+      sectionTitle: 'Le tre anime in arrivo',
+      panther: 'Due texture, un\'unica forza. La pantera non ruggisce — osserva. E quando agisce, è precisa.',
+      urban: 'Il denim profondo di chi vive la città senza subirla. Urban è la calma di chi sa dove sta andando.',
+      candyTiffany: 'Il verde menta di chi non chiede di essere capita — si fa ricordare. Eleganza che non si spiega: si indossa.',
+      backToAnime: 'Torna alle anime',
+    },
   },
   EN: {
     header: {
@@ -725,6 +747,28 @@ export const TRANSLATIONS = {
       metaTitle: 'Anyma Beauty | All Products',
       title: 'All Products',
     },
+    prossimamente: {
+      metaTitle: 'Anyma Beauty | Coming Soon',
+      heroTitle: 'Three souls are on their way.',
+      heroSubtitle: "We haven't created them yet. We're listening.",
+      body1:
+        "ANYMA BEAUTY doesn't produce collections: it creates souls. And a soul isn't born in a marketing meeting — it's born when it's ready.",
+      body2:
+        "Panther, Urban and Candy Tiffany already exist in our imagination. We know what textures they'll have, what stories they'll tell, which woman will choose them without a second thought. But before we produce them, we want to hear from you.",
+      body3:
+        "The first three souls — Leopard, Candy Rosa and Street — are the opening chapter. They're in the hands of our Anime Prime, the first women who chose to be part of this project. Their feedback, their stories, the way they live with our products: all of this is shaping the next chapter.",
+      body4:
+        "When Panther, Urban and Candy Tiffany are ready, it won't be because we decided. It'll be because you asked.",
+      cta: 'Want to be among the first to know when they arrive?',
+      emailPlaceholder: 'Leave your email',
+      subscribe: 'Notify me',
+      thanks: "Thanks! We'll let you know.",
+      sectionTitle: 'The three souls in the making',
+      panther: "Two textures, one force. The panther doesn't roar — she watches. And when she acts, she's precise.",
+      urban: "The deep denim of someone who lives in the city without being lived by it. Urban is the calm of knowing where you're going.",
+      candyTiffany: "The mint green of someone who doesn't ask to be understood — she makes herself remembered. Elegance that isn't explained: it's worn.",
+      backToAnime: 'Back to the souls',
+    },
   },
   ES: {
     header: {
@@ -1085,6 +1129,28 @@ export const TRANSLATIONS = {
     allProducts: {
       metaTitle: 'Anyma Beauty | Todos los Productos',
       title: 'Todos los Productos',
+    },
+    prossimamente: {
+      metaTitle: 'Anyma Beauty | Muy Pronto',
+      heroTitle: 'Tres almas están en camino.',
+      heroSubtitle: 'Todavía no las creamos. Las estamos escuchando.',
+      body1:
+        'ANYMA BEAUTY no produce colecciones: crea almas. Y un alma no nace en una reunión de marketing — nace cuando está lista.',
+      body2:
+        'Panther, Urban y Candy Tiffany ya existen en nuestro imaginario. Sabemos qué texturas tendrán, qué historia contarán, qué mujer las va a elegir sin pensarlo dos veces. Pero antes de producirlas, queremos escucharte a vos.',
+      body3:
+        'Las primeras tres almas — Leopard, Candy Rosa y Street — son el primer capítulo. Están en las manos de nuestras Anime Prime, las primeras mujeres que eligieron ser parte de este proyecto. Su feedback, sus historias, la forma en que viven nuestros productos: todo eso está dibujando el próximo capítulo.',
+      body4:
+        'Cuando Panther, Urban y Candy Tiffany estén listas, no será porque lo decidimos nosotros. Será porque ustedes lo pidieron.',
+      cta: '¿Querés ser de las primeras en saber cuándo llegan?',
+      emailPlaceholder: 'Dejá tu email',
+      subscribe: 'Avisame',
+      thanks: '¡Gracias! Te avisaremos.',
+      sectionTitle: 'Las tres almas en camino',
+      panther: 'Dos texturas, una sola fuerza. La pantera no ruge — observa. Y cuando actúa, es precisa.',
+      urban: 'El denim profundo de quien vive la ciudad sin sufrirla. Urban es la calma de saber adónde vas.',
+      candyTiffany: 'El verde menta de quien no pide ser entendida — se hace recordar. Elegancia que no se explica: se lleva puesta.',
+      backToAnime: 'Volver a las almas',
     },
   },
 } as const;

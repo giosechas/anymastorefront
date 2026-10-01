@@ -202,6 +202,12 @@ export function findAnimaByTag(
   return ANIME.find((a) => tags.includes(a.tag));
 }
 
+const COMING_SOON_TAGS = ANIME.filter((a) => a.comingSoon).map((a) => a.tag);
+
+export function isComingSoonProduct(tags: string[]): boolean {
+  return tags.some((t) => COMING_SOON_TAGS.includes(t));
+}
+
 /** /pack/$handle expects the slug without the "anima-" prefix. */
 export function getPackPath(anima: AnimaDefinition): string {
   return `/pack/${anima.handle.replace(/^anima-/, '')}`;
