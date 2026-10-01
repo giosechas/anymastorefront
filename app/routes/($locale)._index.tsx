@@ -48,6 +48,11 @@ const HERO_SLIDES: Array<{kind: 'image' | 'video'; src: string}> = [
 ];
 const HERO_IMAGE_ROTATE_MS = 4000;
 const HERO_TEXT_ROTATE_MS = 8000;
+const HERO_CTA_LABELS = [
+  'Scopri chi sei',
+  'Decidi chi vuoi essere oggi',
+  'Non esiste una sola te',
+];
 
 export const meta: Route.MetaFunction = ({params}) => {
   const code = getLocaleFromParam(params.locale);
@@ -155,6 +160,7 @@ export default function Homepage() {
     <div className="home">
       {data.isShopLinked ? null : <MockShopNotice />}
       <Hero />
+      <div className="mx-auto my-6 h-[3px] max-w-6xl bg-[#FF5FA0] sm:my-8" />
       <RecommendedProducts products={data.recommendedProducts} />
       <AnimeGrid />
       <PhilosophySection />
@@ -239,7 +245,7 @@ function Hero() {
               i === textIndex ? 'opacity-100 duration-[1200ms]' : 'pointer-events-none opacity-0 duration-[800ms]'
             }`}
           >
-            <h1 className="font-display text-balance text-[33px] leading-[1.05] tracking-[0.04em] text-fuchsia [text-shadow:0_2px_10px_rgba(0,0,0,0.35)] sm:text-[45px] md:text-[57px]">
+            <h1 className="font-display text-balance text-[18px] uppercase leading-[1.05] tracking-[0.04em] text-fuchsia [text-shadow:0_2px_10px_rgba(0,0,0,0.35)] sm:text-[30px] md:text-[42px]">
               {slide.title}
             </h1>
             <p className="mt-3 max-w-md text-[14px] leading-relaxed text-paper [text-shadow:0_1px_8px_rgba(0,0,0,0.5)] sm:text-[20px]">
@@ -253,7 +259,7 @@ function Hero() {
           href="#anime"
           className="border border-gold px-8 py-3 text-xs uppercase tracking-[0.2em] text-white transition-colors hover:bg-gold hover:text-nero"
         >
-          {t('hero.discoverAnyme')}
+          {HERO_CTA_LABELS[textIndex % HERO_CTA_LABELS.length]}
         </a>
         <Link
           to={href('/collections/all')}
@@ -313,11 +319,11 @@ function AnimaTile({anima}: {anima: AnimaDefinition}) {
   const {code, href} = useLocale();
   const t = useT();
   const [activeIndex, setActiveIndex] = useState(0);
-  // Randomized per-tile so the 6 tiles don't all flip in sync.
   const [initialDelay] = useState(() => Math.random() * ANIMA_TILE_ROTATE_MS);
+  const hoverOnlyRotate = anima.key === 'candyRosa';
 
   useEffect(() => {
-    if (images.length < 2) return;
+    if (images.length < 2 || hoverOnlyRotate) return;
     let intervalId: ReturnType<typeof setInterval>;
     const nextRandomIndex = (current: number) => {
       if (images.length < 3) return (current + 1) % images.length;
@@ -335,15 +341,21 @@ function AnimaTile({anima}: {anima: AnimaDefinition}) {
       clearTimeout(timeoutId);
       clearInterval(intervalId);
     };
-  }, [images.length, initialDelay]);
+  }, [images.length, initialDelay, hoverOnlyRotate]);
+
+  const handleMouseEnter = hoverOnlyRotate
+    ? () => setActiveIndex((i) => (i + 1) % images.length)
+    : undefined;
 
   return (
     <div
       className={`group relative aspect-[4/5] overflow-hidden ${anima.swatch}`}
+      onMouseEnter={handleMouseEnter}
     >
       <Link
-        to={href(`/collections/${anima.handle}`)}
+        to={anima.comingSoon ? '#' : href(`/collections/${anima.handle}`)}
         className="absolute inset-0 flex flex-col justify-end p-6"
+        onClick={anima.comingSoon ? (e) => e.preventDefault() : undefined}
       >
         {images.map((src, i) => (
           <img
@@ -352,10 +364,17 @@ function AnimaTile({anima}: {anima: AnimaDefinition}) {
             alt=""
             className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
               i === activeIndex ? 'opacity-100' : 'opacity-0'
-            }`}
+            } ${anima.comingSoon ? 'blur-sm' : ''}`}
           />
         ))}
         <div className="absolute inset-0 bg-gradient-to-t from-nero/70 via-nero/5 to-transparent" />
+        {anima.comingSoon && (
+          <div className="absolute inset-0 flex items-center justify-center bg-nero/30">
+            <span className="font-display text-2xl uppercase tracking-[0.15em] text-paper sm:text-3xl">
+              {code === 'ES' ? 'Muy Pronto' : code === 'EN' ? 'Coming Soon' : 'Prossimamente'}
+            </span>
+          </div>
+        )}
         <div className="relative">
           <h3 className="font-display text-2xl uppercase tracking-[0.05em] text-paper">
             {anima.name}
@@ -365,14 +384,16 @@ function AnimaTile({anima}: {anima: AnimaDefinition}) {
           </p>
         </div>
       </Link>
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-nero/0 opacity-0 transition-all duration-200 group-hover:bg-nero/40 group-hover:opacity-100">
-        <Link
-          to={href(getPackPath(anima))}
-          className="pointer-events-auto border border-white bg-nero/80 px-6 py-3 text-xs uppercase tracking-[0.15em] text-white transition-colors hover:bg-nero"
-        >
-          {t('animaGrid.compraIlPack')}
-        </Link>
-      </div>
+      {!anima.comingSoon && (
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-nero/0 opacity-0 transition-all duration-200 group-hover:bg-nero/40 group-hover:opacity-100">
+          <Link
+            to={href(getPackPath(anima))}
+            className="pointer-events-auto border border-white bg-nero/80 px-6 py-3 text-xs uppercase tracking-[0.15em] text-white transition-colors hover:bg-nero"
+          >
+            {t('animaGrid.compraIlPack')}
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

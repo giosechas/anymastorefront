@@ -107,7 +107,7 @@ export function Header({
         <img
           src={onDark ? logoWhite : logoPositive}
           alt={shop.name}
-          className="h-5 w-auto md:h-7"
+          className="h-7 w-auto md:h-9"
         />
       </NavLink>
       <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} onDark={onDark} />

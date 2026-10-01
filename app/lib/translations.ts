@@ -157,7 +157,7 @@ export const TRANSLATIONS = {
         },
       ],
       discoverAnyme: 'Scopri le tue Anyme',
-      shopNow: 'Shop Now',
+      shopNow: 'Tu sai chi sei',
     },
     animaGrid: {
       le6Anyme: 'Le 6 Anyme',
@@ -518,7 +518,7 @@ export const TRANSLATIONS = {
         },
       ],
       discoverAnyme: 'Discover your Anyme',
-      shopNow: 'Shop Now',
+      shopNow: 'You know who you are',
     },
     animaGrid: {
       le6Anyme: 'The 6 Anyme',
@@ -879,7 +879,7 @@ export const TRANSLATIONS = {
         },
       ],
       discoverAnyme: 'Descubre tus Anyme',
-      shopNow: 'Comprar ahora',
+      shopNow: 'Tú sabes quién eres',
     },
     animaGrid: {
       le6Anyme: 'Las 6 Anyme',

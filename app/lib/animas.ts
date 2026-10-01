@@ -54,7 +54,7 @@ export const ANIME: AnimaDefinition[] = [
     swatch: 'anima-tile-leopard',
     color: '#a9793a',
     tag: 'LEOPARD',
-    galleryCount: 8,
+    galleryCount: 3,
   },
   {
     key: 'panther',
