@@ -379,9 +379,6 @@ function AnimaTile({anima}: {anima: AnimaDefinition}) {
           <h3 className="font-display text-2xl uppercase tracking-[0.05em] text-paper">
             {anima.name}
           </h3>
-          <p className="mt-1 text-xs text-paper/80">
-            {pickLocale(anima.tagline, code)}
-          </p>
         </div>
       </Link>
       {!anima.comingSoon && (

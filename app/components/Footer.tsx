@@ -35,9 +35,6 @@ export function Footer({
         {(footer) => (
           <footer className="footer">
             <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 bg-paper px-6 py-8 text-center">
-              <p className="font-display text-[17px] uppercase tracking-[0.25em] text-nero/80">
-                {t('footer.rivelaChiSei')}
-              </p>
               <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
                 <Link
                   to={href('/about')}
@@ -46,17 +43,11 @@ export function Footer({
                   {t('footer.laNostraStoria')}
                 </Link>
                 <FooterDot />
-                <LegalMenu />
-                <FooterDot />
-                <TrackOrderMenuItem />
-                <FooterDot />
-                <ReturnOrderMenuItem />
-                <FooterDot />
                 <Link
-                  to={href('/lavora-con-noi')}
+                  to={href('/blogs/journal')}
                   className="text-xs uppercase tracking-[0.15em] text-nero/60 transition-colors hover:text-nero"
                 >
-                  {t('footer.lavoraConNoi')}
+                  {t('footer.scopriIlBlog')}
                 </Link>
                 {footer?.menu && header.shop.primaryDomain?.url && (
                   <>
@@ -71,7 +62,7 @@ export function Footer({
               </div>
             </div>
 
-            {/* Bottom bar — minimal: wordmark + year, socials, legal name. */}
+            {/* Bottom bar — wordmark + year, socials, legal dropdown. */}
             <div className="border-t border-paper/10 bg-nero">
               <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-4 sm:flex-row">
                 <div className="flex items-center gap-2">
@@ -92,15 +83,13 @@ export function Footer({
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={social.name}
-                      className="text-paper/40 transition-colors hover:text-paper"
+                      className="text-fuchsia transition-colors hover:text-fuchsia/70"
                     >
                       <SocialIcon name={social.name} />
                     </a>
                   ))}
                 </div>
-                <p className="text-[10px] text-paper/40">
-                  {t('footer.rightsReserved')}
-                </p>
+                <LegalMenu />
               </div>
             </div>
           </footer>
@@ -261,7 +250,7 @@ function LegalMenu() {
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        className="flex items-center gap-1.5 text-xs uppercase tracking-[0.15em] text-nero/60 transition-colors hover:text-nero"
+        className="flex items-center gap-1.5 text-xs uppercase tracking-[0.15em] text-paper/60 transition-colors hover:text-paper"
       >
         {t('footer.areaLegale')}
         <span
@@ -272,13 +261,13 @@ function LegalMenu() {
         </span>
       </button>
       {open && (
-        <div className="absolute left-1/2 top-full z-20 mt-4 w-[90vw] max-w-3xl -translate-x-1/2 rounded bg-paper px-6 py-5">
-          <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+        <div className="absolute bottom-full right-0 z-20 mb-3 w-max max-w-xs rounded bg-nero/95 px-5 py-4 shadow-lg backdrop-blur-sm">
+          <ul className="flex flex-col gap-2.5">
             {LEGAL_POLICIES.map((policy) => (
               <li key={policy.slug}>
                 <Link
                   to={`/legale/${policy.slug}`}
-                  className="text-xs uppercase tracking-[0.05em] text-nero/70 transition-colors hover:text-gold"
+                  className="text-xs uppercase tracking-[0.05em] text-paper/70 transition-colors hover:text-fuchsia"
                 >
                   {policy.title}
                 </Link>

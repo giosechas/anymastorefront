@@ -23,6 +23,7 @@ export const TRANSLATIONS = {
     footer: {
       rivelaChiSei: 'Rivela chi sei',
       laNostraStoria: 'La Nostra Storia',
+      scopriIlBlog: 'Scopri il nostro blog',
       areaLegale: 'Area Legale',
       lavoraConNoi: 'Lavora con noi',
       rightsReserved: 'Tutti i diritti riservati',
@@ -384,6 +385,7 @@ export const TRANSLATIONS = {
     footer: {
       rivelaChiSei: 'Reveal who you are',
       laNostraStoria: 'Our Story',
+      scopriIlBlog: 'Discover our blog',
       areaLegale: 'Legal',
       lavoraConNoi: 'Work with us',
       rightsReserved: 'All rights reserved',
@@ -745,6 +747,7 @@ export const TRANSLATIONS = {
     footer: {
       rivelaChiSei: 'Revela quién eres',
       laNostraStoria: 'Nuestra Historia',
+      scopriIlBlog: 'Descubre nuestro blog',
       areaLegale: 'Legal',
       lavoraConNoi: 'Trabaja con nosotros',
       rightsReserved: 'Todos los derechos reservados',
