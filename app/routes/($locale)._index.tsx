@@ -164,8 +164,9 @@ export default function Homepage() {
     <div className="home">
       {data.isShopLinked ? null : <MockShopNotice />}
       <Hero />
-      <div className="mx-auto my-6 h-[3px] max-w-6xl bg-[#FF5FA0] sm:my-8" />
+      <div className="my-6 h-[3px] w-full bg-fuchsia sm:my-8" />
       <RecommendedProducts products={data.recommendedProducts} />
+      <div className="my-6 h-[3px] w-full bg-fuchsia sm:my-8" />
       <AnimeGrid />
       <PhilosophySection />
       <BrandStoryTeaser />
@@ -252,9 +253,6 @@ function Hero() {
             <h1 className="font-display text-balance text-[18px] uppercase leading-[1.05] tracking-[0.04em] text-fuchsia [text-shadow:0_2px_10px_rgba(0,0,0,0.35)] sm:text-[30px] md:text-[42px]">
               {slide.title}
             </h1>
-            <p className="mt-3 max-w-md text-[14px] leading-relaxed text-paper [text-shadow:0_1px_8px_rgba(0,0,0,0.5)] sm:text-[20px]">
-              {slide.tagline}
-            </p>
           </div>
         ))}
       </div>
