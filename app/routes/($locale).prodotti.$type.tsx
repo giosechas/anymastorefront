@@ -3,7 +3,7 @@ import {useMemo, useState} from 'react';
 import type {Route} from './+types/($locale).prodotti.$type';
 import {ProductItem} from '~/components/ProductItem';
 import {getColorTag, getColorLabel, COLOR_SWATCH_HEX} from '~/lib/productCopy';
-
+import {isComingSoonProduct} from '~/lib/animas';
 import {getLocaleFromParam} from '~/lib/locale';
 import {useLocale, useT} from '~/lib/i18n';
 import {TRANSLATIONS} from '~/lib/translations';
@@ -43,7 +43,10 @@ export async function loader({context, params}: Route.LoaderArgs) {
     variables: {searchQuery: `product_type:"${info.productType}"`},
   });
 
-  return {info, products: products.nodes};
+  const visible = products.nodes.filter(
+    (p: {tags: string[]}) => !isComingSoonProduct(p.tags),
+  );
+  return {info, products: visible};
 }
 
 export default function ProductsByType() {

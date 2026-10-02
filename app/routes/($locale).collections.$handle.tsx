@@ -5,7 +5,7 @@ import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {ProductItem} from '~/components/ProductItem';
 import type {ProductItemFragment} from 'storefrontapi.generated';
-import {ANIME, findAnimaByCollectionHandle} from '~/lib/animas';
+import {ANIME, findAnimaByCollectionHandle, isComingSoonProduct} from '~/lib/animas';
 import {getAnimaAnimalVideo} from '~/lib/animaVideo';
 import {pickLocale} from '~/lib/locale';
 import {useLocale, useT} from '~/lib/i18n';
@@ -104,7 +104,7 @@ export default function Collection() {
               {t('collection.cambiaLaTuaAnyma')}
             </p>
             <div className="flex flex-wrap justify-center gap-1.5">
-              {ANIME.map((a) => {
+              {ANIME.filter((a) => !a.comingSoon).map((a) => {
                 const isCurrent = a.key === anima.key;
                 return isCurrent ? (
                   <span
@@ -167,13 +167,15 @@ export default function Collection() {
           connection={collection.products}
           resourcesClassName="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
         >
-          {({node: product, index}) => (
-            <ProductItem
-              key={product.id}
-              product={product}
-              loading={index < 8 ? 'eager' : undefined}
-            />
-          )}
+          {({node: product, index}) =>
+            isComingSoonProduct(product.tags) ? null : (
+              <ProductItem
+                key={product.id}
+                product={product}
+                loading={index < 8 ? 'eager' : undefined}
+              />
+            )
+          }
         </PaginatedResourceSection>
       </div>
 
