@@ -148,10 +148,10 @@ export default function Pack() {
                     }`}
                   >
                     {product.featuredImage && (
-                      <div className="h-20 w-20 bg-nero/5">
+                      <div className="h-40 w-40 bg-nero/5">
                         <Image
                           data={product.featuredImage}
-                          sizes="80px"
+                          sizes="160px"
                           className="h-full w-full object-contain"
                         />
                       </div>

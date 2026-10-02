@@ -164,9 +164,9 @@ export default function Homepage() {
     <div className="home">
       {data.isShopLinked ? null : <MockShopNotice />}
       <Hero />
-      <div className="my-6 h-[3px] w-full bg-fuchsia sm:my-8" />
+      <div className="my-2 h-[3px] w-full bg-fuchsia sm:my-3" />
       <RecommendedProducts products={data.recommendedProducts} />
-      <div className="my-6 h-[3px] w-full bg-fuchsia sm:my-8" />
+      <div className="my-2 h-[3px] w-full bg-fuchsia sm:my-3" />
       <AnimeGrid />
       <PhilosophySection />
       <BrandStoryTeaser />
