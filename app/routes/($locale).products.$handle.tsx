@@ -35,7 +35,6 @@ import {
 import {
   getSkuStory,
   getSkuFinishAroma,
-  getComingSoonColors,
 } from '~/lib/skuData';
 import {
   getPdpDescrizione,
@@ -233,9 +232,6 @@ export default function Product() {
     },
   ];
   const pdpTabs = rawPdpTabs.filter((tab): tab is PdpTab => tab !== null);
-  const comingSoonColors = getComingSoonColors(product.productType).filter(
-    (c) => c.tag !== colorTag,
-  );
   const displayTitle = getComposedTitle(product.productType, colorTag, code);
   const video = getProductVideo(product.productType, anima?.handle);
   const mascaraModelPhoto = getMascaraModelPhoto(
@@ -395,28 +391,7 @@ export default function Product() {
                       />
                     );
                   })}
-                  {comingSoonColors.map(({tag: comingSoonTag}) => (
-                    <span
-                      key={comingSoonTag}
-                      title={`${getColorLabel(comingSoonTag, code)} · ${t('pdp.inArrivo')}`}
-                      aria-label={`${getColorLabel(comingSoonTag, code)} · ${t('pdp.inArrivo')}`}
-                      className="relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-dashed border-nero/25"
-                      style={{
-                        backgroundColor: `${COLOR_SWATCH_HEX[comingSoonTag] ?? '#ccc'}55`,
-                      }}
-                    >
-                      <span className="absolute inset-0 rounded-full backdrop-blur-[1px]" />
-                    </span>
-                  ))}
                 </div>
-                {comingSoonColors.length > 0 && (
-                  <p className="mt-2 text-[10px] uppercase tracking-[0.15em] text-nero/40">
-                    {comingSoonColors
-                      .map((c) => getColorLabel(c.tag, code))
-                      .join(', ')}{' '}
-                    · {t('pdp.inArrivo')}
-                  </p>
-                )}
               </div>
             )}
           </div>

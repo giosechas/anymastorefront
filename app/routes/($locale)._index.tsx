@@ -290,8 +290,11 @@ function Hero() {
   );
 }
 
+const ACTIVE_ANIMAS = ANIME.filter((a) => !a.comingSoon);
+
 function AnimeGrid() {
   const t = useT();
+  const {href} = useLocale();
   return (
     <section id="anime" className="mx-auto max-w-6xl px-6 py-12 sm:py-28">
       <div className="mb-8 text-center sm:mb-12">
@@ -306,9 +309,24 @@ function AnimeGrid() {
         </p>
       </div>
       <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
-        {ANIME.map((anima) => (
+        {ACTIVE_ANIMAS.map((anima) => (
           <AnimaTile key={anima.key} anima={anima} />
         ))}
+        <Link
+          to={href('/prossimamente')}
+          className="group relative flex aspect-[4/5] flex-col items-center justify-center overflow-hidden p-6 text-center"
+          style={{background: 'linear-gradient(to bottom right, #231F20, #C8A96E)'}}
+        >
+          <h3 className="font-display text-xl uppercase tracking-[0.1em] text-paper sm:text-2xl">
+            {t('animaGrid.comingSoonTitle')}
+          </h3>
+          <p className="mt-3 max-w-[200px] text-xs leading-relaxed text-paper/70 sm:text-sm">
+            {t('animaGrid.comingSoonSubtitle')}
+          </p>
+          <span className="mt-5 text-2xl text-paper/60 transition-transform group-hover:translate-x-1">
+            →
+          </span>
+        </Link>
       </div>
     </section>
   );
@@ -318,7 +336,7 @@ const ANIMA_TILE_ROTATE_MS = 5000;
 
 function AnimaTile({anima}: {anima: AnimaDefinition}) {
   const images = getAnimaGalleryImages(anima);
-  const {code, href} = useLocale();
+  const {href} = useLocale();
   const t = useT();
   const [activeIndex, setActiveIndex] = useState(0);
   const [initialDelay] = useState(() => Math.random() * ANIMA_TILE_ROTATE_MS);
@@ -355,9 +373,7 @@ function AnimaTile({anima}: {anima: AnimaDefinition}) {
       onMouseEnter={handleMouseEnter}
     >
       <Link
-        to={anima.comingSoon
-          ? href('/prossimamente')
-          : href(`/collections/${anima.handle}`)}
+        to={href(`/collections/${anima.handle}`)}
         className="absolute inset-0 flex flex-col justify-end p-6"
       >
         {images.map((src, i) => (
@@ -368,33 +384,23 @@ function AnimaTile({anima}: {anima: AnimaDefinition}) {
             className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
               i === activeIndex ? 'opacity-100' : 'opacity-0'
             }`}
-            style={anima.comingSoon ? {filter: 'blur(8px) saturate(0.5)'} : undefined}
           />
         ))}
         <div className="absolute inset-0 bg-gradient-to-t from-nero/70 via-nero/5 to-transparent" />
-        {anima.comingSoon && (
-          <div className="absolute inset-0 flex items-center justify-center bg-nero/40">
-            <span className="font-display text-2xl uppercase tracking-[0.15em] text-paper sm:text-3xl">
-              {code === 'ES' ? 'Muy Pronto' : code === 'EN' ? 'Coming Soon' : 'Prossimamente'}
-            </span>
-          </div>
-        )}
         <div className="relative">
           <h3 className="font-display text-2xl uppercase tracking-[0.05em] text-paper">
             {anima.name}
           </h3>
         </div>
       </Link>
-      {!anima.comingSoon && (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-nero/0 opacity-0 transition-all duration-200 group-hover:bg-nero/40 group-hover:opacity-100">
-          <Link
-            to={href(getPackPath(anima))}
-            className="pointer-events-auto border border-white bg-nero/80 px-6 py-3 text-xs uppercase tracking-[0.15em] text-white transition-colors hover:bg-nero"
-          >
-            {t('animaGrid.compraIlPack')}
-          </Link>
-        </div>
-      )}
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-nero/0 opacity-0 transition-all duration-200 group-hover:bg-nero/40 group-hover:opacity-100">
+        <Link
+          to={href(getPackPath(anima))}
+          className="pointer-events-auto border border-white bg-nero/80 px-6 py-3 text-xs uppercase tracking-[0.15em] text-white transition-colors hover:bg-nero"
+        >
+          {t('animaGrid.compraIlPack')}
+        </Link>
+      </div>
     </div>
   );
 }

@@ -204,12 +204,12 @@ export function HeaderMenu({
           >
             {t('header.tutteLeAnyme')}
           </NavLink>
-          {ANIME.map((anima) => (
+          {ANIME.filter((a) => !a.comingSoon).map((anima) => (
             <NavLink
               key={anima.key}
               onClick={close}
               prefetch="intent"
-              to={href(anima.comingSoon ? '/prossimamente' : `/collections/${anima.handle}`)}
+              to={href(`/collections/${anima.handle}`)}
             >
               {anima.name}
             </NavLink>

@@ -132,11 +132,6 @@ export default function Collection() {
               className={`mb-3 flex items-center gap-2 text-xs uppercase tracking-[0.35em] text-gold ${animalVideo ? '' : 'sm:justify-center'}`}
             >
               {t('collection.anymaLabel', anima.name)}
-              {anima.comingSoon && (
-                <span className="border border-fuchsia px-2 py-0.5 text-[10px] tracking-[0.15em] text-fuchsia">
-                  {t('collection.inArrivo')}
-                </span>
-              )}
             </p>
             <h2 className="font-display text-2xl uppercase tracking-[0.02em] text-fuchsia sm:text-3xl">
               {pickLocale(anima.storyHeading, code)}
