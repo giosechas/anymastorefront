@@ -15,7 +15,13 @@ export const meta: Route.MetaFunction = ({data}) => {
     ? findAnimaByCollectionHandle(data.collection.handle)
     : undefined;
   const title = anima ? `Anyma ${anima.name}` : (data?.collection.title ?? '');
-  return [{title: `Anyma Beauty | ${title}`}];
+  const tags: ReturnType<Route.MetaFunction> = [
+    {title: `Anyma Beauty | ${title}`},
+  ];
+  if (anima?.comingSoon) {
+    tags.push({name: 'robots', content: 'noindex, nofollow'});
+  }
+  return tags;
 };
 
 export async function loader(args: Route.LoaderArgs) {
