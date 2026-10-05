@@ -153,7 +153,7 @@ export const TRANSLATIONS = {
             'Un giorno fiera come Leopard, un giorno libera come Street, un giorno leggera come Candy.',
         },
         {
-          title: 'Reveal your soul',
+          title: 'Reveal your soul!',
           tagline: 'Oggetti identitari creati in Italia per dare voce a tutte le versioni di te.',
         },
       ],
@@ -527,7 +527,7 @@ export const TRANSLATIONS = {
             'One day fierce like Leopard, one day free like Street, one day light like Candy.',
         },
         {
-          title: 'Reveal your soul',
+          title: 'Reveal your soul!',
           tagline: 'Identity objects made in Italy to give voice to every version of you.',
         },
       ],
@@ -901,7 +901,7 @@ export const TRANSLATIONS = {
             'Un día fiera como Leopard, un día libre como Street, un día ligera como Candy.',
         },
         {
-          title: 'Reveal your soul',
+          title: 'Reveal your soul!',
           tagline: 'Objetos identitarios creados en Italia para dar voz a todas las versiones de ti.',
         },
       ],
