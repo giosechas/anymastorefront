@@ -297,11 +297,14 @@ button.reset:hover:not(:has(> *)) {
 
 .header--scrolled {
   background: rgb(255 255 255 / 60%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-bottom-color: rgb(35 31 32 / 8%);
 }
 
 .header--scrolled.header--on-dark {
   background: rgb(35 31 32 / 60%);
+  border-bottom-color: rgb(255 255 255 / 8%);
 }
 
 .header--on-dark {
