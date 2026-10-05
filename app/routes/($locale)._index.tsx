@@ -18,19 +18,10 @@ import {pickLocale, getLocaleFromParam} from '~/lib/locale';
 import {useLocale, useT, useDict} from '~/lib/i18n';
 import {TRANSLATIONS} from '~/lib/translations';
 import brandStoryBg from '~/assets/images/brand-story/all-models.webp';
-import philosophyTruth1 from '~/assets/images/philosophy/pool/truth1.webp';
 import philosophyTruth5 from '~/assets/images/philosophy/pool/truth5.webp';
-import philosophyIdentity1 from '~/assets/images/philosophy/pool/identity1.webp';
-import philosophyIdentity2 from '~/assets/images/philosophy/pool/identity2.webp';
-import philosophyIdentity3 from '~/assets/images/philosophy/pool/identity3.webp';
 import founderImage1 from '~/assets/images/founders/founder-1.webp';
 
-const PHILOSOPHY_TRUTH_IMAGES = [philosophyTruth1, philosophyTruth5];
-const PHILOSOPHY_IDENTITY_IMAGES = [
-  philosophyIdentity1,
-  philosophyIdentity2,
-  philosophyIdentity3,
-];
+const PHILOSOPHY_TRUTH_IMAGES = [philosophyTruth5];
 const PHILOSOPHY_ROTATE_MS = 4000;
 
 // More founder-campaign photos will land here over time — the section
@@ -422,30 +413,9 @@ function PhilosophySection() {
             src: '/videos/philosophy/truth-beach.mp4',
             poster: '/videos/philosophy/posters/truth-beach.jpg',
           },
-          {
-            kind: 'video',
-            src: '/videos/philosophy/reveal-lipstick.mp4',
-            poster: '/videos/philosophy/posters/reveal-lipstick.jpg',
-          },
         ]}
         quote={t('philosophy.truthQuote')}
         subquote={t('philosophy.truthSubquote')}
-      />
-      <PhilosophyBlock
-        slides={[
-          ...PHILOSOPHY_IDENTITY_IMAGES.map(
-            (src): PhilosophySlide => ({kind: 'image', src}),
-          ),
-          {
-            kind: 'video',
-            src: '/videos/philosophy/identity-hand.mp4',
-            poster: '/videos/philosophy/posters/identity-hand.jpg',
-          },
-        ]}
-        quote={t('philosophy.identityQuote')}
-        subquote={t('philosophy.identitySubquote')}
-        accent="fuchsia"
-        reverse
       />
     </section>
   );
