@@ -278,7 +278,9 @@ button.reset:hover:not(:has(> *)) {
 */
 .header {
   align-items: center;
-  background: transparent;
+  background: rgb(255 255 255 / 45%);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   border-bottom: 1px solid rgb(35 31 32 / 8%);
   display: flex;
   height: var(--header-height);
@@ -290,12 +292,14 @@ button.reset:hover:not(:has(> *)) {
   right: 0;
   top: var(--marquee-height);
   transition:
+    background 300ms ease,
     border-color 300ms ease,
     color 300ms ease;
   z-index: 40;
 }
 
 .header--on-dark {
+  background: rgb(35 31 32 / 30%);
   border-bottom-color: transparent;
 }
 
