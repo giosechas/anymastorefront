@@ -50,6 +50,14 @@ export function Header({
   const location = useLocation();
   const {href} = useLocale();
   const [onDark, setOnDark] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    onScroll();
+    window.addEventListener('scroll', onScroll, {passive: true});
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   useEffect(() => {
     const targets = Array.from(
@@ -95,7 +103,7 @@ export function Header({
   }, [location.pathname]);
 
   return (
-    <header className={`header ${onDark ? 'header--on-dark' : ''}`}>
+    <header className={`header ${onDark ? 'header--on-dark' : ''} ${scrolled ? 'header--scrolled' : ''}`}>
       <HeaderMenuMobileToggle />
       <NavLink
         prefetch="intent"
