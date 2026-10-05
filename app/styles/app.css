@@ -296,14 +296,12 @@ button.reset:hover:not(:has(> *)) {
 }
 
 .header--scrolled {
-  background: rgb(255 255 255 / 20%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgb(255 255 255 / 60%);
   border-bottom-color: rgb(35 31 32 / 8%);
 }
 
 .header--scrolled.header--on-dark {
-  background: rgb(35 31 32 / 20%);
+  background: rgb(35 31 32 / 60%);
 }
 
 .header--on-dark {
