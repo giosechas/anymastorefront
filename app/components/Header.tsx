@@ -1,4 +1,4 @@
-import {Suspense, useEffect, useRef, useState} from 'react';
+import {Suspense, useEffect, useState} from 'react';
 import {Await, NavLink, useAsyncValue, useLocation} from 'react-router';
 import {
   type CartViewPayload,
@@ -10,7 +10,6 @@ import {useAside} from '~/components/Aside';
 import {SearchPopover} from '~/components/SearchPopover';
 import {LoginPopover} from '~/components/LoginPopover';
 import {FlagIcon} from '~/components/FlagIcon';
-import {useReducedMotion} from '~/hooks/useReducedMotion';
 import {ANIME, getPackPath} from '~/lib/animas';
 import {useWishlist} from '~/lib/wishlist';
 import {LOCALES, localizePath, stripLocalePrefix} from '~/lib/locale';
@@ -120,65 +119,6 @@ export function Header({
       </NavLink>
       <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} onDark={onDark} />
     </header>
-  );
-}
-
-const MARQUEE_ROTATE_MS = 3500;
-const MARQUEE_TRANSITION_MS = 450;
-
-export function MarqueeBar() {
-  const t = useT();
-  const items = [
-    {icon: '🎁', text: t('header.marqueeDiscount')},
-    {icon: '🚚', text: t('header.marqueeShipping')},
-  ];
-  const [index, setIndex] = useState(0);
-  const [exitingIndex, setExitingIndex] = useState<number | null>(null);
-  const reducedMotion = useReducedMotion();
-  const rotationKey = useRef(0);
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      setIndex((current) => {
-        if (!reducedMotion) {
-          rotationKey.current += 1;
-          setExitingIndex(current);
-        }
-        return (current + 1) % items.length;
-      });
-    }, MARQUEE_ROTATE_MS);
-    return () => clearInterval(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reducedMotion]);
-
-  useEffect(() => {
-    if (exitingIndex === null) return;
-    const timeout = setTimeout(
-      () => setExitingIndex(null),
-      MARQUEE_TRANSITION_MS,
-    );
-    return () => clearTimeout(timeout);
-  }, [exitingIndex]);
-
-  const item = items[index];
-
-  return (
-    <div className="marquee-bar" aria-hidden="true">
-      {exitingIndex !== null && (
-        <span
-          className="marquee-bar-item"
-          data-phase="exit"
-          key={`exit-${rotationKey.current}`}
-        >
-          <span>{items[exitingIndex].icon}</span>
-          <span>{items[exitingIndex].text}</span>
-        </span>
-      )}
-      <span className="marquee-bar-item" data-phase="enter" key={index}>
-        <span>{item.icon}</span>
-        <span>{item.text}</span>
-      </span>
-    </div>
   );
 }
 

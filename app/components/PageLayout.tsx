@@ -11,7 +11,6 @@ import {
   Header,
   HeaderMenu,
   LanguageSwitcher,
-  MarqueeBar,
 } from '~/components/Header';
 import {CartMain} from '~/components/CartMain';
 import {CookieBanner} from '~/components/CookieBanner';
@@ -38,7 +37,6 @@ export function PageLayout({
     <Aside.Provider>
       <CartAside cart={cart} />
       <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} />
-      {/* <MarqueeBar /> */}
       {header && (
         <Header
           header={header}

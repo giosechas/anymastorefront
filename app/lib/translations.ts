@@ -4,8 +4,6 @@
 export const TRANSLATIONS = {
   IT: {
     header: {
-      marqueeDiscount: 'Sconto esclusivo per chi si iscrive',
-      marqueeShipping: 'Spedizione in 48h',
       leAnyme: 'Le Anyme',
       tutteLeAnyme: 'Tutte le Anyme',
       packPerAnyme: 'Pack per Anyme',
@@ -378,8 +376,6 @@ export const TRANSLATIONS = {
   },
   EN: {
     header: {
-      marqueeDiscount: 'Exclusive discount when you sign up',
-      marqueeShipping: 'Shipping in 48h',
       leAnyme: 'The Anyme',
       tutteLeAnyme: 'All the Anyme',
       packPerAnyme: 'Packs by Anyma',
@@ -752,8 +748,6 @@ export const TRANSLATIONS = {
   },
   ES: {
     header: {
-      marqueeDiscount: 'Descuento exclusivo al suscribirte',
-      marqueeShipping: 'Envío en 48h',
       leAnyme: 'Las Anyme',
       tutteLeAnyme: 'Todas las Anyme',
       packPerAnyme: 'Packs por Anyma',
