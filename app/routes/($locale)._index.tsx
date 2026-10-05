@@ -42,10 +42,7 @@ const FOUNDERS_REGISTERED = 247;
 const FOUNDERS_TOTAL = 800;
 
 const HERO_SLIDES: Array<{kind: 'image' | 'video'; src: string}> = [
-  {kind: 'video', src: '/videos/hero/hero-rosso.mp4'},
-  {kind: 'video' as const, src: '/videos/hero/hero-nude.mp4'},
-  {kind: 'video' as const, src: '/videos/hero/hero-viola.mp4'},
-  {kind: 'video' as const, src: '/videos/hero/hero-cherry.mp4'},
+  {kind: 'video', src: '/videos/hero/hero-main.mp4'},
 ];
 const HERO_IMAGE_ROTATE_MS = 4000;
 const HERO_TEXT_ROTATE_MS = 8000;
@@ -270,22 +267,24 @@ function Hero() {
           {t('hero.shopNow')}
         </Link>
       </div>
-      <div className="absolute bottom-8 right-6 flex items-center gap-3">
-        <span className="text-[10px] tracking-[0.2em] text-paper/80">
-          {String(activeIndex + 1).padStart(2, '0')}
-        </span>
-        <div className="relative h-px w-24 overflow-hidden bg-paper/25">
-          <div
-            className="absolute inset-y-0 left-0 bg-gold transition-all duration-500"
-            style={{
-              width: `${((activeIndex + 1) / HERO_SLIDES.length) * 100}%`,
-            }}
-          />
+      {HERO_SLIDES.length > 1 && (
+        <div className="absolute bottom-8 right-6 flex items-center gap-3">
+          <span className="text-[10px] tracking-[0.2em] text-paper/80">
+            {String(activeIndex + 1).padStart(2, '0')}
+          </span>
+          <div className="relative h-px w-24 overflow-hidden bg-paper/25">
+            <div
+              className="absolute inset-y-0 left-0 bg-gold transition-all duration-500"
+              style={{
+                width: `${((activeIndex + 1) / HERO_SLIDES.length) * 100}%`,
+              }}
+            />
+          </div>
+          <span className="text-[10px] tracking-[0.2em] text-paper/40">
+            {String(HERO_SLIDES.length).padStart(2, '0')}
+          </span>
         </div>
-        <span className="text-[10px] tracking-[0.2em] text-paper/40">
-          {String(HERO_SLIDES.length).padStart(2, '0')}
-        </span>
-      </div>
+      )}
     </section>
   );
 }
