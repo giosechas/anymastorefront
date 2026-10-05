@@ -19,9 +19,11 @@ import {useLocale, useT, useDict} from '~/lib/i18n';
 import {TRANSLATIONS} from '~/lib/translations';
 import brandStoryBg from '~/assets/images/brand-story/all-models.webp';
 import philosophyTruth5 from '~/assets/images/philosophy/pool/truth5.webp';
+import philosophyStreetPiazza from '~/assets/images/philosophy/pool/street-piazza.webp';
+import philosophyBeachCandyrosa from '~/assets/images/philosophy/pool/beach-candyrosa.webp';
 import founderImage1 from '~/assets/images/founders/founder-1.webp';
 
-const PHILOSOPHY_TRUTH_IMAGES = [philosophyTruth5];
+const PHILOSOPHY_TRUTH_IMAGES = [philosophyTruth5, philosophyStreetPiazza, philosophyBeachCandyrosa];
 const PHILOSOPHY_ROTATE_MS = 4000;
 
 // More founder-campaign photos will land here over time — the section
