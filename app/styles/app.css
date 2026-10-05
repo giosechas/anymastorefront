@@ -11,8 +11,8 @@
   --cart-aside-summary-height: 250px;
   --grid-item-width: 355px;
   --header-height: 72px;
-  --marquee-height: 2.1rem;
-  --top-bars-height: calc(var(--header-height) + var(--marquee-height));
+  --marquee-height: 0px;
+  --top-bars-height: var(--header-height);
   --color-dark: var(--nero);
   --color-light: var(--paper);
   --ease-pop: cubic-bezier(0.16, 1, 0.3, 1);
@@ -282,7 +282,6 @@ button.reset:hover:not(:has(> *)) {
   border-bottom: 1px solid transparent;
   display: flex;
   height: var(--header-height);
-  isolation: isolate;
   justify-content: space-between;
   left: 0;
   padding: 0 1.5rem;
