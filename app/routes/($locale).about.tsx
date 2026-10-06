@@ -175,7 +175,7 @@ function StorySectionTruth() {
             <span className="text-gold">Leopard</span> {t('about.truthListLeopard')}
           </li>
           <li>
-            <span className="text-gold">Candy Rosa</span>{' '}
+            <span className="text-gold">Candy</span>{' '}
             {t('about.truthListCandyRosa')}
           </li>
           <li>

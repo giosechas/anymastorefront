@@ -125,10 +125,6 @@ export const TRANSLATIONS = {
     hero: {
       slides: [
         {
-          title: 'Il primo beauty identitario',
-          tagline: 'Non scegli un semplice cosmetico: scegli chi vuoi essere oggi.',
-        },
-        {
           title: 'La bellezza non è coerenza. È verità.',
           tagline: 'La tua molteplicità è il tuo potere più grande. Rivelala senza scuse.',
         },
@@ -140,15 +136,6 @@ export const TRANSLATIONS = {
           title: 'Questo non è trucco. È il tuo rituale.',
           tagline:
             'Trasformiamo il gesto quotidiano davanti allo specchio in un atto di pura autodeterminazione.',
-        },
-        {
-          title: "Oggetti d'arte che parlano di te",
-          tagline: 'Alluminio massiccio, finitura goldrose e la firma fisica della tua identità.',
-        },
-        {
-          title: 'Ti diamo gli strumenti per diventare',
-          tagline:
-            'Un giorno fiera come Leopard, un giorno libera come Street, un giorno leggera come Candy.',
         },
         {
           title: 'Reveal your soul!',
@@ -351,7 +338,7 @@ export const TRANSLATIONS = {
       packagingLeopard:
         'Sculture in alluminio e acrilico: velatura bronzo-dorata, macchie leopardate in rilievo, chevron dorato lucido.',
       attitudeCandyRosa:
-        'Candy Rosa è per i giorni in cui la dolcezza è la tua forza più grande: tenerezza ribelle che trasforma la sensibilità in energia gioiosa.',
+        'Candy è per i giorni in cui la dolcezza è la tua forza più grande: tenerezza ribelle che trasforma la sensibilità in energia gioiosa.',
       packagingCandyRosa:
         'Finitura oro rosa custom con tappi rosa opaco, motivo paisley pastello e chevron dorato.',
       attitudeStreet:
@@ -367,7 +354,7 @@ export const TRANSLATIONS = {
       metaTitle: 'Anyma Beauty | Prossimamente',
       heroTitle: 'Nuove anime in arrivo.',
       heroSubtitle: 'Le stiamo creando con chi le indosserà.',
-      body: 'Leopard, Candy Rosa e Street sono il primo capitolo. Le prossime anime nasceranno dal feedback delle nostre Anime Prime — le prime donne che hanno scelto ANYMA. Vuoi essere tra loro?',
+      body: 'Leopard, Candy e Street sono il primo capitolo. Le prossime anime nasceranno dal feedback delle nostre Anime Prime — le prime donne che hanno scelto ANYMA. Vuoi essere tra loro?',
       emailPlaceholder: 'Lascia la tua email',
       subscribe: 'Avvisami',
       thanks: 'Grazie! Ti avviseremo.',
@@ -497,10 +484,6 @@ export const TRANSLATIONS = {
     hero: {
       slides: [
         {
-          title: 'The first identity beauty',
-          tagline: "You're not choosing a simple cosmetic: you're choosing who you want to be today.",
-        },
-        {
           title: "Beauty is not consistency. It's truth.",
           tagline: 'Your multiplicity is your greatest power. Reveal it without apologies.',
         },
@@ -512,15 +495,6 @@ export const TRANSLATIONS = {
           title: "This isn't make-up. It's your ritual.",
           tagline:
             'We turn the everyday gesture in front of the mirror into an act of pure self-determination.',
-        },
-        {
-          title: 'Objects of art that speak about you',
-          tagline: 'Solid aluminum, goldrose finish, and the physical signature of your identity.',
-        },
-        {
-          title: 'We give you the tools to become',
-          tagline:
-            'One day fierce like Leopard, one day free like Street, one day light like Candy.',
         },
         {
           title: 'Reveal your soul!',
@@ -723,7 +697,7 @@ export const TRANSLATIONS = {
       packagingLeopard:
         'Sculptures in aluminum and acrylic: bronze-gold glaze, raised leopard spots, glossy gold chevron.',
       attitudeCandyRosa:
-        'Candy Rosa is for the days when sweetness is your greatest strength: rebellious tenderness that turns sensitivity into joyful energy.',
+        'Candy is for the days when sweetness is your greatest strength: rebellious tenderness that turns sensitivity into joyful energy.',
       packagingCandyRosa:
         'Custom rose-gold finish with matte pink caps, pastel paisley pattern and gold chevron.',
       attitudeStreet:
@@ -739,7 +713,7 @@ export const TRANSLATIONS = {
       metaTitle: 'Anyma Beauty | Coming Soon',
       heroTitle: 'New souls on the way.',
       heroSubtitle: "We're creating them with the women who'll wear them.",
-      body: "Leopard, Candy Rosa and Street are the opening chapter. The next souls will be shaped by the feedback of our Anime Prime — the first women who chose ANYMA. Want to be one of them?",
+      body: "Leopard, Candy and Street are the opening chapter. The next souls will be shaped by the feedback of our Anime Prime — the first women who chose ANYMA. Want to be one of them?",
       emailPlaceholder: 'Leave your email',
       subscribe: 'Notify me',
       thanks: "Thanks! We'll let you know.",
@@ -869,10 +843,6 @@ export const TRANSLATIONS = {
     hero: {
       slides: [
         {
-          title: 'El primer beauty identitario',
-          tagline: 'No eliges un simple cosmético: eliges quién quieres ser hoy.',
-        },
-        {
           title: 'La belleza no es coherencia. Es verdad.',
           tagline: 'Tu multiplicidad es tu mayor poder. Revélala sin excusas.',
         },
@@ -884,15 +854,6 @@ export const TRANSLATIONS = {
           title: 'Esto no es maquillaje. Es tu ritual.',
           tagline:
             'Transformamos el gesto cotidiano ante el espejo en un acto de pura autodeterminación.',
-        },
-        {
-          title: 'Objetos de arte que hablan de ti',
-          tagline: 'Aluminio macizo, acabado goldrose y la firma física de tu identidad.',
-        },
-        {
-          title: 'Te damos las herramientas para convertirte',
-          tagline:
-            'Un día fiera como Leopard, un día libre como Street, un día ligera como Candy.',
         },
         {
           title: 'Reveal your soul!',
@@ -1094,7 +1055,7 @@ export const TRANSLATIONS = {
       packagingLeopard:
         'Esculturas en aluminio y acrílico: veladura bronce-dorada, manchas de leopardo en relieve, chevron dorado brillante.',
       attitudeCandyRosa:
-        'Candy Rosa es para los días en que la dulzura es tu mayor fortaleza: ternura rebelde que transforma la sensibilidad en energía alegre.',
+        'Candy es para los días en que la dulzura es tu mayor fortaleza: ternura rebelde que transforma la sensibilidad en energía alegre.',
       packagingCandyRosa:
         'Acabado oro rosa personalizado con tapas rosa mate, motivo paisley pastel y chevron dorado.',
       attitudeStreet:
@@ -1110,7 +1071,7 @@ export const TRANSLATIONS = {
       metaTitle: 'Anyma Beauty | Muy Pronto',
       heroTitle: 'Nuevas almas en camino.',
       heroSubtitle: 'Las estamos creando con quienes las van a llevar.',
-      body: 'Leopard, Candy Rosa y Street son el primer capítulo. Las próximas almas nacerán del feedback de nuestras Anime Prime — las primeras mujeres que eligieron ANYMA. ¿Querés ser una de ellas?',
+      body: 'Leopard, Candy y Street son el primer capítulo. Las próximas almas nacerán del feedback de nuestras Anime Prime — las primeras mujeres que eligieron ANYMA. ¿Querés ser una de ellas?',
       emailPlaceholder: 'Dejá tu email',
       subscribe: 'Avisame',
       thanks: '¡Gracias! Te avisaremos.',

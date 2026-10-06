@@ -84,7 +84,7 @@ export const ANIME: AnimaDefinition[] = [
   {
     key: 'candyRosa',
     handle: 'anima-candy-rosa',
-    name: 'Candy Rosa',
+    name: 'Candy',
     tagline: {
       IT: 'Per le giornate di intensità dolce.',
       EN: 'For days of sweet intensity.',
