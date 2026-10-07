@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useRef, useCallback, useEffect} from 'react';
 import {Image} from '@shopify/hydrogen';
 import type {ProductFragment} from 'storefrontapi.generated';
 import {useT} from '~/lib/i18n';
@@ -26,8 +26,6 @@ export function ProductGallery({
   modelPhotos?: {url: string; altText: string}[];
   video?: {src: string; poster: string};
 }) {
-  // Product shots (open, closed — Shopify's own order) first, then the
-  // video as the 3rd slide, then the swatch shot and the model photos.
   const imageSlides: ImageSlide[] = images.map((image) => ({
     kind: 'image',
     id: image.id ?? image.url,
@@ -50,13 +48,24 @@ export function ProductGallery({
   const active = slides[activeIndex] ?? slides[0];
   const [zoomOrigin, setZoomOrigin] = useState('50% 50%');
   const [isZooming, setIsZooming] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const idx = Math.round(el.scrollLeft / el.clientWidth);
+    setActiveIndex(idx);
+    setIsZooming(false);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.addEventListener('scroll', handleScroll, {passive: true});
+    return () => el.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
 
   if (!active) return <div className="aspect-[2/3] bg-nero/5" />;
-
-  const activeAspectRatio =
-    active.kind === 'image' && active.image.width && active.image.height
-      ? `${active.image.width} / ${active.image.height}`
-      : '2 / 3';
 
   const canZoom = active.kind !== 'video';
   const t = useT();
@@ -75,17 +84,48 @@ export function ProductGallery({
   }
 
   function goTo(index: number) {
-    setActiveIndex((index + slides.length) % slides.length);
+    const wrapped = (index + slides.length) % slides.length;
+    setActiveIndex(wrapped);
     setIsZooming(false);
+    scrollRef.current?.scrollTo({
+      left: wrapped * (scrollRef.current?.clientWidth ?? 0),
+      behavior: 'smooth',
+    });
   }
 
   return (
     <div className="flex flex-col items-center gap-3">
+      {/* Mobile: horizontal scroll carousel */}
       <div
-        className={`relative w-full overflow-hidden bg-nero/5 ${
+        ref={scrollRef}
+        data-gallery-scroll
+        className="flex w-full snap-x snap-mandatory overflow-x-auto sm:hidden"
+        style={{scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch'}}
+      >
+        <style>{`[data-gallery-scroll]::-webkit-scrollbar{display:none}`}</style>
+        {slides.map((slide, i) => (
+          <div
+            key={slide.id}
+            className="aspect-[2/3] w-full flex-none snap-start bg-nero/5"
+          >
+            <SlideContent slide={slide} />
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop: single active slide with zoom + arrows */}
+      <div
+        className={`relative hidden w-full overflow-hidden bg-nero/5 sm:block ${
           canZoom ? (isZooming ? 'cursor-zoom-out' : 'cursor-zoom-in') : ''
         }`}
-        style={{aspectRatio: activeAspectRatio}}
+        style={{
+          aspectRatio:
+            active.kind === 'image' &&
+            active.image.width &&
+            active.image.height
+              ? `${active.image.width} / ${active.image.height}`
+              : '2 / 3',
+        }}
         onClick={handleClick}
         onMouseMove={canZoom && isZooming ? updateZoomOrigin : undefined}
       >
@@ -170,6 +210,38 @@ export function ProductGallery({
         </div>
       )}
     </div>
+  );
+}
+
+function SlideContent({slide}: {slide: Slide}) {
+  if (slide.kind === 'video') {
+    return (
+      <video
+        src={slide.src}
+        poster={slide.poster}
+        autoPlay
+        muted
+        playsInline
+        loop
+        className="h-full w-full object-contain"
+      />
+    );
+  }
+  if (slide.kind === 'staticImage') {
+    return (
+      <img
+        src={slide.url}
+        alt={slide.altText}
+        className="h-full w-full object-cover"
+      />
+    );
+  }
+  return (
+    <Image
+      data={slide.image}
+      sizes="100vw"
+      className="h-full w-full object-contain"
+    />
   );
 }
 
