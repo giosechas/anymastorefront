@@ -152,7 +152,7 @@ export const ANIME: AnimaDefinition[] = [
     swatch: 'anima-tile-street',
     color: '#4a6280',
     tag: 'STREET',
-    galleryCount: 9,
+    galleryCount: 4,
   },
   {
     key: 'urban',
