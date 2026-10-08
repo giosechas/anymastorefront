@@ -158,3 +158,77 @@ export function getPdpAnatomia(
   if (!category) return undefined;
   return ANATOMIA[locale]?.[category] ?? ANATOMIA.IT[category];
 }
+
+const INCI: Record<Category, string> = {
+  LIPSTICK:
+    'OCTYLDODECANOL, HYDROGENATED POLYDECENE, PENTAERYTHRITYL TETRAISOSTEARATE, SYNTHETIC WAX, DIISOSTEARYL MALATE, MICROCRYSTALLINE WAX, BIS-DIGLYCERYL POLYACYLADIPATE-2, CALCIUM ALUMINUM BOROSILICATE, AROMA, CITRUS AURANTIUM PEEL OIL, DISTEARDIMONIUM HECTORITE, TOCOPHERYL ACETATE, LIMONENE, DICALCIUM PHOSPHATE, PENTAERYTHRITYL TETRA-DI-T-BUTYL HYDROXYHYDROCINNAMATE, TIN OXIDE, PROPYLENE CARBONATE, PINENE, MENTHOL, LINALYL ACETATE, ALUMINA, CITRAL, LINALOOL +/- [CI 77891, CI 77492, CI 15850, CI 77491, CI 42090]',
+  GLOSS:
+    'POLYBUTENE, OCTYLDODECANOL, BIS-DIGLYCERYL POLYACYLADIPATE-2, DIISOSTEARYL MALATE, DICALCIUM PHOSPHATE, SILICA DIMETHYL SILYLATE, MICROCRYSTALLINE WAX, VP/HEXADECENE COPOLYMER, CALCIUM ALUMINUM BOROSILICATE, SYNTHETIC FLUORPHLOGOPITE, SILICA, AROMA, CITRUS AURANTIUM PEEL OIL, TOCOPHERYL ACETATE, MANGIFERA INDICA SEED BUTTER, PENTAERYTHRITYL TETRA-DI-T-BUTYL HYDROXYHYDROCINNAMATE, TIN OXIDE, ALUMINA, LIMONENE, CITRAL, LINALOOL, PINENE, MENTHOL, LINALYL ACETATE +/- [COLORANTI SECONDO SHADE]',
+  MASCARA:
+    'AQUA, PARAFFIN, STEARIC ACID, SYNTHETIC BEESWAX, GLYCERYL STEARATE SE, CERA MICROCRISTALLINA, HYDROGENATED VEGETABLE OIL, POLYBUTENE, ACACIA SENEGAL GUM, ORYZA SATIVA (RICE) BRAN WAX, VP/EICOSENE COPOLYMER, BUTYLENE GLYCOL, AMINOMETHYL PROPANEDIOL, STEARYL STEARATE, PHENOXYETHANOL, TOCOPHERYL ACETATE, CETYL HYDROXYETHYLCELLULOSE, ETHYLHEXYLGLYCERIN, PANTHENOL, HYDRATED SILICA, DISODIUM PHOSPHATE, SILICA DIMETHYL SILYLATE, CI 77499',
+};
+
+const INCI_EMPTY_COLORS: Record<Category, string[]> = {
+  LIPSTICK: ['RED METAL'],
+  GLOSS: [],
+  MASCARA: [],
+};
+
+const PAO: Record<Category, string> = {
+  LIPSTICK: '6M',
+  GLOSS: '12M',
+  MASCARA: '6M',
+};
+
+const MODO_USO: Record<LocaleCode, Record<Category, string>> = {
+  IT: {
+    LIPSTICK:
+      "Applica direttamente sulle labbra partendo dal centro e procedendo verso gli angoli. Per un colore pieno, applica due strati. Richiudi il rossetto dopo l'uso e conserva a temperatura ambiente, lontano da fonti di calore.",
+    GLOSS:
+      "Applica il gloss con l'applicatore doe-foot partendo dal centro del labbro inferiore. Può essere usato da solo per un effetto luminoso naturale o sopra il rossetto ANYMA per un finish multidimensionale. Richiudi dopo l'uso.",
+    MASCARA:
+      "Posiziona lo scovolino alla radice delle ciglia e muovi dalla base alle punte con piccoli movimenti a zig-zag. Per le ciglia inferiori, usa la punta dello scovolino. Richiudi bene il mascara dopo ogni uso per preservare la formula.",
+  },
+  EN: {
+    LIPSTICK:
+      'Apply directly to the lips starting from the center and working toward the corners. For full color, apply two coats. Close the lipstick after use and store at room temperature, away from heat sources.',
+    GLOSS:
+      'Apply the gloss with the doe-foot applicator starting from the center of the lower lip. Use alone for a natural luminous effect or layer over ANYMA lipstick for a multidimensional finish. Close after use.',
+    MASCARA:
+      'Place the wand at the root of the lashes and move from base to tip in small zig-zag motions. For lower lashes, use the tip of the wand. Close the mascara tightly after each use to preserve the formula.',
+  },
+  ES: {
+    LIPSTICK:
+      'Aplica directamente sobre los labios empezando por el centro y avanzando hacia las comisuras. Para un color pleno, aplica dos capas. Cierra el labial después del uso y conserva a temperatura ambiente, lejos de fuentes de calor.',
+    GLOSS:
+      'Aplica el gloss con el aplicador doe-foot empezando por el centro del labio inferior. Se puede usar solo para un efecto luminoso natural o sobre el labial ANYMA para un acabado multidimensional. Cierra después del uso.',
+    MASCARA:
+      'Coloca el cepillo en la raíz de las pestañas y muévelo de la base a las puntas con pequeños movimientos en zig-zag. Para las pestañas inferiores, usa la punta del cepillo. Cierra bien la máscara después de cada uso para preservar la fórmula.',
+  },
+};
+
+export function getPdpInci(
+  productType: string,
+  colorTag: string | undefined,
+): string | undefined {
+  const category = getCategoryKey(productType);
+  if (!category) return undefined;
+  const color = getSkuColorKey(colorTag);
+  if (color && INCI_EMPTY_COLORS[category].includes(color)) return undefined;
+  return INCI[category];
+}
+
+export function getPdpPao(productType: string): string | undefined {
+  const category = getCategoryKey(productType);
+  if (!category) return undefined;
+  return PAO[category];
+}
+
+export function getPdpModoUso(
+  productType: string,
+  locale: LocaleCode,
+): string | undefined {
+  const category = getCategoryKey(productType);
+  if (!category) return undefined;
+  return MODO_USO[locale]?.[category] ?? MODO_USO.IT[category];
+}

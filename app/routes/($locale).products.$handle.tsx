@@ -41,6 +41,9 @@ import {
   getPdpApplicazione,
   getPdpFormula,
   getPdpAnatomia,
+  getPdpInci,
+  getPdpPao,
+  getPdpModoUso,
 } from '~/lib/pdpContent';
 import {pickLocale, getLocaleFromParam} from '~/lib/locale';
 import {useLocale, useT} from '~/lib/i18n';
@@ -214,12 +217,18 @@ export default function Product() {
   const applicazione = getPdpApplicazione(product.productType, code);
   const formula = getPdpFormula(product.productType, code);
   const anatomia = getPdpAnatomia(product.productType, code);
+  const modoUso = getPdpModoUso(product.productType, code);
+  const inci = getPdpInci(product.productType, colorTag);
+  const pao = getPdpPao(product.productType);
   const rawPdpTabs: (PdpTab | null)[] = [
     descrizione
       ? {key: 'descrizione', label: t('pdp.descrizione'), content: descrizione}
       : null,
     applicazione
       ? {key: 'applicazione', label: t('pdp.applicazione'), content: applicazione}
+      : null,
+    modoUso
+      ? {key: 'modoUso', label: t('pdp.modoUso'), content: modoUso}
       : null,
     formula ? {key: 'formula', label: t('pdp.formula'), content: formula} : null,
     anatomia
@@ -228,7 +237,11 @@ export default function Product() {
     {
       key: 'ingredienti',
       label: t('pdp.ingredienti'),
-      content: t('pdp.ingredientiInArrivo'),
+      content: inci ? (
+        <InciContent inci={inci} pao={pao} />
+      ) : (
+        <span className="italic text-nero/40">{t('pdp.ingredientiInArrivo')}</span>
+      ),
     },
   ];
   const pdpTabs = rawPdpTabs.filter((tab): tab is PdpTab => tab !== null);
@@ -587,6 +600,19 @@ function PdpDetailTabs({tabs}: {tabs: PdpTab[]}) {
         <div className="mt-3 text-xs leading-relaxed text-nero/70">
           {openTab.content}
         </div>
+      )}
+    </div>
+  );
+}
+
+function InciContent({inci, pao}: {inci: string; pao: string | undefined}) {
+  return (
+    <div>
+      <p className="text-[11px] leading-relaxed text-[#888]">{inci}</p>
+      {pao && (
+        <span className="mt-3 inline-block rounded border border-nero/15 px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-nero/50">
+          PAO: {pao}
+        </span>
       )}
     </div>
   );
