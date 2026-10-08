@@ -249,7 +249,7 @@ function Hero() {
       <div className="mt-10 flex flex-wrap items-center justify-start gap-4">
         <a
           href="#anime"
-          className="border border-gold px-8 py-3 text-xs uppercase tracking-[0.2em] text-white transition-colors hover:bg-gold hover:text-nero"
+          className="border border-gold bg-gold px-8 py-3 text-xs uppercase tracking-[0.2em] text-nero transition-colors hover:bg-white hover:border-white"
         >
           {HERO_CTA_LABELS[textIndex % HERO_CTA_LABELS.length]}
         </a>
