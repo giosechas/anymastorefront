@@ -11,6 +11,7 @@ import {
   ACTIVE_ANIMAS,
   getAnimaGalleryImages,
   getPackPath,
+  getPackPhoto,
   isComingSoonProduct,
   type AnimaDefinition,
 } from '~/lib/animas';
@@ -403,15 +404,13 @@ function PackSection() {
       </div>
       <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory sm:grid sm:grid-cols-3 sm:overflow-visible" style={{scrollbarWidth: 'none'}}>
         <style>{`[data-pack-scroll]::-webkit-scrollbar{display:none}`}</style>
-        {ACTIVE_ANIMAS.map((anima) => {
-          const images = getAnimaGalleryImages(anima);
-          return (
+        {ACTIVE_ANIMAS.map((anima) => (
             <div
               key={anima.key}
               className="relative flex-none w-[80vw] snap-start sm:w-auto aspect-[4/5] overflow-hidden group"
             >
               <img
-                src={images[0]}
+                src={getPackPhoto(anima)}
                 alt={anima.name}
                 className="absolute inset-0 h-full w-full object-cover"
               />
@@ -428,8 +427,7 @@ function PackSection() {
                 </Link>
               </div>
             </div>
-          );
-        })}
+        ))}
       </div>
     </section>
   );
