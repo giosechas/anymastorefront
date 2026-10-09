@@ -188,6 +188,11 @@ export function getPackPhoto(anima: AnimaDefinition): string {
   return `/images/packs/${slug}.webp`;
 }
 
+export function getPackVideo(anima: AnimaDefinition): string {
+  const slug = anima.handle.replace(/^anima-/, '');
+  return `/videos/packs/${slug}.mp4`;
+}
+
 export function getAnimaGalleryImages(anima: AnimaDefinition): string[] {
   const slug = anima.handle.replace(/^anima-/, '');
   return Array.from(

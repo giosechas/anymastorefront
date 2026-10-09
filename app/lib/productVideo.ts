@@ -1,6 +1,5 @@
 const CATEGORY_PREFIX: Record<string, string> = {
   Rossetto: 'lipstick',
-  'Lip Gloss': 'gloss',
   'Mascara/Eyeliner': 'mask',
 };
 

@@ -12,6 +12,7 @@ import {
   getAnimaGalleryImages,
   getPackPath,
   getPackPhoto,
+  getPackVideo,
   isComingSoonProduct,
   type AnimaDefinition,
 } from '~/lib/animas';
@@ -394,45 +395,57 @@ function PackSection() {
   const {href} = useLocale();
   return (
     <section
-      className="py-12 sm:py-28"
-      style={{background: 'linear-gradient(to bottom right, #231F20, #C8A96E)'}}
+      className="bg-paper py-12 sm:py-28"
     >
       <div className="mx-auto max-w-6xl px-6">
-      <div className="mb-8 text-center sm:mb-12">
-        <h2 className="font-display text-2xl uppercase tracking-[0.03em] text-paper sm:text-4xl">
-          {t('packSection.title')}
-        </h2>
-        <p className="mx-auto mt-4 max-w-lg text-sm text-paper/70 sm:text-base">
-          {t('packSection.subtitle')}
-        </p>
-      </div>
-      <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory sm:grid sm:grid-cols-3 sm:overflow-visible" style={{scrollbarWidth: 'none'}}>
-        <style>{`[data-pack-scroll]::-webkit-scrollbar{display:none}`}</style>
-        {ACTIVE_ANIMAS.map((anima) => (
+        <div className="mb-10 text-center sm:mb-16">
+          <h2 className="font-display text-2xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
+            {t('packSection.title')}
+          </h2>
+          <p className="mx-auto mt-4 max-w-lg text-sm text-nero/70 sm:text-base">
+            {t('packSection.subtitle')}
+          </p>
+        </div>
+        <div className="space-y-10 sm:space-y-16">
+          {ACTIVE_ANIMAS.map((anima, i) => (
             <div
               key={anima.key}
-              className="relative flex-none w-[80vw] snap-start sm:w-auto aspect-[4/5] overflow-hidden group"
+              className={`flex flex-col gap-4 sm:gap-6 ${
+                i % 2 === 0 ? 'sm:flex-row' : 'sm:flex-row-reverse'
+              }`}
             >
-              <img
-                src={getPackPhoto(anima)}
-                alt={anima.name}
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-nero/80 via-nero/20 to-transparent" />
-              <div className="relative flex h-full flex-col items-center justify-end p-6 pb-8 text-center">
-                <h3 className="font-display text-2xl uppercase tracking-[0.05em] text-paper">
-                  {anima.name}
-                </h3>
-                <Link
-                  to={href(getPackPath(anima))}
-                  className="mt-4 border border-gold bg-gold px-6 py-2.5 text-[10px] uppercase tracking-[0.15em] text-nero transition-colors hover:bg-white hover:border-white"
-                >
-                  {t('packSection.cta')}
-                </Link>
+              <div className="relative aspect-[4/5] w-full overflow-hidden sm:w-1/2">
+                <img
+                  src={getPackPhoto(anima)}
+                  alt={anima.name}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-nero/70 via-nero/10 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 flex flex-col items-center p-6 pb-8 text-center">
+                  <h3 className="font-display text-3xl uppercase tracking-[0.05em] text-paper sm:text-4xl">
+                    {anima.name}
+                  </h3>
+                  <Link
+                    to={href(getPackPath(anima))}
+                    className="mt-4 border border-gold bg-gold px-6 py-2.5 text-[10px] uppercase tracking-[0.15em] text-nero transition-colors hover:bg-white hover:border-white"
+                  >
+                    {t('packSection.cta')}
+                  </Link>
+                </div>
+              </div>
+              <div className="aspect-[4/5] w-full overflow-hidden sm:w-1/2">
+                <video
+                  src={getPackVideo(anima)}
+                  autoPlay
+                  muted
+                  playsInline
+                  loop
+                  className="h-full w-full object-cover"
+                />
               </div>
             </div>
-        ))}
-      </div>
+          ))}
+        </div>
       </div>
     </section>
   );
