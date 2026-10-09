@@ -485,33 +485,26 @@ export default function Product() {
       )}
 
       {anima && (
-        <div className="relative mt-12 aspect-[2/1] w-full overflow-hidden rounded bg-nero sm:mt-16">
-          {heroVideo ? (
-            <video
-              key={heroVideo.src}
-              src={heroVideo.src}
-              poster={heroVideo.poster}
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-          ) : (
-            product.productType === 'Rossetto' && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <p className="text-xs uppercase tracking-[0.3em] text-paper/40">
-                  {t('pdp.videoInArrivo')}
-                </p>
-              </div>
-            )
+        <div className="mt-12 sm:mt-16">
+          {heroVideo && (
+            <div className="aspect-[2/1] w-full overflow-hidden rounded">
+              <video
+                key={heroVideo.src}
+                src={heroVideo.src}
+                poster={heroVideo.poster}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="h-full w-full object-cover"
+              />
+            </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-nero/80 via-nero/10 to-transparent" />
-          <ScrollReveal className="absolute inset-x-0 bottom-0 p-6 sm:p-10">
+          <ScrollReveal className="mt-6 px-2">
             <p className="font-display text-lg uppercase tracking-[0.25em] text-fuchsia sm:text-xl">
               {pickLocale(anima.storyHeading, code)}
             </p>
-            <p className="mt-2 max-w-md text-xs leading-relaxed text-paper sm:text-base">
+            <p className="mt-2 max-w-md text-sm leading-relaxed text-nero/70 sm:text-base">
               {pickLocale(anima.story, code)}
             </p>
           </ScrollReveal>
