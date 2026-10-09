@@ -43,7 +43,6 @@ import {
   getPdpAnatomia,
   getPdpInci,
   getPdpPao,
-  getPdpModoUso,
 } from '~/lib/pdpContent';
 import {pickLocale, getLocaleFromParam} from '~/lib/locale';
 import {useLocale, useT} from '~/lib/i18n';
@@ -217,7 +216,6 @@ export default function Product() {
   const applicazione = getPdpApplicazione(product.productType, code);
   const formula = getPdpFormula(product.productType, code);
   const anatomia = getPdpAnatomia(product.productType, code);
-  const modoUso = getPdpModoUso(product.productType, code);
   const inci = getPdpInci(product.productType, colorTag);
   const pao = getPdpPao(product.productType);
   const rawPdpTabs: (PdpTab | null)[] = [
@@ -226,9 +224,6 @@ export default function Product() {
       : null,
     applicazione
       ? {key: 'applicazione', label: t('pdp.applicazione'), content: applicazione}
-      : null,
-    modoUso
-      ? {key: 'modoUso', label: t('pdp.modoUso'), content: modoUso}
       : null,
     formula ? {key: 'formula', label: t('pdp.formula'), content: formula} : null,
     anatomia
