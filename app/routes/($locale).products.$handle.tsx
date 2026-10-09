@@ -19,7 +19,7 @@ import {WishlistHeart} from '~/components/WishlistHeart';
 import {ProductCarousel} from '~/components/ProductCarousel';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {
-  ANIME,
+  ACTIVE_ANIMAS,
   findAnimaByCollectionHandle,
   getAnimaGalleryImages,
   getPackPath,
@@ -187,7 +187,7 @@ export default function Product() {
   const {code, href} = useLocale();
   const t = useT();
 
-  const orderedAnimaVariants = ANIME.map((a) =>
+  const orderedAnimaVariants = ACTIVE_ANIMAS.map((a) =>
     animaVariants.find((v) => v.anima.key === a.key),
   ).filter((v): v is {anima: AnimaDefinition; handle: string} => Boolean(v));
 

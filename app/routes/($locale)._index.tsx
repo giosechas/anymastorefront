@@ -8,7 +8,7 @@ import {ScrollReveal} from '~/components/ScrollReveal';
 import {useParallaxOffset} from '~/hooks/useParallaxOffset';
 import {getTikTokVideos, type TikTokVideo} from '~/lib/tiktok';
 import {
-  ANIME,
+  ACTIVE_ANIMAS,
   getAnimaGalleryImages,
   getPackPath,
   isComingSoonProduct,
@@ -158,6 +158,7 @@ export default function Homepage() {
       <RecommendedProducts products={data.recommendedProducts} />
       <div className="my-2 h-[3px] w-full bg-fuchsia sm:my-3" />
       <AnimeGrid />
+      <PackSection />
       <PhilosophySection />
       <BrandStoryTeaser />
       <SocialSection tiktokVideos={data.tiktokVideos} />
@@ -282,8 +283,6 @@ function Hero() {
   );
 }
 
-const ACTIVE_ANIMAS = ANIME.filter((a) => !a.comingSoon);
-
 function AnimeGrid() {
   const t = useT();
   const {href} = useLocale();
@@ -385,15 +384,54 @@ function AnimaTile({anima}: {anima: AnimaDefinition}) {
           </h3>
         </div>
       </Link>
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-nero/0 opacity-0 transition-all duration-200 group-hover:bg-nero/40 group-hover:opacity-100">
-        <Link
-          to={href(getPackPath(anima))}
-          className="pointer-events-auto border border-white bg-nero/80 px-6 py-3 text-xs uppercase tracking-[0.15em] text-white transition-colors hover:bg-nero"
-        >
-          {t('animaGrid.compraIlPack')}
-        </Link>
-      </div>
     </div>
+  );
+}
+
+function PackSection() {
+  const t = useT();
+  const {href} = useLocale();
+  return (
+    <section className="mx-auto max-w-6xl px-6 py-12 sm:py-28">
+      <div className="mb-8 text-center sm:mb-12">
+        <h2 className="font-display text-2xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
+          {t('packSection.title')}
+        </h2>
+        <p className="mx-auto mt-4 max-w-lg text-sm text-nero/70 sm:text-base">
+          {t('packSection.subtitle')}
+        </p>
+      </div>
+      <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory sm:grid sm:grid-cols-3 sm:overflow-visible" style={{scrollbarWidth: 'none'}}>
+        <style>{`[data-pack-scroll]::-webkit-scrollbar{display:none}`}</style>
+        {ACTIVE_ANIMAS.map((anima) => {
+          const images = getAnimaGalleryImages(anima);
+          return (
+            <div
+              key={anima.key}
+              className="relative flex-none w-[80vw] snap-start sm:w-auto aspect-[4/5] overflow-hidden group"
+            >
+              <img
+                src={images[0]}
+                alt={anima.name}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-nero/80 via-nero/20 to-transparent" />
+              <div className="relative flex h-full flex-col items-center justify-end p-6 pb-8 text-center">
+                <h3 className="font-display text-2xl uppercase tracking-[0.05em] text-paper">
+                  {anima.name}
+                </h3>
+                <Link
+                  to={href(getPackPath(anima))}
+                  className="mt-4 border border-gold bg-gold px-6 py-2.5 text-[10px] uppercase tracking-[0.15em] text-nero transition-colors hover:bg-white hover:border-white"
+                >
+                  {t('packSection.cta')}
+                </Link>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 

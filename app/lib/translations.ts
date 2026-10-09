@@ -154,6 +154,11 @@ export const TRANSLATIONS = {
       comingSoonTitle: 'Nuove anime in arrivo',
       comingSoonSubtitle: 'Lascia la tua email per scoprirle prima di tutti',
     },
+    packSection: {
+      title: 'Componi il tuo Pack',
+      subtitle: 'Rossetto, gloss e mascara nella tua Anyma. Un rituale completo in un solo gesto.',
+      cta: 'Componi il tuo Pack',
+    },
     brandStory: {
       quote: 'Non esiste una sola te.',
       body: 'Riveliamo le anyme attraverso il make-up. Non vendiamo rossetti. Creiamo gli oggetti con cui le persone si raccontano ogni giorno.',
@@ -514,6 +519,11 @@ export const TRANSLATIONS = {
       comingSoonTitle: 'New souls on the way',
       comingSoonSubtitle: 'Leave your email to discover them before everyone',
     },
+    packSection: {
+      title: 'Build your Pack',
+      subtitle: 'Lipstick, gloss and mascara in your Anyma. A complete ritual in one gesture.',
+      cta: 'Build your Pack',
+    },
     brandStory: {
       quote: "There isn't just one you.",
       body: "We reveal souls through make-up. We don't sell lipsticks. We create the objects people tell their story with, every day.",
@@ -873,6 +883,11 @@ export const TRANSLATIONS = {
       compraIlPack: 'Comprar el Pack',
       comingSoonTitle: 'Nuevas almas en camino',
       comingSoonSubtitle: 'Dejá tu email para descubrirlas antes que nadie',
+    },
+    packSection: {
+      title: 'Arma tu Pack',
+      subtitle: 'Labial, gloss y máscara en tu Anyma. Un ritual completo en un solo gesto.',
+      cta: 'Arma tu Pack',
     },
     brandStory: {
       quote: 'No existe una sola tú.',

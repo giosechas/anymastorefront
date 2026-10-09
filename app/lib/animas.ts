@@ -181,6 +181,8 @@ export const ANIME: AnimaDefinition[] = [
   },
 ];
 
+export const ACTIVE_ANIMAS = ANIME.filter((a) => !a.comingSoon);
+
 export function getAnimaGalleryImages(anima: AnimaDefinition): string[] {
   const slug = anima.handle.replace(/^anima-/, '');
   return Array.from(
