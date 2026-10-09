@@ -421,13 +421,13 @@ function PackSection() {
                   className="absolute inset-0 h-full w-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-nero/70 via-nero/10 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 flex flex-col items-center p-6 pb-8 text-center">
-                  <h3 className="font-display text-3xl uppercase tracking-[0.05em] text-paper sm:text-4xl">
+                <div className="absolute inset-x-0 bottom-0 flex flex-col items-center p-3 pb-4 text-center sm:p-6 sm:pb-8">
+                  <h3 className="font-display text-lg uppercase tracking-[0.05em] text-paper sm:text-4xl">
                     {anima.name}
                   </h3>
                   <Link
                     to={href(getPackPath(anima))}
-                    className="mt-4 border border-gold bg-gold px-6 py-2.5 text-[10px] uppercase tracking-[0.15em] text-nero transition-colors hover:bg-white hover:border-white"
+                    className="mt-2 border border-gold bg-gold px-3 py-1.5 text-[8px] uppercase tracking-[0.15em] text-nero transition-colors hover:bg-white hover:border-white sm:mt-4 sm:px-6 sm:py-2.5 sm:text-[10px]"
                   >
                     {t('packSection.cta')}
                   </Link>
