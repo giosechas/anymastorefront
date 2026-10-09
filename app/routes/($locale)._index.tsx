@@ -410,11 +410,11 @@ function PackSection() {
           {ACTIVE_ANIMAS.map((anima, i) => (
             <div
               key={anima.key}
-              className={`flex flex-col gap-4 sm:gap-6 ${
-                i % 2 === 0 ? 'sm:flex-row' : 'sm:flex-row-reverse'
+              className={`flex gap-2 sm:gap-6 ${
+                i % 2 === 0 ? 'flex-row' : 'flex-row-reverse'
               }`}
             >
-              <div className="relative aspect-[4/5] w-full overflow-hidden sm:w-1/2">
+              <div className="relative aspect-[4/5] w-1/2 overflow-hidden">
                 <img
                   src={getPackPhoto(anima)}
                   alt={anima.name}
@@ -433,7 +433,7 @@ function PackSection() {
                   </Link>
                 </div>
               </div>
-              <div className="aspect-[4/5] w-full overflow-hidden sm:w-1/2">
+              <div className="aspect-[4/5] w-1/2 overflow-hidden">
                 <video
                   src={getPackVideo(anima)}
                   autoPlay
