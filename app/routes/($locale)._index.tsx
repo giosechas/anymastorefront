@@ -393,12 +393,16 @@ function PackSection() {
   const t = useT();
   const {href} = useLocale();
   return (
-    <section className="mx-auto max-w-6xl px-6 py-12 sm:py-28">
+    <section
+      className="py-12 sm:py-28"
+      style={{background: 'linear-gradient(to bottom right, #231F20, #C8A96E)'}}
+    >
+      <div className="mx-auto max-w-6xl px-6">
       <div className="mb-8 text-center sm:mb-12">
-        <h2 className="font-display text-2xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
+        <h2 className="font-display text-2xl uppercase tracking-[0.03em] text-paper sm:text-4xl">
           {t('packSection.title')}
         </h2>
-        <p className="mx-auto mt-4 max-w-lg text-sm text-nero/70 sm:text-base">
+        <p className="mx-auto mt-4 max-w-lg text-sm text-paper/70 sm:text-base">
           {t('packSection.subtitle')}
         </p>
       </div>
@@ -428,6 +432,7 @@ function PackSection() {
               </div>
             </div>
         ))}
+      </div>
       </div>
     </section>
   );
