@@ -145,6 +145,30 @@ export function getComposedTitle(
   return color ? `${category} - ${color}` : category;
 }
 
+export const FINISH_MAP: Record<string, Record<string, string>> = {
+  Rossetto: {
+    NUDE: 'Pearly Gloss',
+    ROSSO: 'Metallic',
+    VIOLA: 'Pearly Gloss',
+    CHERRY: 'Pearly Gloss',
+  },
+  'Lip Gloss': {
+    PINK: 'Super Pearly Gloss',
+    YELLOW: 'Pearly Gloss',
+    CHOCOLATE: 'Pearly Gloss',
+    CHERRY: 'Pearly Gloss',
+  },
+  'Mascara/Eyeliner': {
+    BLACK: 'Super Black',
+    LILLA: 'Pervinca',
+  },
+};
+
+export function getFinish(productType: string, colorTag: string | undefined): string | undefined {
+  if (!colorTag) return undefined;
+  return FINISH_MAP[productType]?.[colorTag];
+}
+
 /** "ANYMA Leopard · Lip Gloss - Light Gold" style title used on catalog
  * cards and in the cart, combining the anima name with the composed
  * category+color title. */
