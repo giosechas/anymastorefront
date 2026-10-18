@@ -4,9 +4,9 @@
 export const TRANSLATIONS = {
   IT: {
     header: {
-      leAnyme: 'Le Anyme',
-      tutteLeAnyme: 'Tutte le Anyme',
-      packPerAnyme: 'Pack per Anyme',
+      leAnyme: 'Le ANYMA',
+      tutteLeAnyme: 'Tutte le ANYMA',
+      packPerAnyme: 'Pack per ANYMA',
       cercaPerProdotto: 'Cerca per prodotto',
       rossetti: 'Rossetti',
       lipGloss: 'Lip Gloss',
@@ -64,7 +64,7 @@ export const TRANSLATIONS = {
     search: {
       cerca: 'Cerca',
       chiudiRicerca: 'Chiudi ricerca',
-      placeholder: 'Cerca prodotti, anime...',
+      placeholder: 'Cerca prodotti, ANYMA...',
       ricercheRecenti: 'Ricerche recenti',
       rimuoviDallaCronologia: (t: string) => `Rimuovi "${t}" dalla cronologia`,
       ricercaInCorso: 'Ricerca in corso…',
@@ -110,7 +110,7 @@ export const TRANSLATIONS = {
     },
     rating: {
       noReviewsYet: 'Ancora nessuna recensione',
-      outOf5: (rating: number) => `${rating} su 5 Anyme`,
+      outOf5: (rating: number) => `${rating} su 5 ANYMA`,
       summary: (rating: string, count: number) =>
         `${rating} · ${count} ${count === 1 ? 'recensione' : 'recensioni'}`,
     },
@@ -120,7 +120,7 @@ export const TRANSLATIONS = {
     },
     product: {
       addToCart: 'Aggiungi al carrello',
-      soldOut: 'Esaurito',
+      soldOut: 'Prossimamente',
     },
     hero: {
       slides: [
@@ -142,16 +142,16 @@ export const TRANSLATIONS = {
           tagline: 'Oggetti identitari creati in Italia per dare voce a tutte le versioni di te.',
         },
       ],
-      discoverAnyme: 'Scopri le tue Anyme',
+      discoverAnyme: 'Scopri le tue ANYMA',
       shopNow: 'Tu sai chi sei',
     },
     animaGrid: {
-      le6Anyme: 'Le Anyme',
+      le6Anyme: 'Le ANYMA',
       scegliLaTuaAnyma: 'Scegli la tua Anyma',
       subtitle:
         'Ogni Anyma ha la sua estetica. Il pack che scegli non è un contenitore: è un simbolo.',
       compraIlPack: 'Compra il Pack',
-      comingSoonTitle: 'Nuove anime in arrivo',
+      comingSoonTitle: 'Nuove ANYMA in arrivo',
       comingSoonSubtitle: 'Lascia la tua email per scoprirle prima di tutti',
     },
     packSection: {
@@ -161,15 +161,15 @@ export const TRANSLATIONS = {
     },
     brandStory: {
       quote: 'Non esiste una sola te.',
-      body: 'Riveliamo le anyme attraverso il make-up. Non vendiamo rossetti. Creiamo gli oggetti con cui le persone si raccontano ogni giorno.',
+      body: 'Riveliamo le ANYMA attraverso il make-up. Non vendiamo rossetti. Creiamo gli oggetti con cui le persone si raccontano ogni giorno.',
       cta: 'Scopri la nostra storia',
     },
     founders: {
       postiLimitati: 'Posti limitati',
       title: 'Diventa Anyma Prima',
       subtitle:
-        'Spedizione a vita, tessera numerata, 15% di benvenuto: solo per le prime 800 anyme.',
-      countOf: (total: number) => `su ${total} anyme già dentro`,
+        'Spedizione a vita, tessera numerata, 15% di benvenuto: solo per le prime 800 ANYMA.',
+      countOf: (total: number) => `su ${total} ANYMA già dentro`,
       thanks: 'Grazie, ti faremo sapere quando si apre il tuo posto.',
       emailPlaceholder: 'La tua email',
       reserveSpot: 'Riservati il posto',
@@ -213,12 +213,12 @@ export const TRANSLATIONS = {
     social: {
       seguici: 'Seguici',
       guardaciSu: 'Guardaci su',
-      body: 'Backstage, texture, anyme in movimento: la parte più vera del brand vive sui social, prima ancora che sullo shop.',
+      body: 'Backstage, texture, ANYMA in movimento: la parte più vera del brand vive sui social, prima ancora che sullo shop.',
       segui: (handle: string) => `Segui ${handle}`,
     },
     productsByType: {
       cercaPerProdotto: 'Cerca per prodotto',
-      subtitle: 'Lo stesso gesto, in tutte le Anyme. Trova il tuo colore.',
+      subtitle: 'Lo stesso gesto, in tutte le ANYMA. Trova il tuo colore.',
       vediPerAnyma: 'Vedi per Anyma',
       vediPerColore: 'Vedi per colore',
       nessunProdotto: 'Nessun prodotto trovato per questa categoria.',
@@ -313,11 +313,11 @@ export const TRANSLATIONS = {
         "Ogni formula ANYMA BEAUTY è conforme al Regolamento (CE) n. 1223/2009 dell'Unione Europea, il quadro normativo più severo al mondo in materia di sicurezza cosmetica. Ma la conformità è il punto di partenza, non il traguardo. Noi andiamo oltre: selezioniamo materie prime italiane ed europee, evitiamo scorciatoie industriali e trattiamo ogni lotto come se fosse l'unico.",
       labP5:
         'Il risultato è una formula che non ha bisogno di raccontarsi, perché si sente. Al primo tocco. Al primo gesto. Al primo sguardo allo specchio.',
-      labQuote: 'Stessa cura. Stessa formula. Anime diverse.',
-      closingTitle: 'Benvenuta tra le Anyme',
+      labQuote: 'Stessa cura. Stessa formula. ANYMA diverse.',
+      closingTitle: 'Benvenuta tra le ANYMA',
       closingP:
-        'Chi entra nell\'universo di ANYMA BEAUTY non diventa cliente: entra a far parte di un sistema narrativo. Non ti chiameremo mai "cara cliente" o "consumatrice". Tu sei un\'Anyma della nostra crew. E le anyme non si contano. Crescono.',
-      closingQuote1: 'Scegli la tua anyma.',
+        'Chi entra nell\'universo di ANYMA BEAUTY non diventa cliente: entra a far parte di un sistema narrativo. Non ti chiameremo mai "cara cliente" o "consumatrice". Tu sei un\'Anyma della nostra crew. E le ANYMA non si contano. Crescono.',
+      closingQuote1: 'Scegli la tua Anyma.',
       closingQuote2: 'Rivela chi sei.',
     },
     careers: {
@@ -378,19 +378,19 @@ export const TRANSLATIONS = {
     },
     prossimamente: {
       metaTitle: 'Anyma Beauty | Prossimamente',
-      heroTitle: 'Nuove anime in arrivo.',
+      heroTitle: 'Nuove ANYMA in arrivo.',
       heroSubtitle: 'Le stiamo creando con chi le indosserà.',
-      body: 'Leopard, Candy e Street sono il primo capitolo. Le prossime anime nasceranno dal feedback delle nostre Anime Prime — le prime donne che hanno scelto ANYMA. Vuoi essere tra loro?',
+      body: 'Leopard, Candy e Street sono il primo capitolo. Le prossime ANYMA nasceranno dal feedback delle nostre ANYMA Prime — le prime donne che hanno scelto ANYMA. Vuoi essere tra loro?',
       emailPlaceholder: 'Lascia la tua email',
       subscribe: 'Avvisami',
       thanks: 'Grazie! Ti avviseremo.',
-      backToAnime: 'Scopri le anime disponibili',
+      backToAnime: 'Scopri le ANYMA disponibili',
     },
   },
   EN: {
     header: {
-      leAnyme: 'The Anyme',
-      tutteLeAnyme: 'All the Anyme',
+      leAnyme: 'The ANYMA',
+      tutteLeAnyme: 'All the ANYMA',
       packPerAnyme: 'Packs by Anyma',
       cercaPerProdotto: 'Search by product',
       rossetti: 'Lipsticks',
@@ -495,7 +495,7 @@ export const TRANSLATIONS = {
     },
     rating: {
       noReviewsYet: 'No reviews yet',
-      outOf5: (rating: number) => `${rating} out of 5 Anyme`,
+      outOf5: (rating: number) => `${rating} out of 5 ANYMA`,
       summary: (rating: string, count: number) =>
         `${rating} · ${count} ${count === 1 ? 'review' : 'reviews'}`,
     },
@@ -505,7 +505,7 @@ export const TRANSLATIONS = {
     },
     product: {
       addToCart: 'Add to cart',
-      soldOut: 'Sold out',
+      soldOut: 'Coming soon',
     },
     hero: {
       slides: [
@@ -527,11 +527,11 @@ export const TRANSLATIONS = {
           tagline: 'Identity objects made in Italy to give voice to every version of you.',
         },
       ],
-      discoverAnyme: 'Discover your Anyme',
+      discoverAnyme: 'Discover your ANYMA',
       shopNow: 'You know who you are',
     },
     animaGrid: {
-      le6Anyme: 'The Anyme',
+      le6Anyme: 'The ANYMA',
       scegliLaTuaAnyma: 'Choose your Anyma',
       subtitle:
         "Every Anyma has its own aesthetic. The pack you choose isn't a container: it's a symbol.",
@@ -553,8 +553,8 @@ export const TRANSLATIONS = {
       postiLimitati: 'Limited spots',
       title: 'Become Anyma Prima',
       subtitle:
-        'Free shipping for life, a numbered card, 15% welcome discount: only for the first 800 anyme.',
-      countOf: (total: number) => `of ${total} anyme already in`,
+        'Free shipping for life, a numbered card, 15% welcome discount: only for the first 800 ANYMA.',
+      countOf: (total: number) => `of ${total} ANYMA already in`,
       thanks: "Thanks — we'll let you know when your spot opens up.",
       emailPlaceholder: 'Your email',
       reserveSpot: 'Reserve your spot',
@@ -603,7 +603,7 @@ export const TRANSLATIONS = {
     },
     productsByType: {
       cercaPerProdotto: 'Search by product',
-      subtitle: 'The same gesture, across every Anyme. Find your color.',
+      subtitle: 'The same gesture, across every ANYMA. Find your color.',
       vediPerAnyma: 'View by Anyma',
       vediPerColore: 'View by color',
       nessunProdotto: 'No products found in this category.',
@@ -699,10 +699,10 @@ export const TRANSLATIONS = {
       labP5:
         "The result is a formula that doesn't need to explain itself, because you feel it. At the first touch. At the first gesture. At the first look in the mirror.",
       labQuote: 'Same care. Same formula. Different souls.',
-      closingTitle: 'Welcome among the Anyme',
+      closingTitle: 'Welcome among the ANYMA',
       closingP:
-        'Whoever enters the ANYMA BEAUTY universe doesn\'t become a customer: they become part of a narrative system. We will never call you "dear customer" or "consumer." You are an Anyma of our crew. And anyme aren\'t counted. They grow.',
-      closingQuote1: 'Choose your anyma.',
+        'Whoever enters the ANYMA BEAUTY universe doesn\'t become a customer: they become part of a narrative system. We will never call you "dear customer" or "consumer." You are an Anyma of our crew. And ANYMA aren\'t counted. They grow.',
+      closingQuote1: 'Choose your Anyma.',
       closingQuote2: 'Reveal who you are.',
     },
     careers: {
@@ -765,7 +765,7 @@ export const TRANSLATIONS = {
       metaTitle: 'Anyma Beauty | Coming Soon',
       heroTitle: 'New souls on the way.',
       heroSubtitle: "We're creating them with the women who'll wear them.",
-      body: "Leopard, Candy and Street are the opening chapter. The next souls will be shaped by the feedback of our Anime Prime — the first women who chose ANYMA. Want to be one of them?",
+      body: "Leopard, Candy and Street are the opening chapter. The next souls will be shaped by the feedback of our ANYMA Prime — the first women who chose ANYMA. Want to be one of them?",
       emailPlaceholder: 'Leave your email',
       subscribe: 'Notify me',
       thanks: "Thanks! We'll let you know.",
@@ -774,8 +774,8 @@ export const TRANSLATIONS = {
   },
   ES: {
     header: {
-      leAnyme: 'Las Anyme',
-      tutteLeAnyme: 'Todas las Anyme',
+      leAnyme: 'Las ANYMA',
+      tutteLeAnyme: 'Todas las ANYMA',
       packPerAnyme: 'Packs por Anyma',
       cercaPerProdotto: 'Buscar por producto',
       rossetti: 'Labiales',
@@ -834,7 +834,7 @@ export const TRANSLATIONS = {
     search: {
       cerca: 'Buscar',
       chiudiRicerca: 'Cerrar búsqueda',
-      placeholder: 'Busca productos, anime...',
+      placeholder: 'Busca productos, ANYMA...',
       ricercheRecenti: 'Búsquedas recientes',
       rimuoviDallaCronologia: (t: string) => `Quitar "${t}" del historial`,
       ricercaInCorso: 'Buscando…',
@@ -880,7 +880,7 @@ export const TRANSLATIONS = {
     },
     rating: {
       noReviewsYet: 'Todavía no hay reseñas',
-      outOf5: (rating: number) => `${rating} de 5 Anyme`,
+      outOf5: (rating: number) => `${rating} de 5 ANYMA`,
       summary: (rating: string, count: number) =>
         `${rating} · ${count} ${count === 1 ? 'reseña' : 'reseñas'}`,
     },
@@ -890,7 +890,7 @@ export const TRANSLATIONS = {
     },
     product: {
       addToCart: 'Añadir al carrito',
-      soldOut: 'Agotado',
+      soldOut: 'Próximamente',
     },
     hero: {
       slides: [
@@ -912,11 +912,11 @@ export const TRANSLATIONS = {
           tagline: 'Objetos identitarios creados en Italia para dar voz a todas las versiones de ti.',
         },
       ],
-      discoverAnyme: 'Descubre tus Anyme',
+      discoverAnyme: 'Descubre tus ANYMA',
       shopNow: 'Tú sabes quién eres',
     },
     animaGrid: {
-      le6Anyme: 'Las Anyme',
+      le6Anyme: 'Las ANYMA',
       scegliLaTuaAnyma: 'Elige tu Anyma',
       subtitle:
         'Cada Anyma tiene su propia estética. El pack que eliges no es un envase: es un símbolo.',
@@ -931,15 +931,15 @@ export const TRANSLATIONS = {
     },
     brandStory: {
       quote: 'No existe una sola tú.',
-      body: 'Revelamos las anyme a través del maquillaje. No vendemos labiales. Creamos los objetos con los que las personas se cuentan a sí mismas cada día.',
+      body: 'Revelamos las ANYMA a través del maquillaje. No vendemos labiales. Creamos los objetos con los que las personas se cuentan a sí mismas cada día.',
       cta: 'Descubre nuestra historia',
     },
     founders: {
       postiLimitati: 'Cupos limitados',
       title: 'Conviértete en Anyma Prima',
       subtitle:
-        'Envío de por vida, tarjeta numerada, 15% de bienvenida: solo para las primeras 800 anyme.',
-      countOf: (total: number) => `de ${total} anyme ya dentro`,
+        'Envío de por vida, tarjeta numerada, 15% de bienvenida: solo para las primeras 800 ANYMA.',
+      countOf: (total: number) => `de ${total} ANYMA ya dentro`,
       thanks: 'Gracias, te avisaremos cuando se abra tu cupo.',
       emailPlaceholder: 'Tu email',
       reserveSpot: 'Reserva tu cupo',
@@ -983,12 +983,12 @@ export const TRANSLATIONS = {
     social: {
       seguici: 'Síguenos',
       guardaciSu: 'Míranos en',
-      body: 'Backstage, texturas, anyme en movimiento: la parte más real de la marca vive en las redes, incluso antes que en la tienda.',
+      body: 'Backstage, texturas, ANYMA en movimiento: la parte más real de la marca vive en las redes, incluso antes que en la tienda.',
       segui: (handle: string) => `Sigue ${handle}`,
     },
     productsByType: {
       cercaPerProdotto: 'Buscar por producto',
-      subtitle: 'El mismo gesto, en todas las Anyme. Encuentra tu color.',
+      subtitle: 'El mismo gesto, en todas las ANYMA. Encuentra tu color.',
       vediPerAnyma: 'Ver por Anyma',
       vediPerColore: 'Ver por color',
       nessunProdotto: 'No se encontraron productos en esta categoría.',
@@ -1083,10 +1083,10 @@ export const TRANSLATIONS = {
       labP5:
         'El resultado es una fórmula que no necesita contarse, porque se siente. Al primer toque. Al primer gesto. A la primera mirada al espejo.',
       labQuote: 'Mismo cuidado. Misma fórmula. Almas distintas.',
-      closingTitle: 'Bienvenida entre las Anyme',
+      closingTitle: 'Bienvenida entre las ANYMA',
       closingP:
-        'Quien entra en el universo de ANYMA BEAUTY no se convierte en clienta: pasa a formar parte de un sistema narrativo. Nunca te llamaremos "estimada clienta" ni "consumidora". Tú eres una Anyma de nuestra crew. Y las anyme no se cuentan. Crecen.',
-      closingQuote1: 'Elige tu anyma.',
+        'Quien entra en el universo de ANYMA BEAUTY no se convierte en clienta: pasa a formar parte de un sistema narrativo. Nunca te llamaremos "estimada clienta" ni "consumidora". Tú eres una Anyma de nuestra crew. Y las ANYMA no se cuentan. Crecen.',
+      closingQuote1: 'Elige tu Anyma.',
       closingQuote2: 'Revela quién eres.',
     },
     careers: {
@@ -1149,7 +1149,7 @@ export const TRANSLATIONS = {
       metaTitle: 'Anyma Beauty | Muy Pronto',
       heroTitle: 'Nuevas almas en camino.',
       heroSubtitle: 'Las estamos creando con quienes las van a llevar.',
-      body: 'Leopard, Candy y Street son el primer capítulo. Las próximas almas nacerán del feedback de nuestras Anime Prime — las primeras mujeres que eligieron ANYMA. ¿Querés ser una de ellas?',
+      body: 'Leopard, Candy y Street son el primer capítulo. Las próximas almas nacerán del feedback de nuestras ANYMA Prime — las primeras mujeres que eligieron ANYMA. ¿Querés ser una de ellas?',
       emailPlaceholder: 'Dejá tu email',
       subscribe: 'Avisame',
       thanks: '¡Gracias! Te avisaremos.',

@@ -32,7 +32,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       },
       {
         heading: '3. Proprietà intellettuale',
-        body: 'Tutti i contenuti presenti sul Sito, inclusi testi, immagini, grafiche, loghi, marchi, design del packaging, nomi delle collezioni (Leopard, Panther, Candy Rosa, Candy Tiffany, Street, Urban), il sistema delle "Anime" e ogni altro elemento creativo, sono di proprietà esclusiva di MAD SOLUTION S.R.L. o dei rispettivi licenzianti e sono protetti dalle leggi italiane, europee e internazionali in materia di proprietà intellettuale. È vietata qualsiasi riproduzione, distribuzione, trasmissione, modifica o utilizzo dei contenuti del Sito senza autorizzazione scritta del Titolare.',
+        body: 'Tutti i contenuti presenti sul Sito, inclusi testi, immagini, grafiche, loghi, marchi, design del packaging, nomi delle collezioni (Leopard, Panther, Candy Rosa, Candy Tiffany, Street, Urban), il sistema delle "ANYMA" e ogni altro elemento creativo, sono di proprietà esclusiva di MAD SOLUTION S.R.L. o dei rispettivi licenzianti e sono protetti dalle leggi italiane, europee e internazionali in materia di proprietà intellettuale. È vietata qualsiasi riproduzione, distribuzione, trasmissione, modifica o utilizzo dei contenuti del Sito senza autorizzazione scritta del Titolare.',
       },
       {
         heading: '4. Utilizzo consentito',
@@ -214,7 +214,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
         body: 'Trattiamo il tuo indirizzo e-mail per inviarti comunicazioni commerciali su prodotti, novità e promozioni. Base giuridica: consenso (art. 6.1.a GDPR). Il consenso è facoltativo e revocabile in qualsiasi momento tramite il link di disiscrizione presente in ogni e-mail.',
       },
       {
-        heading: 'Se partecipi al programma Anime Prime',
+        heading: 'Se partecipi al programma ANYMA Prime',
         body: 'Trattiamo i dati da te forniti (nome, e-mail, profilo social, feedback sui prodotti) per la gestione del programma di co-validazione e per comunicazioni riservate. Base giuridica: consenso (art. 6.1.a GDPR) e legittimo interesse (art. 6.1.f GDPR).',
       },
       {

@@ -127,7 +127,7 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
   // Same product (category + color), across every anima — lets the
   // customer switch soul without losing the color they picked.
   const colorTag = getColorTag(product.tags);
-  let animaVariants: {anima: AnimaDefinition; handle: string}[] = [];
+  let animaVariants: {anima: AnimaDefinition; handle: string; availableForSale: boolean}[] = [];
   if (colorTag) {
     const {products} = await storefront.query(ANIMA_VARIANTS_QUERY, {
       variables: {
@@ -135,17 +135,17 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
       },
     });
     animaVariants = products.nodes
-      .map((node: {handle: string; collections: {nodes: {handle: string}[]}}) => {
+      .map((node: {handle: string; availableForSale: boolean; collections: {nodes: {handle: string}[]}}) => {
         const collectionHandle = node.collections.nodes.find(
           (c: {handle: string}) => c.handle.startsWith('anima-'),
         )?.handle;
         const nodeAnima = findAnimaByCollectionHandle(collectionHandle);
-        return nodeAnima ? {anima: nodeAnima, handle: node.handle} : null;
+        return nodeAnima ? {anima: nodeAnima, handle: node.handle, availableForSale: node.availableForSale} : null;
       })
       .filter(
         (
-          entry: {anima: AnimaDefinition; handle: string} | null,
-        ): entry is {anima: AnimaDefinition; handle: string} => Boolean(entry),
+          entry: {anima: AnimaDefinition; handle: string; availableForSale: boolean} | null,
+        ): entry is {anima: AnimaDefinition; handle: string; availableForSale: boolean} => Boolean(entry),
       );
   }
 
@@ -188,7 +188,7 @@ export default function Product() {
 
   const orderedAnimaVariants = ACTIVE_ANIMAS.map((a) =>
     animaVariants.find((v) => v.anima.key === a.key),
-  ).filter((v): v is {anima: AnimaDefinition; handle: string} => Boolean(v));
+  ).filter((v): v is {anima: AnimaDefinition; handle: string; availableForSale: boolean} => Boolean(v));
 
   const selectedVariant = useOptimisticVariant(
     product.selectedOrFirstAvailableVariant,
@@ -340,18 +340,32 @@ export default function Product() {
                   {t('pdp.cambiaAnymaStessoColore')}
                 </p>
                 <div className="flex flex-wrap gap-1.5">
-                  {orderedAnimaVariants.map(({anima: variantAnima, handle}) => {
+                  {orderedAnimaVariants.map(({anima: variantAnima, handle, availableForSale}) => {
                     const isCurrent = variantAnima.key === anima?.key;
-                    return isCurrent ? (
-                      <span
-                        key={variantAnima.key}
-                        aria-current="true"
-                        className="rounded-full px-2.5 py-1 text-[9px] uppercase tracking-[0.1em] text-paper"
-                        style={{backgroundColor: variantAnima.color}}
-                      >
-                        {variantAnima.name}
-                      </span>
-                    ) : (
+                    if (isCurrent) {
+                      return (
+                        <span
+                          key={variantAnima.key}
+                          aria-current="true"
+                          className="rounded-full px-2.5 py-1 text-[9px] uppercase tracking-[0.1em] text-paper"
+                          style={{backgroundColor: variantAnima.color}}
+                        >
+                          {variantAnima.name}
+                        </span>
+                      );
+                    }
+                    if (!availableForSale) {
+                      return (
+                        <span
+                          key={variantAnima.key}
+                          aria-disabled="true"
+                          className="cursor-not-allowed rounded-full border border-nero/20 px-2.5 py-1 text-[9px] uppercase tracking-[0.1em] text-nero/30"
+                        >
+                          {variantAnima.name}
+                        </span>
+                      );
+                    }
+                    return (
                       <Link
                         key={variantAnima.key}
                         to={href(`/products/${handle}`)}
@@ -734,6 +748,7 @@ const ANIMA_VARIANTS_QUERY = `#graphql
     products(first: 10, query: $searchQuery) {
       nodes {
         handle
+        availableForSale
         collections(first: 5) {
           nodes {
             handle

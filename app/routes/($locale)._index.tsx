@@ -212,7 +212,7 @@ function Hero() {
               <img
                 key={`image-${i}`}
                 src={slide.src}
-                alt="Le Anyme di Anyma Beauty"
+                alt="Le ANYMA di Anyma Beauty"
                 className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-1000 ${
                   i === activeIndex ? 'opacity-100' : 'opacity-0'
                 }`}
