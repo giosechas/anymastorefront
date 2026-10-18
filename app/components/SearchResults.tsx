@@ -2,6 +2,7 @@ import {Link} from 'react-router';
 import {Image, Money, Pagination} from '@shopify/hydrogen';
 import {urlWithTrackingParams, type RegularSearchReturn} from '~/lib/search';
 import {useLocale, useT} from '~/lib/i18n';
+import {HIDE_PRICES} from '~/lib/config';
 
 type SearchItems = RegularSearchReturn['result']['items'];
 type PartialSearchResult<ItemType extends keyof SearchItems> = Pick<
@@ -132,7 +133,7 @@ function SearchResultsProducts({
                   <Image data={image} alt={product.title} sizes="200px" />
                 )}
                 <p>{product.title}</p>
-                <small>{price && <Money data={price} />}</small>
+                <small>{!HIDE_PRICES && price && <Money data={price} />}</small>
               </Link>
             );
           });

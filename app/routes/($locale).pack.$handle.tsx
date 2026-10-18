@@ -2,6 +2,7 @@ import {useMemo, useState} from 'react';
 import {Link, useLoaderData} from 'react-router';
 import type {Route} from './+types/($locale).pack.$handle';
 import {Image, Money} from '@shopify/hydrogen';
+import {HIDE_PRICES} from '~/lib/config';
 import {findAnimaByCollectionHandle, type AnimaKey} from '~/lib/animas';
 import {COLOR_SWATCH_HEX, getColorTag, getColorLabel, getCategoryLabel} from '~/lib/productCopy';
 import {getLocaleFromParam} from '~/lib/locale';
@@ -197,12 +198,14 @@ export default function Pack() {
       </div>
 
       <div className="mt-8 border-t border-nero/10 pt-6">
-        <div className="flex items-center justify-between text-sm text-nero">
-          <span className="uppercase tracking-[0.1em]">{t('pack.totalePack')}</span>
-          <Money data={{amount: String(total), currencyCode: currency}} />
-        </div>
+        {!HIDE_PRICES && (
+          <div className="flex items-center justify-between text-sm text-nero">
+            <span className="uppercase tracking-[0.1em]">{t('pack.totalePack')}</span>
+            <Money data={{amount: String(total), currencyCode: currency}} />
+          </div>
+        )}
 
-        {checkoutHref && allAvailable ? (
+        {!HIDE_PRICES && checkoutHref && allAvailable ? (
           <a
             href={checkoutHref}
             className="mt-6 block w-full border border-nero bg-nero px-8 py-4 text-center text-xs uppercase tracking-[0.2em] text-paper transition-colors hover:bg-transparent hover:text-nero"

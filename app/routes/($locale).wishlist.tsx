@@ -1,6 +1,7 @@
 import {Suspense} from 'react';
 import {Await, Link, useLoaderData} from 'react-router';
 import {Money} from '@shopify/hydrogen';
+import {HIDE_PRICES} from '~/lib/config';
 import type {Route} from './+types/($locale).wishlist';
 import {useWishlist, removeWishlistItem} from '~/lib/wishlist';
 import {ProductItem} from '~/components/ProductItem';
@@ -61,7 +62,7 @@ export default function Wishlist() {
                 <h4 className="mt-3 text-xs uppercase tracking-[0.05em] text-nero">
                   {item.title}
                 </h4>
-                {item.price && (
+                {!HIDE_PRICES && item.price && (
                   <small className="text-xs text-nero/60">
                     <Money data={item.price} />
                   </small>

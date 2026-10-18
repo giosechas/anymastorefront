@@ -17,6 +17,7 @@ import {getLipstickModelPhotos} from '~/lib/lipstickModelPhoto';
 import {getGlossModelPhotos} from '~/lib/glossModelPhoto';
 import {getColorTag, getCatalogTitle} from '~/lib/productCopy';
 import {useLocale, useT} from '~/lib/i18n';
+import {HIDE_PRICES} from '~/lib/config';
 
 const IMAGE_ROTATE_MS = 3000;
 
@@ -162,7 +163,7 @@ export function ProductItem({
                 price: product.priceRange.minVariantPrice,
               }}
             />
-            {variant?.availableForSale ? (
+            {!HIDE_PRICES && variant?.availableForSale ? (
               <div
                 onClick={(e) => {
                   e.preventDefault();
@@ -180,7 +181,7 @@ export function ProductItem({
                 </AddToCartButton>
               </div>
             ) : (
-              variant && <NotifyBell productId={product.id} />
+              variant && !HIDE_PRICES && <NotifyBell productId={product.id} />
             )}
           </div>
         </div>
@@ -188,7 +189,13 @@ export function ProductItem({
           {displayTitle}
         </h4>
         <small className="text-[10px] text-nero/60 no-underline transition-colors group-hover:text-gold">
-          <Money data={product.priceRange.minVariantPrice} />
+          {HIDE_PRICES ? (
+            <span className="uppercase tracking-[0.08em] text-nero/40">
+              {t('product.soldOut')}
+            </span>
+          ) : (
+            <Money data={product.priceRange.minVariantPrice} />
+          )}
         </small>
       </Link>
 
@@ -196,12 +203,12 @@ export function ProductItem({
         <div className="pointer-events-none absolute inset-0 bottom-[3.25rem] flex items-center justify-center bg-nero/0 opacity-0 transition-all duration-200 group-hover:bg-nero/40 group-hover:opacity-100">
           <div className="pointer-events-auto">
             <AddToCartButton
-              disabled={!variant.availableForSale}
+              disabled={HIDE_PRICES || !variant.availableForSale}
               onClick={() => open('cart')}
               lines={[{merchandiseId: variant.id, quantity: 1, selectedVariant: variant}]}
               className="border border-paper bg-paper/0 px-5 py-2 text-[11px] uppercase tracking-[0.15em] text-paper transition-colors hover:bg-paper hover:text-nero disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {variant.availableForSale ? t('product.addToCart') : t('product.soldOut')}
+              {!HIDE_PRICES && variant.availableForSale ? t('product.addToCart') : t('product.soldOut')}
             </AddToCartButton>
           </div>
         </div>

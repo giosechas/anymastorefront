@@ -1,5 +1,6 @@
 import {Link, useFetcher, type Fetcher} from 'react-router';
 import {Image, Money} from '@shopify/hydrogen';
+import {HIDE_PRICES} from '~/lib/config';
 import React, {useRef, useEffect} from 'react';
 import {
   getEmptyPredictiveSearchResult,
@@ -228,7 +229,7 @@ function SearchResultsPredictiveProducts({
                 )}
                 <div>
                   <p>{product.title}</p>
-                  <small>{price && <Money data={price} />}</small>
+                  <small>{!HIDE_PRICES && price && <Money data={price} />}</small>
                 </div>
               </Link>
             </li>

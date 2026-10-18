@@ -1191,7 +1191,7 @@ export type AnimaVariantsQueryVariables = StorefrontAPI.Exact<{
 export type AnimaVariantsQuery = {
   products: {
     nodes: Array<
-      Pick<StorefrontAPI.Product, 'handle'> & {
+      Pick<StorefrontAPI.Product, 'handle' | 'availableForSale'> & {
         collections: {nodes: Array<Pick<StorefrontAPI.Collection, 'handle'>>};
       }
     >;
@@ -1603,7 +1603,7 @@ interface GeneratedQueryTypes {
     return: AnimaSiblingsQuery;
     variables: AnimaSiblingsQueryVariables;
   };
-  '#graphql\n  query AnimaVariants($searchQuery: String!, $country: CountryCode, $language: LanguageCode)\n    @inContext(country: $country, language: $language) {\n    products(first: 10, query: $searchQuery) {\n      nodes {\n        handle\n        collections(first: 5) {\n          nodes {\n            handle\n          }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  query AnimaVariants($searchQuery: String!, $country: CountryCode, $language: LanguageCode)\n    @inContext(country: $country, language: $language) {\n    products(first: 10, query: $searchQuery) {\n      nodes {\n        handle\n        availableForSale\n        collections(first: 5) {\n          nodes {\n            handle\n          }\n        }\n      }\n    }\n  }\n': {
     return: AnimaVariantsQuery;
     variables: AnimaVariantsQueryVariables;
   };

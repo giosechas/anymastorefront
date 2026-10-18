@@ -8,6 +8,7 @@ import type {
 import {AddToCartButton} from './AddToCartButton';
 import {useAside} from './Aside';
 import {useLocale, useT} from '~/lib/i18n';
+import {HIDE_PRICES} from '~/lib/config';
 import type {ProductFragment} from 'storefrontapi.generated';
 
 export function ProductForm({
@@ -108,26 +109,28 @@ export function ProductForm({
           </div>
         );
       })}
-      <div className="quantity-selector">
-        <button
-          type="button"
-          aria-label={t('cart.decreaseQuantity')}
-          onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-        >
-          −
-        </button>
-        <span aria-live="polite">{quantity}</span>
-        <button
-          type="button"
-          aria-label={t('cart.increaseQuantity')}
-          onClick={() => setQuantity((q) => q + 1)}
-        >
-          +
-        </button>
-      </div>
+      {!HIDE_PRICES && (
+        <div className="quantity-selector">
+          <button
+            type="button"
+            aria-label={t('cart.decreaseQuantity')}
+            onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+          >
+            −
+          </button>
+          <span aria-live="polite">{quantity}</span>
+          <button
+            type="button"
+            aria-label={t('cart.increaseQuantity')}
+            onClick={() => setQuantity((q) => q + 1)}
+          >
+            +
+          </button>
+        </div>
+      )}
       <AddToCartButton
         className={buttonClassName}
-        disabled={!selectedVariant || !selectedVariant.availableForSale}
+        disabled={HIDE_PRICES || !selectedVariant || !selectedVariant.availableForSale}
         onClick={() => {
           open('cart');
         }}
@@ -143,7 +146,7 @@ export function ProductForm({
             : []
         }
       >
-        {selectedVariant?.availableForSale
+        {!HIDE_PRICES && selectedVariant?.availableForSale
           ? t('product.addToCart')
           : t('product.soldOut')}
       </AddToCartButton>

@@ -4,6 +4,7 @@ import {CartForm, Image, type OptimisticCartLine} from '@shopify/hydrogen';
 import {useVariantUrl} from '~/lib/variants';
 import {Link} from 'react-router';
 import {ProductPrice} from './ProductPrice';
+import {HIDE_PRICES} from '~/lib/config';
 import {useAside} from './Aside';
 import {useLocale, useT} from '~/lib/i18n';
 import {getColorTag, getColorLabel, getCatalogTitle} from '~/lib/productCopy';
@@ -73,7 +74,7 @@ export function CartLineItem({
               <strong>{displayTitle}</strong>
             </p>
           </Link>
-          <ProductPrice price={line?.cost?.totalAmount} />
+          {!HIDE_PRICES && <ProductPrice price={line?.cost?.totalAmount} />}
           <ul>
             {selectedOptions.map((option) => (
               <li key={option.name}>

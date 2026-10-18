@@ -1,6 +1,7 @@
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import type {CartLayout} from '~/components/CartMain';
 import {CartForm, Money, type OptimisticCart} from '@shopify/hydrogen';
+import {HIDE_PRICES} from '~/lib/config';
 import {useEffect, useId, useRef, useState} from 'react';
 import {useFetcher} from 'react-router';
 import {useT} from '~/lib/i18n';
@@ -23,16 +24,18 @@ export function CartSummary({cart, layout}: CartSummaryProps) {
   return (
     <div aria-labelledby={summaryId} className={className}>
       <h4 id={summaryId}>{t('cart.totals')}</h4>
-      <dl role="group" className="cart-subtotal">
-        <dt>{t('cart.subtotal')}</dt>
-        <dd>
-          {cart?.cost?.subtotalAmount?.amount ? (
-            <Money data={cart?.cost?.subtotalAmount} />
-          ) : (
-            '-'
-          )}
-        </dd>
-      </dl>
+      {!HIDE_PRICES && (
+        <dl role="group" className="cart-subtotal">
+          <dt>{t('cart.subtotal')}</dt>
+          <dd>
+            {cart?.cost?.subtotalAmount?.amount ? (
+              <Money data={cart?.cost?.subtotalAmount} />
+            ) : (
+              '-'
+            )}
+          </dd>
+        </dl>
+      )}
       <CartDiscounts
         discountCodes={cart?.discountCodes}
         discountsHeadingId={discountsHeadingId}
