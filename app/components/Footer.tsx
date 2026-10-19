@@ -10,7 +10,7 @@ import {
 } from '~/components/FooterSupportPopovers';
 
 const SOCIAL_LINKS = [
-  {name: 'Instagram', url: 'https://www.instagram.com/anyma.beauty'},
+  {name: 'Instagram', url: 'https://www.instagram.com/anyma_beauty/'},
   {name: 'TikTok', url: 'https://www.tiktok.com/@anyma.beauty'},
   {name: 'YouTube', url: 'https://www.youtube.com/@anymabeauty'},
   {name: 'Facebook', url: 'https://www.facebook.com/share/1Cg45D3Q3J/?mibextid=wwXIfr'},

@@ -1,12 +1,14 @@
 import {Await, useLoaderData, Link} from 'react-router';
 import type {Route} from './+types/($locale)._index';
-import {Suspense, useCallback, useEffect, useRef, useState} from 'react';
+import {Suspense, useEffect, useRef, useState} from 'react';
 import type {RecommendedProductsQuery} from 'storefrontapi.generated';
 import {ProductCarousel} from '~/components/ProductCarousel';
 import {MockShopNotice} from '~/components/MockShopNotice';
 import {ScrollReveal} from '~/components/ScrollReveal';
 import {useParallaxOffset} from '~/hooks/useParallaxOffset';
-import {getTikTokVideos, type TikTokVideo} from '~/lib/tiktok';
+import {getTikTokPosts} from '~/lib/tiktok';
+import {getInstagramPosts} from '~/lib/instagram';
+import {mergeSocialFeed, type SocialPost} from '~/lib/socialFeed';
 import {
   ACTIVE_ANIMAS,
   getAnimaGalleryImages,
@@ -92,14 +94,20 @@ function loadDeferredData({context}: Route.LoaderArgs) {
       return null;
     });
 
-  const tiktokVideos = getTikTokVideos(context.env).catch((error: Error) => {
-    console.error(error);
-    return [];
-  });
+  const socialFeed = Promise.all([
+    getInstagramPosts(context.env).catch((err: Error) => {
+      console.error(err);
+      return [];
+    }),
+    getTikTokPosts(context.storefront).catch((err: Error) => {
+      console.error(err);
+      return [];
+    }),
+  ]).then(([ig, tt]) => mergeSocialFeed(ig, tt, 6));
 
   return {
     recommendedProducts,
-    tiktokVideos,
+    socialFeed,
   };
 }
 
@@ -163,7 +171,7 @@ export default function Homepage() {
       <PackSection />
       <PhilosophySection />
       <BrandStoryTeaser />
-      <SocialSection tiktokVideos={data.tiktokVideos} />
+      <SocialSection feed={data.socialFeed} />
       <FoundersSection />
     </div>
   );
@@ -637,143 +645,126 @@ function RecommendedProducts({
 
 const TIKTOK_HANDLE = '@anyma.beauty';
 const TIKTOK_URL = 'https://www.tiktok.com/@anyma.beauty';
+const INSTAGRAM_HANDLE = '@anyma_beauty';
+const INSTAGRAM_URL = 'https://www.instagram.com/anyma_beauty/';
 
-const TIKTOK_WALL_CLIPS = [
-  {name: 'bedroom-alt', src: '/videos/tiktok-wall/bedroom-alt.mp4', poster: '/videos/tiktok-wall/posters/bedroom-alt.jpg'},
-  {name: 'lip-closeup', src: '/videos/tiktok-wall/lip-closeup.mp4', poster: '/videos/tiktok-wall/posters/lip-closeup.jpg'},
-  {name: 'paris-walk', src: '/videos/tiktok-wall/paris-walk.mp4', poster: '/videos/tiktok-wall/posters/paris-walk.jpg'},
-  {name: 'street-bite', src: '/videos/tiktok-wall/street-bite.mp4', poster: '/videos/tiktok-wall/posters/street-bite.jpg'},
-  {name: 'city-selfie', src: '/videos/tiktok-wall/city-selfie.mp4', poster: '/videos/tiktok-wall/posters/city-selfie.jpg'},
-  {name: 'locker-room', src: '/videos/tiktok-wall/locker-room.mp4', poster: '/videos/tiktok-wall/posters/locker-room.jpg'},
-];
-
-function SocialSection({
-  tiktokVideos,
-}: {
-  tiktokVideos: Promise<TikTokVideo[]>;
-}) {
+function SocialSection({feed}: {feed: Promise<SocialPost[]>}) {
   const t = useT();
-  const parallaxCols = [
-    useParallaxOffset<HTMLDivElement>(-70),
-    useParallaxOffset<HTMLDivElement>(55),
-    useParallaxOffset<HTMLDivElement>(-40),
-  ];
 
   return (
     <section className="overflow-hidden bg-nero px-6 py-16 sm:py-24">
-      <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-10 sm:grid-cols-2 sm:gap-16">
-        <ScrollReveal direction="left">
-          <p className="mb-3 text-xs uppercase tracking-[0.4em] text-gold">
-            {t('social.seguici')}
-          </p>
-          <h2 className="font-display text-3xl uppercase tracking-[0.03em] text-paper sm:text-4xl">
-            {t('social.guardaciSu')} <span className="text-fuchsia">TikTok</span>
-          </h2>
-          <p className="mt-4 max-w-md text-sm leading-relaxed text-paper/70">
-            {t('social.body')}
-          </p>
-          <a
-            href={TIKTOK_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-6 inline-flex items-center gap-2 border border-paper px-6 py-3 text-xs uppercase tracking-[0.2em] text-paper transition-colors hover:bg-paper hover:text-nero"
-          >
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
-              <path d="M16.6 5.82c-.9-.86-1.47-2.03-1.6-3.32h-3.02v13.9c0 1.7-1.38 3.08-3.08 3.08a3.08 3.08 0 0 1-1.13-5.95 3.06 3.06 0 0 1 1.13-.21c.28 0 .55.03.81.09v-3.1a6.1 6.1 0 0 0-.81-.05A6.1 6.1 0 0 0 3.28 16.5 6.1 6.1 0 0 0 8.9 22.6a6.1 6.1 0 0 0 6.1-6.1V8.94a8.2 8.2 0 0 0 4.8 1.53V7.45c-1.13 0-2.19-.35-3.2-1.63Z" />
-            </svg>
-            {t('social.segui', TIKTOK_HANDLE)}
-          </a>
-        </ScrollReveal>
+      <div className="mx-auto max-w-5xl">
+        <ScrollReveal direction="up">
+          <div className="mb-10 text-center sm:mb-14">
+            <p className="mb-3 text-xs uppercase tracking-[0.4em] text-gold">
+              {t('social.seguici')}
+            </p>
+            <h2 className="font-display text-3xl uppercase tracking-[0.03em] text-paper sm:text-4xl">
+              {t('social.guardaciSu')}{' '}
+              <span className="text-fuchsia">TikTok</span> &{' '}
+              <span className="text-fuchsia">Instagram</span>
+            </h2>
+            <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-paper/70">
+              {t('social.body')}
+            </p>
 
-        <ScrollReveal direction="right" delay={100}>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-            <Suspense
-              fallback={
-                <TikTokWallColumns parallaxCols={parallaxCols} clips={TIKTOK_WALL_CLIPS} />
-              }
-            >
-              <Await resolve={tiktokVideos}>
-                {(videos) =>
-                  videos.length > 0 ? (
-                    <TikTokWallColumns
-                      parallaxCols={parallaxCols}
-                      liveVideos={videos}
-                    />
-                  ) : (
-                    <TikTokWallColumns
-                      parallaxCols={parallaxCols}
-                      clips={TIKTOK_WALL_CLIPS}
-                    />
-                  )
-                }
-              </Await>
-            </Suspense>
+            <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
+              <a
+                href={TIKTOK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={t('social.segui', TIKTOK_HANDLE)}
+                className="inline-flex items-center gap-2 border border-paper px-6 py-3 text-xs uppercase tracking-[0.2em] text-paper transition-colors hover:bg-paper hover:text-nero"
+              >
+                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
+                  <path d="M16.6 5.82c-.9-.86-1.47-2.03-1.6-3.32h-3.02v13.9c0 1.7-1.38 3.08-3.08 3.08a3.08 3.08 0 0 1-1.13-5.95 3.06 3.06 0 0 1 1.13-.21c.28 0 .55.03.81.09v-3.1a6.1 6.1 0 0 0-.81-.05A6.1 6.1 0 0 0 3.28 16.5 6.1 6.1 0 0 0 8.9 22.6a6.1 6.1 0 0 0 6.1-6.1V8.94a8.2 8.2 0 0 0 4.8 1.53V7.45c-1.13 0-2.19-.35-3.2-1.63Z" />
+                </svg>
+                {t('social.segui', TIKTOK_HANDLE)}
+              </a>
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={t('instagram.segui', INSTAGRAM_HANDLE)}
+                className="inline-flex items-center gap-2 border border-paper px-6 py-3 text-xs uppercase tracking-[0.2em] text-paper transition-colors hover:bg-paper hover:text-nero"
+              >
+                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
+                  <path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
+                </svg>
+                {t('instagram.segui', INSTAGRAM_HANDLE)}
+              </a>
+            </div>
           </div>
         </ScrollReveal>
+
+        <Suspense fallback={null}>
+          <Await resolve={feed}>
+            {(posts) => {
+              if (!posts || posts.length === 0) return null;
+              return <SocialGrid posts={posts} />;
+            }}
+          </Await>
+        </Suspense>
       </div>
     </section>
   );
 }
 
-function TikTokWallColumns({
-  parallaxCols,
-  clips,
-  liveVideos,
-}: {
-  parallaxCols: ReturnType<typeof useParallaxOffset<HTMLDivElement>>[];
-  clips?: typeof TIKTOK_WALL_CLIPS;
-  liveVideos?: TikTokVideo[];
-}) {
-  const tiles = liveVideos
-    ? liveVideos.slice(0, 6).map((video) => (
-        <a
-          key={video.id}
-          href={video.shareUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="block aspect-[9/16] overflow-hidden rounded bg-paper/10"
-        >
-          <img
-            src={video.coverImageUrl}
-            alt={video.description}
-            className="h-full w-full object-cover"
-          />
-        </a>
-      ))
-    : (clips ?? []).map((clip) => (
-        <div
-          key={clip.name}
-          className="aspect-[9/16] overflow-hidden rounded bg-paper/10"
-        >
-          <video
-            src={clip.src}
-            poster={clip.poster}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="h-full w-full object-cover"
-          />
-        </div>
-      ));
-
-  const groups = [tiles.slice(0, 2), tiles.slice(2, 4), tiles.slice(4, 6)];
-
+function SocialGrid({posts}: {posts: SocialPost[]}) {
   return (
     <>
-      {groups.map((group, i) => (
-        <div
-          key={i}
-          ref={parallaxCols[i].ref}
-          className={`flex flex-col gap-3 will-change-transform ${
-            i === 2 ? 'hidden sm:flex' : ''
-          }`}
-          style={{transform: `translateY(${parallaxCols[i].offset}px)`}}
-        >
-          {group}
-        </div>
-      ))}
+      {/* Mobile: horizontal scroll-snap carousel */}
+      <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-4 sm:hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {posts.map((post) => (
+          <SocialCard key={post.id} post={post} className="w-[70vw] flex-shrink-0 snap-start" />
+        ))}
+      </div>
+      {/* Desktop: 3-col grid */}
+      <div className="hidden gap-3 sm:grid sm:grid-cols-3">
+        {posts.map((post) => (
+          <SocialCard key={post.id} post={post} />
+        ))}
+      </div>
     </>
+  );
+}
+
+function SocialCard({post, className = ''}: {post: SocialPost; className?: string}) {
+  return (
+    <a
+      href={post.permalink}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`group relative aspect-square overflow-hidden rounded bg-paper/10 ${className}`}
+    >
+      {post.imageUrl ? (
+        <img
+          src={post.imageUrl}
+          alt=""
+          loading="lazy"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center bg-nero">
+          <svg viewBox="0 0 24 24" className="h-10 w-10 text-paper/30" fill="currentColor">
+            <path d="M16.6 5.82c-.9-.86-1.47-2.03-1.6-3.32h-3.02v13.9c0 1.7-1.38 3.08-3.08 3.08a3.08 3.08 0 0 1-1.13-5.95 3.06 3.06 0 0 1 1.13-.21c.28 0 .55.03.81.09v-3.1a6.1 6.1 0 0 0-.81-.05A6.1 6.1 0 0 0 3.28 16.5 6.1 6.1 0 0 0 8.9 22.6a6.1 6.1 0 0 0 6.1-6.1V8.94a8.2 8.2 0 0 0 4.8 1.53V7.45c-1.13 0-2.19-.35-3.2-1.63Z" />
+          </svg>
+        </div>
+      )}
+      <div className="absolute inset-0 bg-nero/0 transition-colors duration-300 group-hover:bg-nero/20" />
+      {/* Network badge */}
+      <span className="absolute bottom-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-nero/60 text-paper backdrop-blur-sm">
+        {post.source === 'tiktok' ? (
+          <svg viewBox="0 0 24 24" className="h-3 w-3" fill="currentColor">
+            <path d="M16.6 5.82c-.9-.86-1.47-2.03-1.6-3.32h-3.02v13.9c0 1.7-1.38 3.08-3.08 3.08a3.08 3.08 0 0 1-1.13-5.95 3.06 3.06 0 0 1 1.13-.21c.28 0 .55.03.81.09v-3.1a6.1 6.1 0 0 0-.81-.05A6.1 6.1 0 0 0 3.28 16.5 6.1 6.1 0 0 0 8.9 22.6a6.1 6.1 0 0 0 6.1-6.1V8.94a8.2 8.2 0 0 0 4.8 1.53V7.45c-1.13 0-2.19-.35-3.2-1.63Z" />
+          </svg>
+        ) : (
+          <svg viewBox="0 0 24 24" className="h-3 w-3" fill="currentColor">
+            <path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
+          </svg>
+        )}
+      </span>
+    </a>
   );
 }
 

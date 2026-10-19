@@ -216,6 +216,10 @@ export const TRANSLATIONS = {
       body: 'Backstage, texture, ANYMA in movimento: la parte più vera del brand vive sui social, prima ancora che sullo shop.',
       segui: (handle: string) => `Segui ${handle}`,
     },
+    instagram: {
+      seguiciSu: 'Seguici su',
+      segui: (handle: string) => `Segui ${handle}`,
+    },
     productsByType: {
       cercaPerProdotto: 'Cerca per prodotto',
       subtitle: 'Lo stesso gesto, in tutte le ANYMA. Trova il tuo colore.',
@@ -601,6 +605,10 @@ export const TRANSLATIONS = {
       body: "Backstage, textures, souls in motion: the most real side of the brand lives on social, even before the shop.",
       segui: (handle: string) => `Follow ${handle}`,
     },
+    instagram: {
+      seguiciSu: 'Follow us on',
+      segui: (handle: string) => `Follow ${handle}`,
+    },
     productsByType: {
       cercaPerProdotto: 'Search by product',
       subtitle: 'The same gesture, across every ANYMA. Find your color.',
@@ -984,6 +992,10 @@ export const TRANSLATIONS = {
       seguici: 'Síguenos',
       guardaciSu: 'Míranos en',
       body: 'Backstage, texturas, ANYMA en movimiento: la parte más real de la marca vive en las redes, incluso antes que en la tienda.',
+      segui: (handle: string) => `Sigue ${handle}`,
+    },
+    instagram: {
+      seguiciSu: 'Síguenos en',
       segui: (handle: string) => `Sigue ${handle}`,
     },
     productsByType: {
