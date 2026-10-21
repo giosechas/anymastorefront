@@ -109,28 +109,26 @@ export function ProductForm({
           </div>
         );
       })}
-      {!HIDE_PRICES && (
-        <div className="quantity-selector">
-          <button
-            type="button"
-            aria-label={t('cart.decreaseQuantity')}
-            onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-          >
-            −
-          </button>
-          <span aria-live="polite">{quantity}</span>
-          <button
-            type="button"
-            aria-label={t('cart.increaseQuantity')}
-            onClick={() => setQuantity((q) => q + 1)}
-          >
-            +
-          </button>
-        </div>
-      )}
+      <div className="quantity-selector">
+        <button
+          type="button"
+          aria-label={t('cart.decreaseQuantity')}
+          onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+        >
+          −
+        </button>
+        <span aria-live="polite">{quantity}</span>
+        <button
+          type="button"
+          aria-label={t('cart.increaseQuantity')}
+          onClick={() => setQuantity((q) => q + 1)}
+        >
+          +
+        </button>
+      </div>
       <AddToCartButton
         className={buttonClassName}
-        disabled={HIDE_PRICES || !selectedVariant || !selectedVariant.availableForSale}
+        disabled={!selectedVariant || (!selectedVariant.availableForSale && !HIDE_PRICES)}
         onClick={() => {
           open('cart');
         }}
@@ -146,8 +144,8 @@ export function ProductForm({
             : []
         }
       >
-        {!HIDE_PRICES && selectedVariant?.availableForSale
-          ? t('product.addToCart')
+        {selectedVariant?.availableForSale
+          ? HIDE_PRICES ? t('product.soldOut') : t('product.addToCart')
           : t('product.soldOut')}
       </AddToCartButton>
     </div>

@@ -4,9 +4,9 @@
 export const TRANSLATIONS = {
   IT: {
     header: {
-      leAnyme: 'Le ANYMA',
-      tutteLeAnyme: 'Tutte le ANYMA',
-      packPerAnyme: 'Pack per ANYMA',
+      leAnyme: 'Scegli chi vuoi essere oggi',
+      tutteLeAnyme: 'Tutte le collezioni',
+      packPerAnyme: 'Pack',
       cercaPerProdotto: 'Cerca per prodotto',
       rossetti: 'Rossetti',
       lipGloss: 'Lip Gloss',
@@ -120,7 +120,7 @@ export const TRANSLATIONS = {
     },
     product: {
       addToCart: 'Aggiungi al carrello',
-      soldOut: 'Prossimamente',
+      soldOut: 'Pre Order',
     },
     hero: {
       slides: [
@@ -374,7 +374,7 @@ export const TRANSLATIONS = {
       filterAvailability: 'Disponibilità',
       filterSort: 'Ordina per',
       availableNow: 'Disponibile ora',
-      comingSoon: 'Prossimamente',
+      comingSoon: 'Pre Order',
       sortRecommended: 'Consigliati',
       sortPriceAsc: 'Prezzo crescente',
       sortPriceDesc: 'Prezzo decrescente',
@@ -393,9 +393,9 @@ export const TRANSLATIONS = {
   },
   EN: {
     header: {
-      leAnyme: 'The ANYMA',
-      tutteLeAnyme: 'All the ANYMA',
-      packPerAnyme: 'Packs by Anyma',
+      leAnyme: 'Choose who you want to be today',
+      tutteLeAnyme: 'All collections',
+      packPerAnyme: 'Packs',
       cercaPerProdotto: 'Search by product',
       rossetti: 'Lipsticks',
       lipGloss: 'Lip Gloss',
@@ -509,7 +509,7 @@ export const TRANSLATIONS = {
     },
     product: {
       addToCart: 'Add to cart',
-      soldOut: 'Coming soon',
+      soldOut: 'Pre Order',
     },
     hero: {
       slides: [
@@ -763,7 +763,7 @@ export const TRANSLATIONS = {
       filterAvailability: 'Availability',
       filterSort: 'Sort by',
       availableNow: 'Available now',
-      comingSoon: 'Coming soon',
+      comingSoon: 'Pre Order',
       sortRecommended: 'Recommended',
       sortPriceAsc: 'Price: low to high',
       sortPriceDesc: 'Price: high to low',
@@ -782,9 +782,9 @@ export const TRANSLATIONS = {
   },
   ES: {
     header: {
-      leAnyme: 'Las ANYMA',
-      tutteLeAnyme: 'Todas las ANYMA',
-      packPerAnyme: 'Packs por Anyma',
+      leAnyme: 'Elige quien quieres ser hoy',
+      tutteLeAnyme: 'Todas las colecciones',
+      packPerAnyme: 'Packs',
       cercaPerProdotto: 'Buscar por producto',
       rossetti: 'Labiales',
       lipGloss: 'Lip Gloss',
@@ -898,7 +898,7 @@ export const TRANSLATIONS = {
     },
     product: {
       addToCart: 'Añadir al carrito',
-      soldOut: 'Próximamente',
+      soldOut: 'Pre Order',
     },
     hero: {
       slides: [
@@ -1151,7 +1151,7 @@ export const TRANSLATIONS = {
       filterAvailability: 'Disponibilidad',
       filterSort: 'Ordenar por',
       availableNow: 'Disponible',
-      comingSoon: 'Próximamente',
+      comingSoon: 'Pre Order',
       sortRecommended: 'Recomendados',
       sortPriceAsc: 'Precio: menor a mayor',
       sortPriceDesc: 'Precio: mayor a menor',

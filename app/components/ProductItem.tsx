@@ -163,7 +163,7 @@ export function ProductItem({
                 price: product.priceRange.minVariantPrice,
               }}
             />
-            {!HIDE_PRICES && variant?.availableForSale ? (
+            {(variant?.availableForSale || HIDE_PRICES) ? (
               <div
                 onClick={(e) => {
                   e.preventDefault();
@@ -203,12 +203,14 @@ export function ProductItem({
         <div className="pointer-events-none absolute inset-0 bottom-[3.25rem] flex items-center justify-center bg-nero/0 opacity-0 transition-all duration-200 group-hover:bg-nero/40 group-hover:opacity-100">
           <div className="pointer-events-auto">
             <AddToCartButton
-              disabled={HIDE_PRICES || !variant.availableForSale}
+              disabled={!variant.availableForSale && !HIDE_PRICES}
               onClick={() => open('cart')}
               lines={[{merchandiseId: variant.id, quantity: 1, selectedVariant: variant}]}
               className="border border-paper bg-paper/0 px-5 py-2 text-[11px] uppercase tracking-[0.15em] text-paper transition-colors hover:bg-paper hover:text-nero disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {!HIDE_PRICES && variant.availableForSale ? t('product.addToCart') : t('product.soldOut')}
+              {variant.availableForSale
+                ? HIDE_PRICES ? t('product.soldOut') : t('product.addToCart')
+                : t('product.soldOut')}
             </AddToCartButton>
           </div>
         </div>

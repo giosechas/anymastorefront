@@ -19,7 +19,7 @@ import logoWhite from '~/assets/anyma-logo-wordmark-white.png';
 
 // Shopify menu titles hidden from the header nav — "Home" is redundant
 // with the logo (which links home) and "Catalogo" is off for now.
-const HIDDEN_MENU_TITLES = ['home', 'catalogo'];
+const HIDDEN_MENU_TITLES = ['home', 'catalogo', 'blog'];
 
 // Mirrors the slug map in routes/prodotti.$type.tsx.
 const PRODUCT_TYPE_SLUGS = [
