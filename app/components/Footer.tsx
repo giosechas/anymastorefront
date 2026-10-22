@@ -42,13 +42,6 @@ export function Footer({
                 >
                   {t('footer.laNostraStoria')}
                 </Link>
-                <FooterDot />
-                <Link
-                  to={href('/blogs/journal')}
-                  className="text-xs uppercase tracking-[0.15em] text-nero/60 transition-colors hover:text-nero"
-                >
-                  {t('footer.scopriIlBlog')}
-                </Link>
                 {footer?.menu && header.shop.primaryDomain?.url && (
                   <>
                     <FooterDot />
