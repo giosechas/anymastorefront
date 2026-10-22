@@ -1,5 +1,5 @@
 import {redirect} from 'react-router';
 
 export function loader() {
-  return redirect('/es/prossimamente');
+  throw redirect('/es/prossimamente', 301);
 }
