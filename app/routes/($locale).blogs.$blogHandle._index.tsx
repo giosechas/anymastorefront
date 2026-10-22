@@ -1,4 +1,4 @@
-import {Link, useLoaderData} from 'react-router';
+import {Link, redirect, useLoaderData} from 'react-router';
 import type {Route} from './+types/($locale).blogs.$blogHandle._index';
 import {Image, getPaginationVariables} from '@shopify/hydrogen';
 import type {ArticleItemFragment} from 'storefrontapi.generated';
@@ -31,6 +31,11 @@ async function loadCriticalData({context, request, params}: Route.LoaderArgs) {
 
   if (!params.blogHandle) {
     throw new Response(`blog not found`, {status: 404});
+  }
+
+  if (params.blogHandle === 'journal') {
+    const prefix = params.locale ? `/${params.locale}` : '';
+    throw redirect(`${prefix}/blogs/notizie`, 301);
   }
 
   const [{blog}] = await Promise.all([

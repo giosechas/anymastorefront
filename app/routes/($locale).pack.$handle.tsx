@@ -38,7 +38,7 @@ export async function loader({context, params}: Route.LoaderArgs) {
   const animaHandle = `anima-${handle}`;
   const anima = findAnimaByCollectionHandle(animaHandle);
 
-  if (!anima) {
+  if (!anima || anima.comingSoon) {
     throw new Response('Anyma non trovata', {status: 404});
   }
 

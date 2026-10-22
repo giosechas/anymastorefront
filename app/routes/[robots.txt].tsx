@@ -74,5 +74,7 @@ Disallow: /policies/
 Disallow: /search
 Allow: /search/
 Disallow: /search/?*
+Disallow: /collections/*filter*
+Disallow: /*/collections/*filter*
 ${sitemapUrl ? `Sitemap: ${sitemapUrl}` : ''}`;
 }

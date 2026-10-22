@@ -5,12 +5,12 @@ import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {ProductItem} from '~/components/ProductItem';
 import type {ProductItemFragment} from 'storefrontapi.generated';
-import {ANIME, findAnimaByCollectionHandle, isComingSoonProduct} from '~/lib/animas';
+import {ANIME, findAnimaByCollectionHandle, isComingSoonProduct, isHiddenAnimaHandle} from '~/lib/animas';
 import {getAnimaAnimalVideo} from '~/lib/animaVideo';
 import {pickLocale} from '~/lib/locale';
 import {useLocale, useT} from '~/lib/i18n';
 
-export const meta: Route.MetaFunction = ({data}) => {
+export const meta: Route.MetaFunction = ({data, params}) => {
   const anima = data
     ? findAnimaByCollectionHandle(data.collection.handle)
     : undefined;
@@ -20,6 +20,21 @@ export const meta: Route.MetaFunction = ({data}) => {
   ];
   if (anima?.comingSoon) {
     tags.push({name: 'robots', content: 'noindex, nofollow'});
+  }
+  if (anima && data?.collection.description) {
+    tags.push({
+      name: 'description',
+      content: data.collection.description.slice(0, 155),
+    });
+  }
+  const origin = 'https://anyma-beauty.com';
+  const prefix = params.locale ? `/${params.locale}` : '';
+  if (data?.collection.handle) {
+    tags.push({
+      tagName: 'link',
+      rel: 'canonical',
+      href: `${origin}${prefix}/collections/${data.collection.handle}`,
+    });
   }
   return tags;
 };
@@ -60,6 +75,10 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
     throw new Response(`Collection ${handle} not found`, {
       status: 404,
     });
+  }
+
+  if (isHiddenAnimaHandle(handle)) {
+    throw new Response(null, {status: 404});
   }
 
   // The API handle might be localized, so redirect to the localized handle

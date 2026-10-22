@@ -9,12 +9,14 @@ import {
   Scripts,
   ScrollRestoration,
   useRouteLoaderData,
+  useLocation,
 } from 'react-router';
 import type {Route} from './+types/root';
 import favicon from '~/assets/images/seal-y-positive.png';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 import {LocaleProvider} from '~/lib/i18n';
 import type {LocaleCode} from '~/lib/locale';
+import {LOCALE_PREFIXES, stripLocalePrefix, getLocaleFromPathname} from '~/lib/locale';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import tailwindCss from './styles/tailwind.css?url';
@@ -144,10 +146,36 @@ function loadDeferredData({context}: Route.LoaderArgs) {
   };
 }
 
+const ORIGIN = 'https://anyma-beauty.com';
+
+function HreflangLinks() {
+  const location = useLocation();
+  const pathname = location.pathname;
+  const bare = stripLocalePrefix(pathname);
+
+  const itUrl = `${ORIGIN}${bare}`;
+  const enUrl = `${ORIGIN}/en${bare === '/' ? '' : bare}`;
+  const esUrl = `${ORIGIN}/es${bare === '/' ? '' : bare}`;
+
+  return (
+    <>
+      <link rel="alternate" hrefLang="it" href={itUrl} />
+      <link rel="alternate" hrefLang="en" href={enUrl} />
+      <link rel="alternate" hrefLang="es" href={esUrl} />
+      <link rel="alternate" hrefLang="x-default" href={itUrl} />
+    </>
+  );
+}
+
 export function Layout({children}: {children?: React.ReactNode}) {
   const nonce = useNonce();
   const data = useRouteLoaderData<RootLoader>('root');
-  const htmlLang = data?.consent.language.toLowerCase() ?? 'it';
+  const location = useLocation();
+  const localeFromPath = getLocaleFromPathname(location.pathname);
+  const htmlLang =
+    localeFromPath !== 'IT'
+      ? localeFromPath.toLowerCase()
+      : (data?.consent.language.toLowerCase() ?? 'it');
 
   return (
     <html lang={htmlLang}>
@@ -157,6 +185,7 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <link rel="stylesheet" href={tailwindCss}></link>
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
+        <HreflangLinks />
         <Meta />
         <Links />
       </head>

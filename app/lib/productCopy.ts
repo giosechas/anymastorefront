@@ -164,6 +164,79 @@ export const FINISH_MAP: Record<string, Record<string, string>> = {
   },
 };
 
+const SEO_DESCRIPTIONS: Record<LocaleCode, Record<string, Record<string, string>>> = {
+  IT: {
+    Rossetto: {
+      NUDE: 'Rossetto Nude dal finish Pearly Gloss, pensato per il pre-lancio ANYMA. Texture italiana, colore naturale, personalità decisa.',
+      ROSSO: 'Rossetto Red Metal dal finish Metallic intenso. Il colore più audace del pre-lancio ANYMA, per chi non cerca compromessi.',
+      VIOLA: 'Rossetto Violet dal finish Pearly Gloss, profondo e luminoso. Un colore che racconta chi sei ancor prima di parlare.',
+      CHERRY: 'Rossetto Cherry dal finish Pearly Gloss, caldo e avvolgente. Il tono perfetto per i tuoi momenti più decisi.',
+    },
+    'Lip Gloss': {
+      PINK: 'Lip Gloss Pink dal finish Super Pearly Gloss. Brillantezza leggera e un rosa vibrante per il tuo look quotidiano.',
+      YELLOW: 'Lip Gloss Light Gold dal finish Pearly Gloss. Una luce calda e dorata che valorizza ogni espressione.',
+    },
+    'Mascara/Eyeliner': {
+      BLACK: 'Mascara Super Black per ciglia intense e definite. Formula italiana e applicatore di precisione, dal pre-lancio ANYMA.',
+      LILLA: 'Mascara Pervinca per uno sguardo inaspettato. Un lilla delicato che gioca con la luce, formula italiana.',
+    },
+  },
+  EN: {
+    Rossetto: {
+      NUDE: 'Nude Lipstick with Pearly Gloss finish, crafted for the ANYMA pre-launch. Italian texture, natural color, bold personality.',
+      ROSSO: 'Red Metal Lipstick with an intense Metallic finish. The boldest shade from the ANYMA pre-launch, for those who seek no compromise.',
+      VIOLA: 'Violet Lipstick with Pearly Gloss finish, deep and luminous. A color that tells your story before you speak.',
+      CHERRY: 'Cherry Lipstick with Pearly Gloss finish, warm and enveloping. The perfect shade for your most decisive moments.',
+    },
+    'Lip Gloss': {
+      PINK: 'Pink Lip Gloss with Super Pearly Gloss finish. Light brilliance and a vibrant pink for your daily look.',
+      YELLOW: 'Light Gold Lip Gloss with Pearly Gloss finish. A warm, golden glow that enhances every expression.',
+    },
+    'Mascara/Eyeliner': {
+      BLACK: 'Super Black Mascara for intense, defined lashes. Italian formula and precision applicator, from the ANYMA pre-launch.',
+      LILLA: 'Pervinca Mascara for an unexpected gaze. A delicate lilac that plays with light, Italian formula.',
+    },
+  },
+  ES: {
+    Rossetto: {
+      NUDE: 'Labial Nude con acabado Pearly Gloss, pensado para el pre-lanzamiento ANYMA. Textura italiana, color natural, personalidad firme.',
+      ROSSO: 'Labial Red Metal con acabado Metallic intenso. El tono más audaz del pre-lanzamiento ANYMA, para quien no busca compromisos.',
+      VIOLA: 'Labial Violet con acabado Pearly Gloss, profundo y luminoso. Un color que cuenta quién eres antes de hablar.',
+      CHERRY: 'Labial Cherry con acabado Pearly Gloss, cálido y envolvente. El tono perfecto para tus momentos más decididos.',
+    },
+    'Lip Gloss': {
+      PINK: 'Lip Gloss Pink con acabado Super Pearly Gloss. Brillo ligero y un rosa vibrante para tu look diario.',
+      YELLOW: 'Lip Gloss Light Gold con acabado Pearly Gloss. Una luz cálida y dorada que realza cada expresión.',
+    },
+    'Mascara/Eyeliner': {
+      BLACK: 'Máscara Super Black para pestañas intensas y definidas. Fórmula italiana y aplicador de precisión, del pre-lanzamiento ANYMA.',
+      LILLA: 'Máscara Pervinca para una mirada inesperada. Un lila delicado que juega con la luz, fórmula italiana.',
+    },
+  },
+};
+
+export function getSeoDescription(
+  productType: string,
+  colorTag: string | undefined,
+  animaName: string | undefined,
+  locale: LocaleCode = 'IT',
+): string {
+  if (colorTag) {
+    const desc = SEO_DESCRIPTIONS[locale]?.[productType]?.[colorTag];
+    if (desc) return desc;
+  }
+  const category = getCategoryLabel(productType, locale);
+  const color = colorTag ? getColorLabel(colorTag, locale) : '';
+  const anima = animaName ? ` – Anyma ${animaName}` : '';
+  if (locale === 'EN') {
+    return `${category}${color ? ` ${color}` : ''}${anima}. Discover the ANYMA pre-launch: 800 units, Italian formulas, packaging that tells your story.`;
+  }
+  if (locale === 'ES') {
+    return `${category}${color ? ` ${color}` : ''}${anima}. Descubre el pre-lanzamiento ANYMA: 800 unidades, fórmulas italianas, un packaging que cuenta tu historia.`;
+  }
+  return `${category}${color ? ` ${color}` : ''}${anima}. Scopri il pre-lancio ANYMA: 800 unità, formule italiane, un packaging che racconta chi sei.`;
+}
+
 export function getFinish(productType: string, colorTag: string | undefined): string | undefined {
   if (!colorTag) return undefined;
   return FINISH_MAP[productType]?.[colorTag];

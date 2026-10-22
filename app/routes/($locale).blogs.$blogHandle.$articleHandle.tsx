@@ -1,4 +1,4 @@
-import {useLoaderData} from 'react-router';
+import {redirect, useLoaderData} from 'react-router';
 import type {Route} from './+types/($locale).blogs.$blogHandle.$articleHandle';
 import {Image} from '@shopify/hydrogen';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
@@ -26,6 +26,11 @@ async function loadCriticalData({context, request, params}: Route.LoaderArgs) {
 
   if (!articleHandle || !blogHandle) {
     throw new Response('Not found', {status: 404});
+  }
+
+  if (blogHandle === 'journal') {
+    const prefix = params.locale ? `/${params.locale}` : '';
+    throw redirect(`${prefix}/blogs/notizie/${articleHandle}`, 301);
   }
 
   const [{blog}] = await Promise.all([
