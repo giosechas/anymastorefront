@@ -248,18 +248,21 @@ function Hero() {
       <div className="absolute inset-0 -z-10 bg-nero/7" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-nero/5 via-nero/27 to-nero/13" />
       <div className="grid max-w-4xl">
-        {heroSlides.map((slide, i) => (
-          <div
-            key={i}
-            className={`col-start-1 row-start-1 transition-opacity ease-in-out ${
-              i === textIndex ? 'opacity-100 duration-[1200ms]' : 'pointer-events-none opacity-0 duration-[800ms]'
-            }`}
-          >
-            <h1 className="font-display text-balance text-[18px] uppercase leading-[1.05] tracking-[0.04em] text-fuchsia [text-shadow:0_2px_10px_rgba(0,0,0,0.35)] sm:text-[30px] md:text-[42px]">
-              {slide.title}
-            </h1>
-          </div>
-        ))}
+        {heroSlides.map((slide, i) => {
+          const Tag = i === 0 ? 'h1' : 'p';
+          return (
+            <div
+              key={i}
+              className={`col-start-1 row-start-1 transition-opacity ease-in-out ${
+                i === textIndex ? 'opacity-100 duration-[1200ms]' : 'pointer-events-none opacity-0 duration-[800ms]'
+              }`}
+            >
+              <Tag className="font-display text-balance text-[18px] uppercase leading-[1.05] tracking-[0.04em] text-fuchsia [text-shadow:0_2px_10px_rgba(0,0,0,0.35)] sm:text-[30px] md:text-[42px]">
+                {slide.title}
+              </Tag>
+            </div>
+          );
+        })}
       </div>
       <div className="mt-10 flex flex-wrap items-center justify-start gap-4">
         <a
