@@ -6,6 +6,7 @@ import {
   type HydrogenRouterContextProvider,
 } from '@shopify/hydrogen';
 import type {EntryContext} from 'react-router';
+import {PRELAUNCH_MODE} from '~/lib/config';
 
 export default async function handleRequest(
   request: Request,
@@ -25,6 +26,21 @@ export default async function handleRequest(
       'https://*.fbcdn.net',
       'https://*.cdninstagram.com',
     ],
+    ...(PRELAUNCH_MODE
+      ? {
+          scriptSrc: [
+            "'self'",
+            "'unsafe-inline'",
+            'https://cdn.shopify.com',
+            'https://accounts.google.com/gsi/client',
+          ],
+          connectSrc: [
+            "'self'",
+            'https://accounts.google.com',
+          ],
+          frameSrc: ['https://accounts.google.com'],
+        }
+      : {}),
   });
 
   const body = await renderToReadableStream(

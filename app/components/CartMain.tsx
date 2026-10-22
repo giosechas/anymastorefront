@@ -5,6 +5,7 @@ import {useAside} from '~/components/Aside';
 import {CartLineItem, type CartLine} from '~/components/CartLineItem';
 import {CartSummary} from './CartSummary';
 import {useLocale, useT} from '~/lib/i18n';
+import {PRELAUNCH_MODE} from '~/lib/config';
 
 export type CartLayout = 'page' | 'aside';
 
@@ -79,7 +80,9 @@ export function CartMain({layout, cart: originalCart}: CartMainProps) {
             </ul>
           </div>
 
-          {cartHasItems && <CartSummary cart={cart} layout={layout} />}
+          {(cartHasItems || PRELAUNCH_MODE) && (
+            <CartSummary cart={cart} layout={layout} />
+          )}
         </>
       )}
     </section>
