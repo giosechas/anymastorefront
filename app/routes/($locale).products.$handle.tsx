@@ -33,6 +33,7 @@ import {
   getColorLabel,
   getComposedTitle,
   getCommunityTagline,
+  getSeoDescription,
 } from '~/lib/productCopy';
 import {
   getSkuStory,
@@ -58,25 +59,35 @@ import {getMascaraModelPhoto} from '~/lib/mascaraModelPhoto';
 import {getMascaraModelVideos} from '~/lib/mascaraModelVideo';
 import {getLipstickHeroVideo} from '~/lib/lipstickHeroVideo';
 
-export const meta: Route.MetaFunction = ({data, params}) => {
+export const meta: Route.MetaFunction = ({data, params, location}) => {
+  if (!data) return [{title: 'Anyma Beauty'}];
   const code = getLocaleFromParam(params.locale);
-  const colorTag = data ? getColorTag(data.product.tags) : undefined;
-  const title = data
-    ? getComposedTitle(data.product.productType, colorTag, code)
-    : '';
-  const story = data
-    ? getSkuStory(data.product.productType, colorTag, data.anima?.tag, code)
-    : undefined;
+  const colorTag = getColorTag(data.product.tags);
+  const composedTitle = getComposedTitle(
+    data.product.productType,
+    colorTag,
+    code,
+  );
+  const animaName = data.anima?.name;
+  const title = animaName
+    ? `${composedTitle} – Anyma ${animaName} | Anyma Beauty`
+    : `${composedTitle} | Anyma Beauty`;
+
+  const description = getSeoDescription(
+    data.product.productType,
+    colorTag,
+    animaName,
+    code,
+  );
+
+  const origin = 'https://anyma-beauty.com';
+  const prefix = params.locale ? `/${params.locale}` : '';
+  const canonical = `${origin}${prefix}/products/${data.product.handle}`;
+
   return [
-    {title: `Anyma Beauty | ${title}`},
-    {
-      name: 'description',
-      content: (story ?? data?.product.description ?? '').slice(0, 160),
-    },
-    {
-      rel: 'canonical',
-      href: `/products/${data?.product.handle}`,
-    },
+    {title},
+    {name: 'description', content: description},
+    {tagName: 'link', rel: 'canonical', href: canonical},
   ];
 };
 

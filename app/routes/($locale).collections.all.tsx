@@ -18,7 +18,10 @@ import {useCallback, useMemo, useState} from 'react';
 
 export const meta: Route.MetaFunction = ({params}) => {
   const code = getLocaleFromParam(params.locale);
-  return [{title: TRANSLATIONS[code].allProducts.metaTitle}];
+  return [
+    {title: TRANSLATIONS[code].allProducts.metaTitle},
+    {name: 'description', content: TRANSLATIONS[code].allProducts.metaDescription},
+  ];
 };
 
 export async function loader({context}: Route.LoaderArgs) {

@@ -358,6 +358,7 @@ export const TRANSLATIONS = {
     },
     allProducts: {
       metaTitle: 'Anyma Beauty | Tutti i Prodotti',
+      metaDescription: 'Esplora rossetti, lip gloss e mascara del pre-lancio ANYMA: 800 unità, formule italiane e un packaging che racconta chi sei.',
       title: 'Tutti i Prodotti',
       filterButton: 'Filtra',
       showResults: 'Mostra {n} prodotti',
@@ -747,6 +748,7 @@ export const TRANSLATIONS = {
     },
     allProducts: {
       metaTitle: 'Anyma Beauty | All Products',
+      metaDescription: 'Explore lipsticks, lip glosses and mascaras from the ANYMA pre-launch: 800 units, Italian formulas and packaging that tells your story.',
       title: 'All Products',
       filterButton: 'Filter',
       showResults: 'Show {n} products',
@@ -1135,6 +1137,7 @@ export const TRANSLATIONS = {
     },
     allProducts: {
       metaTitle: 'Anyma Beauty | Todos los Productos',
+      metaDescription: 'Explora labiales, lip glosses y máscaras del pre-lanzamiento ANYMA: 800 unidades, fórmulas italianas y un packaging que cuenta tu historia.',
       title: 'Todos los Productos',
       filterButton: 'Filtrar',
       showResults: 'Mostrar {n} productos',
