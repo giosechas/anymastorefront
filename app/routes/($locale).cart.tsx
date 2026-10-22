@@ -110,8 +110,10 @@ export default function Cart() {
   const t = useT();
 
   return (
-    <div className="cart">
-      <h1>{t('cart.title')}</h1>
+    <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6 lg:px-8">
+      <h1 className="font-display text-2xl tracking-wide text-nero">
+        {t('cart.title')}
+      </h1>
       <CartMain layout="page" cart={cart} />
     </div>
   );
