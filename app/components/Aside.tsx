@@ -69,7 +69,7 @@ export function Aside({
             &times;
           </button>
         </header>
-        <main>{children}</main>
+        <main className={type === 'cart' ? 'flex-1 overflow-hidden' : ''}>{children}</main>
       </aside>
     </div>
   );

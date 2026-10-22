@@ -9,6 +9,7 @@ import {AddToCartButton} from './AddToCartButton';
 import {useAside} from './Aside';
 import {useLocale, useT} from '~/lib/i18n';
 import {HIDE_PRICES} from '~/lib/config';
+import {PaymentIcons} from './PaymentIcons';
 import type {ProductFragment} from 'storefrontapi.generated';
 
 export function ProductForm({
@@ -148,6 +149,7 @@ export function ProductForm({
           ? HIDE_PRICES ? t('product.soldOut') : t('product.addToCart')
           : t('product.soldOut')}
       </AddToCartButton>
+      <PaymentIcons className="mt-3 justify-center" />
     </div>
   );
 }

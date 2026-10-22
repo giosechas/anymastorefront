@@ -8,6 +8,7 @@ import {
   TrackOrderMenuItem,
   ReturnOrderMenuItem,
 } from '~/components/FooterSupportPopovers';
+import {PaymentIcons} from './PaymentIcons';
 
 const SOCIAL_LINKS = [
   {name: 'Instagram', url: 'https://www.instagram.com/anyma_beauty/'},
@@ -53,6 +54,7 @@ export function Footer({
                   </>
                 )}
               </div>
+              <PaymentIcons className="justify-center" />
             </div>
 
             {/* Bottom bar — wordmark + year, socials, legal dropdown. */}

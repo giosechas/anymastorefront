@@ -14,7 +14,7 @@ export type CartMainProps = {
 };
 
 export type LineItemChildrenMap = {[parentId: string]: CartLine[]};
-/** Returns a map of all line items and their children. */
+
 function getLineItemChildrenMap(lines: CartLine[]): LineItemChildrenMap {
   const children: LineItemChildrenMap = {};
   for (const line of lines) {
@@ -33,63 +33,62 @@ function getLineItemChildrenMap(lines: CartLine[]): LineItemChildrenMap {
   }
   return children;
 }
-/**
- * The main cart component that displays the cart items and summary.
- * It is used by both the /cart route and the cart aside dialog.
- */
+
 export function CartMain({layout, cart: originalCart}: CartMainProps) {
-  // The useOptimisticCart hook applies pending actions to the cart
-  // so the user immediately sees feedback when they modify the cart.
   const cart = useOptimisticCart(originalCart);
   const t = useT();
 
   const linesCount = Boolean(cart?.lines?.nodes?.length || 0);
-  const withDiscount =
-    cart &&
-    Boolean(cart?.discountCodes?.filter((code) => code.applicable)?.length);
-  const className = `cart-main ${withDiscount ? 'with-discount' : ''}`;
   const cartHasItems = cart?.totalQuantity ? cart.totalQuantity > 0 : false;
   const childrenMap = getLineItemChildrenMap(cart?.lines?.nodes ?? []);
 
   return (
     <section
-      className={className}
+      className={layout === 'aside' ? 'flex h-full flex-col' : ''}
       aria-label={layout === 'page' ? t('cart.cartPage') : t('cart.cartDrawer')}
     >
       <CartEmpty hidden={linesCount} layout={layout} />
-      <div className="cart-details">
-        <p id="cart-lines" className="sr-only">
-          {t('cart.lineItems')}
-        </p>
-        <div>
-          <ul aria-labelledby="cart-lines">
-            {(cart?.lines?.nodes ?? []).map((line) => {
-              // we do not render non-parent lines at the root of the cart
-              if (
-                'parentRelationship' in line &&
-                line.parentRelationship?.parent
-              ) {
-                return null;
-              }
-              return (
-                <CartLineItem
-                  key={line.id}
-                  line={line}
-                  layout={layout}
-                  childrenMap={childrenMap}
-                />
-              );
-            })}
-          </ul>
-        </div>
-        {cartHasItems && <CartSummary cart={cart} layout={layout} />}
-      </div>
+
+      {linesCount && (
+        <>
+          <div
+            className={
+              layout === 'aside' ? 'flex-1 overflow-y-auto px-4' : ''
+            }
+          >
+            <p id="cart-lines" className="sr-only">
+              {t('cart.lineItems')}
+            </p>
+            <ul aria-labelledby="cart-lines">
+              {(cart?.lines?.nodes ?? []).map((line) => {
+                if (
+                  'parentRelationship' in line &&
+                  line.parentRelationship?.parent
+                ) {
+                  return null;
+                }
+                return (
+                  <CartLineItem
+                    key={line.id}
+                    line={line}
+                    layout={layout}
+                    childrenMap={childrenMap}
+                  />
+                );
+              })}
+            </ul>
+          </div>
+
+          {cartHasItems && <CartSummary cart={cart} layout={layout} />}
+        </>
+      )}
     </section>
   );
 }
 
 function CartEmpty({
   hidden = false,
+  layout,
 }: {
   hidden: boolean;
   layout?: CartMainProps['layout'];
@@ -97,12 +96,40 @@ function CartEmpty({
   const {close} = useAside();
   const {href} = useLocale();
   const t = useT();
+
   return (
-    <div hidden={hidden}>
-      <br />
-      <p>{t('cart.emptyBody')}</p>
-      <br />
-      <Link to={href('/collections')} onClick={close} prefetch="viewport">
+    <div
+      hidden={hidden}
+      className="flex flex-col items-center px-6 py-12 text-center"
+    >
+      <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-nero/5">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          className="h-8 w-8 text-nero/30"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+          />
+        </svg>
+      </div>
+      <p className="font-display text-lg tracking-wide text-nero">
+        {t('cart.emptyTitle')}
+      </p>
+      <p className="mt-2 max-w-[240px] text-sm text-nero/50">
+        {t('cart.emptyBody')}
+      </p>
+      <Link
+        to={href('/collections/all')}
+        onClick={close}
+        prefetch="viewport"
+        className="mt-6 inline-block rounded-full border border-nero bg-nero px-6 py-2.5 text-xs font-medium uppercase tracking-[0.08em] text-paper transition-colors hover:bg-transparent hover:text-nero"
+      >
         {t('cart.continueShopping')}
       </Link>
     </div>
