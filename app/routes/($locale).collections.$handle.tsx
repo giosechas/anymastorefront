@@ -5,7 +5,7 @@ import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {ProductItem} from '~/components/ProductItem';
 import type {ProductItemFragment} from 'storefrontapi.generated';
-import {ANIME, findAnimaByCollectionHandle, isComingSoonProduct} from '~/lib/animas';
+import {ANIME, findAnimaByCollectionHandle, isComingSoonProduct, isHiddenAnimaHandle} from '~/lib/animas';
 import {getAnimaAnimalVideo} from '~/lib/animaVideo';
 import {pickLocale} from '~/lib/locale';
 import {useLocale, useT} from '~/lib/i18n';
@@ -60,6 +60,10 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
     throw new Response(`Collection ${handle} not found`, {
       status: 404,
     });
+  }
+
+  if (isHiddenAnimaHandle(handle)) {
+    throw new Response(null, {status: 404});
   }
 
   // The API handle might be localized, so redirect to the localized handle

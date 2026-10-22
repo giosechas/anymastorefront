@@ -23,6 +23,8 @@ import {
   findAnimaByCollectionHandle,
   getAnimaGalleryImages,
   getPackPath,
+  isHiddenAnimaProduct,
+  isComingSoonProduct,
   type AnimaDefinition,
 } from '~/lib/animas';
 import {
@@ -107,6 +109,10 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
     throw new Response(null, {status: 404});
   }
 
+  if (isHiddenAnimaProduct(product.collections.nodes)) {
+    throw new Response(null, {status: 404});
+  }
+
   redirectIfHandleIsLocalized(request, {handle, data: product});
 
   const anima = findAnimaByCollectionHandle(
@@ -121,7 +127,9 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
         searchQuery: `tag:"${anima.tag}" AND product_type:"${product.productType}"`,
       },
     });
-    siblings = products.nodes;
+    siblings = products.nodes.filter(
+      (s: {tags: string[]}) => !isComingSoonProduct(s.tags),
+    );
   }
 
   // Same product (category + color), across every anima — lets the
@@ -145,7 +153,8 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
       .filter(
         (
           entry: {anima: AnimaDefinition; handle: string; availableForSale: boolean} | null,
-        ): entry is {anima: AnimaDefinition; handle: string; availableForSale: boolean} => Boolean(entry),
+        ): entry is {anima: AnimaDefinition; handle: string; availableForSale: boolean} =>
+          Boolean(entry) && !entry.anima.comingSoon,
       );
   }
 
@@ -171,9 +180,14 @@ function loadDeferredData(
       .catch(() => null),
   ]).then(([primary, fallback]) => {
     const primaryItems = primary?.productRecommendations ?? [];
-    if (primaryItems.length > 0) return primaryItems;
-    return (fallback?.products.nodes ?? []).filter(
-      (item) => item.handle !== currentHandle,
+    const items =
+      primaryItems.length > 0
+        ? primaryItems
+        : (fallback?.products.nodes ?? []).filter(
+            (item) => item.handle !== currentHandle,
+          );
+    return items.filter(
+      (item: {tags: string[]}) => !isComingSoonProduct(item.tags),
     );
   });
 

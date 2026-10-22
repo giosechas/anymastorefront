@@ -183,6 +183,20 @@ export const ANIME: AnimaDefinition[] = [
 
 export const ACTIVE_ANIMAS = ANIME.filter((a) => !a.comingSoon);
 
+export const HIDDEN_ANIMAS = ANIME.filter((a) => a.comingSoon);
+
+const HIDDEN_HANDLES = new Set(HIDDEN_ANIMAS.map((a) => a.handle));
+
+export function isHiddenAnimaHandle(handle: string): boolean {
+  return HIDDEN_HANDLES.has(handle);
+}
+
+export function isHiddenAnimaProduct(
+  collections: {handle: string}[],
+): boolean {
+  return collections.some((c) => HIDDEN_HANDLES.has(c.handle));
+}
+
 export function getPackPhoto(anima: AnimaDefinition): string {
   const slug = anima.handle.replace(/^anima-/, '');
   return `/images/packs/${slug}.webp`;
