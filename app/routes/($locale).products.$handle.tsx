@@ -176,7 +176,7 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
         (
           entry: {anima: AnimaDefinition; handle: string; availableForSale: boolean} | null,
         ): entry is {anima: AnimaDefinition; handle: string; availableForSale: boolean} =>
-          Boolean(entry) && !entry.anima.comingSoon,
+          entry != null && !entry.anima.comingSoon,
       );
   }
 
