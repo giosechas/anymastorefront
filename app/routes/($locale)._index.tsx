@@ -21,6 +21,7 @@ import {
 import {pickLocale, getLocaleFromParam} from '~/lib/locale';
 import {useLocale, useT, useDict} from '~/lib/i18n';
 import {TRANSLATIONS} from '~/lib/translations';
+import {getOrganizationJsonLd} from '~/lib/structuredData';
 import brandStoryBg from '~/assets/images/brand-story/all-models.webp';
 import philosophyTruth5 from '~/assets/images/philosophy/pool/truth5.webp';
 import philosophyStreetPiazza from '~/assets/images/philosophy/pool/street-piazza.webp';
@@ -56,6 +57,9 @@ export const meta: Route.MetaFunction = ({params}) => {
     {
       name: 'description',
       content: TRANSLATIONS[code].meta.homeDescription,
+    },
+    {
+      'script:ld+json': getOrganizationJsonLd(),
     },
   ];
 };

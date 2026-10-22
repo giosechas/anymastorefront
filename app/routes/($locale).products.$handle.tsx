@@ -48,6 +48,7 @@ import {
   getPdpPao,
 } from '~/lib/pdpContent';
 import {pickLocale, getLocaleFromParam} from '~/lib/locale';
+import {getPdpBreadcrumbs} from '~/lib/structuredData';
 import {useLocale, useT} from '~/lib/i18n';
 import {getProductVideo} from '~/lib/productVideo';
 import {
@@ -84,10 +85,20 @@ export const meta: Route.MetaFunction = ({data, params, location}) => {
   const prefix = params.locale ? `/${params.locale}` : '';
   const canonical = `${origin}${prefix}/products/${data.product.handle}`;
 
+  const breadcrumbs = getPdpBreadcrumbs(
+    code,
+    params.locale ?? '',
+    data.product.productType,
+    colorTag,
+    animaName,
+    data.product.handle,
+  );
+
   return [
     {title},
     {name: 'description', content: description},
     {tagName: 'link', rel: 'canonical', href: canonical},
+    {'script:ld+json': breadcrumbs},
   ];
 };
 
