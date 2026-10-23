@@ -13,8 +13,10 @@ import {
   LanguageSwitcher,
 } from '~/components/Header';
 import {CartMain} from '~/components/CartMain';
+import {PreorderPanel} from '~/components/PreorderPanel';
 import {CookieBanner} from '~/components/CookieBanner';
 import {useLocale, useT} from '~/lib/i18n';
+import {usePrelaunchMode} from '~/root';
 
 interface PageLayoutProps {
   cart: Promise<CartApiQueryFragment | null>;
@@ -33,9 +35,12 @@ export function PageLayout({
   isLoggedIn,
   publicStoreDomain,
 }: PageLayoutProps) {
+  const prelaunchMode = usePrelaunchMode();
+
   return (
     <Aside.Provider>
       <CartAside cart={cart} />
+      {prelaunchMode && <PreorderAside cart={cart} />}
       <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} />
       {header && (
         <Header
@@ -65,6 +70,19 @@ function CartAside({cart}: {cart: PageLayoutProps['cart']}) {
           {(cart) => {
             return <CartMain cart={cart} layout="aside" />;
           }}
+        </Await>
+      </Suspense>
+    </Aside>
+  );
+}
+
+function PreorderAside({cart}: {cart: PageLayoutProps['cart']}) {
+  const t = useT();
+  return (
+    <Aside type="preorder" heading={t('preorder.panelTitle')}>
+      <Suspense fallback={<p className="p-4 text-xs text-nero/40">{t('account.loadingCart')}</p>}>
+        <Await resolve={cart}>
+          {(cart) => <PreorderPanel cart={cart} />}
         </Await>
       </Suspense>
     </Aside>

@@ -5,6 +5,7 @@ import {useAside} from '~/components/Aside';
 import {CartLineItem, type CartLine} from '~/components/CartLineItem';
 import {CartSummary} from './CartSummary';
 import {useLocale, useT} from '~/lib/i18n';
+import {usePrelaunchMode} from '~/root';
 
 export type CartLayout = 'page' | 'aside';
 
@@ -37,6 +38,7 @@ function getLineItemChildrenMap(lines: CartLine[]): LineItemChildrenMap {
 export function CartMain({layout, cart: originalCart}: CartMainProps) {
   const cart = useOptimisticCart(originalCart);
   const t = useT();
+  const prelaunchMode = usePrelaunchMode();
 
   const linesCount = Boolean(cart?.lines?.nodes?.length || 0);
   const cartHasItems = cart?.totalQuantity ? cart.totalQuantity > 0 : false;
@@ -79,7 +81,9 @@ export function CartMain({layout, cart: originalCart}: CartMainProps) {
             </ul>
           </div>
 
-          {cartHasItems && <CartSummary cart={cart} layout={layout} />}
+          {(cartHasItems || prelaunchMode) && (
+            <CartSummary cart={cart} layout={layout} />
+          )}
         </>
       )}
     </section>

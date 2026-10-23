@@ -2,9 +2,11 @@ import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import type {CartLayout} from '~/components/CartMain';
 import {CartForm, Money, type OptimisticCart} from '@shopify/hydrogen';
 import {HIDE_PRICES} from '~/lib/config';
+import {usePrelaunchMode} from '~/root';
 import {useEffect, useId, useRef, useState} from 'react';
 import {useFetcher} from 'react-router';
 import {useT} from '~/lib/i18n';
+import {useAside} from './Aside';
 import {PaymentIcons} from './PaymentIcons';
 
 type CartSummaryProps = {
@@ -14,6 +16,7 @@ type CartSummaryProps = {
 
 export function CartSummary({cart, layout}: CartSummaryProps) {
   const t = useT();
+  const prelaunchMode = usePrelaunchMode();
   const summaryId = useId();
   const discountsHeadingId = useId();
   const discountCodeInputId = useId();
@@ -35,42 +38,64 @@ export function CartSummary({cart, layout}: CartSummaryProps) {
         {t('cart.totals')}
       </h4>
 
-      {!HIDE_PRICES && (
-        <div className="flex items-center justify-between py-2">
-          <span className="text-sm text-nero/60">{t('cart.subtotal')}</span>
-          <span className="text-sm font-medium">
-            {cart?.cost?.subtotalAmount?.amount ? (
-              <Money data={cart.cost.subtotalAmount} />
-            ) : (
-              '-'
-            )}
-          </span>
-        </div>
+      {prelaunchMode ? (
+        <p className="py-3 text-center text-xs leading-relaxed text-nero/60">
+          {t('preorder.cartNote')}
+        </p>
+      ) : (
+        <>
+          {!HIDE_PRICES && (
+            <div className="flex items-center justify-between py-2">
+              <span className="text-sm text-nero/60">{t('cart.subtotal')}</span>
+              <span className="text-sm font-medium">
+                {cart?.cost?.subtotalAmount?.amount ? (
+                  <Money data={cart.cost.subtotalAmount} />
+                ) : (
+                  '-'
+                )}
+              </span>
+            </div>
+          )}
+
+          <p className="text-xs text-nero/40">{t('cart.shippingNote')}</p>
+
+          <CartDiscounts
+            discountCodes={cart?.discountCodes}
+            discountsHeadingId={discountsHeadingId}
+            discountCodeInputId={discountCodeInputId}
+          />
+
+          <CartGiftCard
+            giftCardCodes={cart?.appliedGiftCards}
+            giftCardHeadingId={giftCardHeadingId}
+            giftCardInputId={giftCardInputId}
+          />
+        </>
       )}
 
-      <p className="text-xs text-nero/40">{t('cart.shippingNote')}</p>
+      <CartCheckoutActions checkoutUrl={cart?.checkoutUrl} prelaunchMode={prelaunchMode} />
 
-      <CartDiscounts
-        discountCodes={cart?.discountCodes}
-        discountsHeadingId={discountsHeadingId}
-        discountCodeInputId={discountCodeInputId}
-      />
-
-      <CartGiftCard
-        giftCardCodes={cart?.appliedGiftCards}
-        giftCardHeadingId={giftCardHeadingId}
-        giftCardInputId={giftCardInputId}
-      />
-
-      <CartCheckoutActions checkoutUrl={cart?.checkoutUrl} />
-
-      <CartTrustElements />
+      {!prelaunchMode && <CartTrustElements />}
     </div>
   );
 }
 
-function CartCheckoutActions({checkoutUrl}: {checkoutUrl?: string}) {
+function CartCheckoutActions({checkoutUrl, prelaunchMode}: {checkoutUrl?: string; prelaunchMode: boolean}) {
   const t = useT();
+  const {open} = useAside();
+
+  if (prelaunchMode) {
+    return (
+      <button
+        type="button"
+        onClick={() => open('preorder')}
+        className="mt-3 flex w-full items-center justify-center rounded-full bg-nero py-3 text-xs font-medium uppercase tracking-[0.1em] text-paper transition-colors hover:bg-nero/90"
+      >
+        {t('preorder.ctaButton')}
+      </button>
+    );
+  }
+
   if (!checkoutUrl) return null;
 
   return (
