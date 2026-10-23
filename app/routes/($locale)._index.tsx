@@ -254,7 +254,7 @@ function Hero() {
               }`}
             >
               <Tag className="font-display text-balance text-[18px] uppercase leading-[1.05] tracking-[0.04em] text-fuchsia [text-shadow:0_2px_10px_rgba(0,0,0,0.35)] sm:text-[30px] md:text-[42px]">
-                {slide.title}
+                {slide}
               </Tag>
             </div>
           );

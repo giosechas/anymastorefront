@@ -125,23 +125,10 @@ export const TRANSLATIONS = {
     },
     hero: {
       slides: [
-        {
-          title: 'La bellezza non è coerenza. È verità.',
-          tagline: 'La tua molteplicità è il tuo potere più grande. Rivelala senza scuse.',
-        },
-        {
-          title: 'Chi vuoi essere oggi?',
-          tagline: 'Scegli la tua anima. Il tuo oggetto in alluminio ti seguirà.',
-        },
-        {
-          title: 'Questo non è trucco. È il tuo rituale.',
-          tagline:
-            'Trasformiamo il gesto quotidiano davanti allo specchio in un atto di pura autodeterminazione.',
-        },
-        {
-          title: 'Reveal your soul!',
-          tagline: 'Oggetti identitari creati in Italia per dare voce a tutte le versioni di te.',
-        },
+        'Che donna ti senti oggi?',
+        'Non esiste una sola te',
+        'Reveal your soul!',
+        'La bellezza non è coerenza, è verità',
       ],
       discoverAnyme: 'Scopri le tue ANYMA',
       shopNow: 'Tu sai chi sei',
@@ -545,23 +532,10 @@ export const TRANSLATIONS = {
     },
     hero: {
       slides: [
-        {
-          title: "Beauty is not consistency. It's truth.",
-          tagline: 'Your multiplicity is your greatest power. Reveal it without apologies.',
-        },
-        {
-          title: 'Who do you want to be today?',
-          tagline: 'Choose your soul. Your aluminum object will follow.',
-        },
-        {
-          title: "This isn't make-up. It's your ritual.",
-          tagline:
-            'We turn the everyday gesture in front of the mirror into an act of pure self-determination.',
-        },
-        {
-          title: 'Reveal your soul!',
-          tagline: 'Identity objects made in Italy to give voice to every version of you.',
-        },
+        'Which woman do you feel like today?',
+        'There is no single you',
+        'Reveal your soul!',
+        'Beauty is not consistency, it is truth',
       ],
       discoverAnyme: 'Discover your ANYMA',
       shopNow: 'You know who you are',
@@ -965,23 +939,10 @@ export const TRANSLATIONS = {
     },
     hero: {
       slides: [
-        {
-          title: 'La belleza no es coherencia. Es verdad.',
-          tagline: 'Tu multiplicidad es tu mayor poder. Revélala sin excusas.',
-        },
-        {
-          title: '¿Quién quieres ser hoy?',
-          tagline: 'Elige tu alma. Tu objeto en aluminio te seguirá.',
-        },
-        {
-          title: 'Esto no es maquillaje. Es tu ritual.',
-          tagline:
-            'Transformamos el gesto cotidiano ante el espejo en un acto de pura autodeterminación.',
-        },
-        {
-          title: 'Reveal your soul!',
-          tagline: 'Objetos identitarios creados en Italia para dar voz a todas las versiones de ti.',
-        },
+        '¿Qué mujer te sientes hoy?',
+        'No existe una sola tú',
+        'Reveal your soul!',
+        'La belleza no es coherencia, es verdad',
       ],
       discoverAnyme: 'Descubre tus ANYMA',
       shopNow: 'Tú sabes quién eres',
