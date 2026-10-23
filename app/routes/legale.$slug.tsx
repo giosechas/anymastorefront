@@ -1,13 +1,21 @@
-import {Link} from 'react-router';
+import {Link, redirect} from 'react-router';
 import type {Route} from './+types/legale.$slug';
 import {getLegalPolicy, LEGAL_POLICIES} from '~/lib/legalContent';
+
+const REDIRECTS: Record<string, string> = {
+  privacy: 'privacy-policy',
+};
 
 export const meta: Route.MetaFunction = ({data}) => {
   return [{title: `Anyma Beauty | ${data?.policy.title ?? 'Area Legale'}`}];
 };
 
 export async function loader({params}: Route.LoaderArgs) {
-  const policy = params.slug ? getLegalPolicy(params.slug) : undefined;
+  const slug = params.slug ?? '';
+  if (REDIRECTS[slug]) {
+    throw redirect(`/legale/${REDIRECTS[slug]}`, 301);
+  }
+  const policy = getLegalPolicy(slug) ;
   if (!policy) {
     throw new Response('Documento non trovato', {status: 404});
   }

@@ -164,11 +164,11 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
   {
     slug: 'privacy-policy',
     title: 'Privacy Policy',
-    lastUpdated: '[DA COMPLETARE]',
+    lastUpdated: '23 ottobre 2026',
     sections: [
       {
         heading: '1. Titolare del trattamento',
-        body: 'Il Titolare del trattamento dei dati personali è MAD SOLUTION S.R.L., con sede legale in [DA COMPLETARE], P.IVA [DA COMPLETARE], e-mail: info@anyma-beauty.com, PEC: [DA COMPLETARE].',
+        body: 'Il Titolare del trattamento dei dati personali è [DA COMPLETARE: ANYMA BEAUTY S.R.L. o MAD SOLUTION S.R.L.], con sede legale in [DA COMPLETARE], P.IVA [DA COMPLETARE], e-mail: info@anyma-beauty.com, PEC: [DA COMPLETARE].',
       },
       {
         heading: '2. Dati raccolti',
@@ -179,35 +179,47 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
         body: '(a) Esecuzione del contratto (art. 6.1.b GDPR): gestione dell\'ordine, spedizione, fatturazione, assistenza post-vendita.\n(b) Obbligo legale (art. 6.1.c GDPR): adempimenti fiscali e contabili, conservazione dei dati per il periodo previsto dalla legge.\n(c) Legittimo interesse (art. 6.1.f GDPR): prevenzione delle frodi, miglioramento del Sito e dei servizi, sicurezza informatica.\n(d) Consenso (art. 6.1.a GDPR): invio di comunicazioni promozionali via e-mail, profilazione per marketing personalizzato, cookie analitici e di marketing.',
       },
       {
-        heading: '4. Destinatari dei dati',
-        body: 'I dati possono essere comunicati a: (a) fornitori di servizi tecnici (hosting, e-commerce: Shopify Inc., con sede in Canada, decisione di adeguatezza della Commissione Europea); (b) corrieri per la consegna degli ordini; (c) fornitori di servizi di pagamento (Stripe); (d) fornitori di servizi di analisi e marketing (Google, Meta), previo consenso dell\'Utente; (e) autorità pubbliche, ove richiesto dalla legge.',
+        heading: '4. Lista di accesso anticipato',
+        body: 'Prima del lancio del negozio, offriamo la possibilità di iscriversi a una lista di accesso anticipato. In questo contesto raccogliamo:\n\n- Indirizzo e-mail (obbligatorio)\n- Nome (facoltativo)\n- Prodotti scelti nel carrello al momento dell\'iscrizione\n- Metodo di iscrizione (modulo manuale o accesso con Google)\n\nQuesti dati vengono utilizzati per contattarti prima del lancio, informarti su eventuali vantaggi riservati e inviarti comunicazioni legate al lancio dei prodotti.\n\nBase giuridica: consenso (art. 6.1.a GDPR). L\'iscrizione è facoltativa e richiede il consenso esplicito, che puoi revocare in qualsiasi momento tramite il link di disiscrizione presente in ogni e-mail oppure scrivendo a info@anyma-beauty.com.\n\nI dati raccolti per questa finalità vengono conservati fino alla revoca del consenso.',
       },
       {
-        heading: '5. Trasferimenti extra-UE',
-        body: 'Alcuni dei nostri fornitori di servizi (Shopify, Google, Meta) possono trattare dati al di fuori dello Spazio Economico Europeo. Tali trasferimenti avvengono sulla base di: (a) decisioni di adeguatezza della Commissione Europea; (b) clausole contrattuali standard (art. 46.2.c GDPR); (c) Data Privacy Framework UE-USA, ove applicabile.',
+        heading: '5. Accesso con Google',
+        body: 'Se scegli di iscriverti alla lista di accesso anticipato tramite "Accedi con Google", riceviamo da Google esclusivamente il tuo indirizzo e-mail verificato, il nome e il cognome. Non accediamo ai tuoi contatti, alla posta, al calendario né ad alcun altro dato del tuo account Google.\n\nI dati ricevuti da Google vengono utilizzati unicamente per registrarti nella lista di accesso anticipato.\n\nL\'utilizzo dei dati ricevuti dalle API di Google è conforme alla Google API Services User Data Policy, inclusi i requisiti di Limited Use.',
       },
       {
-        heading: '6. Periodo di conservazione',
-        body: 'Dati di acquisto: 10 anni (obblighi fiscali). Dati dell\'account cliente: fino alla cancellazione dell\'account. Dati di marketing: fino alla revoca del consenso. Cookie analitici: massimo 26 mesi. Log di navigazione: 90 giorni.',
+        heading: '6. Destinatari e responsabili del trattamento',
+        body: 'I dati possono essere comunicati a:\n\n(a) Klaviyo Inc. (Boston, USA) — piattaforma di e-mail marketing, per la gestione della lista di accesso anticipato e l\'invio delle comunicazioni.\n(b) Shopify Inc. (Ottawa, Canada) — piattaforma di hosting del negozio online e gestione degli ordini.\n(c) Google LLC (Mountain View, USA) — servizio di autenticazione ("Accedi con Google").\n(d) Corrieri per la consegna degli ordini.\n(e) Fornitori di servizi di pagamento (Stripe).\n(f) Autorità pubbliche, ove richiesto dalla legge.',
       },
       {
-        heading: '7. Diritti dell\'interessato',
-        body: 'L\'Utente ha diritto di: (a) accedere ai propri dati; (b) ottenerne la rettifica o la cancellazione; (c) limitare il trattamento; (d) opporsi al trattamento; (e) ottenere la portabilità dei dati; (f) revocare il consenso in qualsiasi momento. Per esercitare tali diritti, inviare una richiesta a info@anyma-beauty.com. L\'Utente ha inoltre il diritto di proporre reclamo al Garante per la protezione dei dati personali (www.garanteprivacy.it).',
+        heading: '7. Trasferimenti extra-UE',
+        body: 'Alcuni dei nostri fornitori di servizi (Shopify, Google, Klaviyo, Stripe) possono trattare dati al di fuori dello Spazio Economico Europeo, in particolare negli Stati Uniti e in Canada. Tali trasferimenti avvengono sulla base di: (a) decisioni di adeguatezza della Commissione Europea (Canada); (b) clausole contrattuali standard (art. 46.2.c GDPR); (c) Data Privacy Framework UE-USA, ove applicabile. Ogni fornitore adotta misure di sicurezza adeguate a proteggere i tuoi dati.',
+      },
+      {
+        heading: '8. Periodo di conservazione',
+        body: 'Dati di acquisto: 10 anni (obblighi fiscali). Dati dell\'account cliente: fino alla cancellazione dell\'account. Dati della lista di accesso anticipato: fino alla revoca del consenso. Dati di marketing: fino alla revoca del consenso. Cookie analitici: massimo 26 mesi. Log di navigazione: 90 giorni.',
+      },
+      {
+        heading: '9. Diritti dell\'interessato',
+        body: 'Hai il diritto di: (a) accedere ai tuoi dati; (b) ottenerne la rettifica o la cancellazione; (c) limitare il trattamento; (d) opporti al trattamento; (e) ottenere la portabilità dei dati; (f) revocare il consenso in qualsiasi momento.\n\nPer esercitare questi diritti, scrivi a info@anyma-beauty.com.\n\nHai inoltre il diritto di proporre reclamo al Garante per la protezione dei dati personali (www.garanteprivacy.it).',
       },
     ],
   },
   {
     slug: 'informativa-trattamento-dati',
     title: 'Informativa relativa al trattamento dei dati personali',
-    lastUpdated: '[DA COMPLETARE]',
+    lastUpdated: '23 ottobre 2026',
     sections: [
       {
         heading: 'Ai sensi degli artt. 13 e 14 del Regolamento UE 2016/679 (GDPR)',
-        body: 'Identità del Titolare: MAD SOLUTION S.R.L., con sede legale in [DA COMPLETARE], P.IVA [DA COMPLETARE]. Contatto: info@anyma-beauty.com. Il Titolare non ha nominato un DPO (Responsabile della Protezione dei Dati) in quanto non rientra nei casi previsti dall\'art. 37 del GDPR.',
+        body: 'Identità del Titolare: [DA COMPLETARE: ANYMA BEAUTY S.R.L. o MAD SOLUTION S.R.L.], con sede legale in [DA COMPLETARE], P.IVA [DA COMPLETARE]. Contatto: info@anyma-beauty.com. Il Titolare non ha nominato un DPO (Responsabile della Protezione dei Dati) in quanto non rientra nei casi previsti dall\'art. 37 del GDPR.',
       },
       {
         heading: 'Se acquisti un prodotto',
         body: 'Trattiamo nome, indirizzo, e-mail e dati di pagamento per eseguire il contratto di vendita, gestire la spedizione e fornire assistenza post-vendita. Base giuridica: esecuzione del contratto (art. 6.1.b GDPR). Il conferimento dei dati è necessario; il rifiuto comporta l\'impossibilità di completare l\'acquisto.',
+      },
+      {
+        heading: 'Se ti iscrivi alla lista di accesso anticipato',
+        body: 'Trattiamo il tuo indirizzo e-mail, il nome (se fornito), i prodotti scelti nel carrello e il metodo di iscrizione per contattarti prima del lancio e inviarti comunicazioni riservate. Se ti iscrivi tramite "Accedi con Google", riceviamo solo e-mail verificata, nome e cognome — non accediamo ad altri dati del tuo account Google. Base giuridica: consenso (art. 6.1.a GDPR). Il consenso è facoltativo e revocabile in qualsiasi momento tramite il link di disiscrizione presente in ogni e-mail o scrivendo a info@anyma-beauty.com.',
       },
       {
         heading: 'Se ti iscrivi alla newsletter',
