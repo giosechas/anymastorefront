@@ -638,7 +638,7 @@ function RecommendedProducts({
         <Await resolve={products}>
           {(response) => {
             if (!response) return null;
-            return <ProductCarousel products={response.products.nodes} />;
+            return <ProductCarousel products={response.products.nodes} rotateLabels />;
           }}
         </Await>
       </Suspense>
