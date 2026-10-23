@@ -190,7 +190,7 @@ export function ProductItem({
         </h4>
         <small className="text-[10px] text-nero/60 no-underline transition-colors group-hover:text-gold">
           {HIDE_PRICES ? (
-            <span className="uppercase tracking-[0.08em] text-nero/40">
+            <span className="uppercase tracking-[0.08em] text-fuchsia">
               {t('product.soldOut')}
             </span>
           ) : (
