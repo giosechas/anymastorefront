@@ -14,7 +14,7 @@ export function ProductPrice({
   if (HIDE_PRICES) {
     return (
       <div aria-label="Price" className="product-price" role="group">
-        <span className="text-[11px] uppercase tracking-[0.08em] text-nero/40">
+        <span className="text-[11px] uppercase tracking-[0.08em] text-fuchsia">
           {t('product.soldOut')}
         </span>
       </div>

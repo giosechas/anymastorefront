@@ -11,7 +11,7 @@ export interface LegalPolicy {
 }
 
 /**
- * Real legal text drafted for Anyma Beauty (MAD SOLUTION S.R.L.), source:
+ * Real legal text drafted for Anyma Beauty (ANYMA BEAUTY S.R.L.), source:
  * ANYMA_AREA_LEGALE.docx. [DA COMPLETARE] markers are still open (company
  * address, P.IVA, REA, PEC) — fill in once the lawyer/accountant confirms
  * them, then update lastUpdated.
@@ -24,7 +24,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
     sections: [
       {
         heading: '1. Titolarità del sito',
-        body: 'Il sito web anyma-beauty.com (di seguito "Sito") è di proprietà e gestito da MAD SOLUTION S.R.L., con sede legale in [DA COMPLETARE], P.IVA [DA COMPLETARE], iscritta al Registro delle Imprese di Milano al n. [DA COMPLETARE] (di seguito "Titolare").',
+        body: 'Il sito web anyma-beauty.com (di seguito "Sito") è di proprietà e gestito da ANYMA BEAUTY S.R.L., con sede legale in [DA COMPLETARE], P.IVA [DA COMPLETARE], iscritta al Registro delle Imprese di Milano al n. [DA COMPLETARE] (di seguito "Titolare").',
       },
       {
         heading: '2. Ambito di applicazione',
@@ -32,7 +32,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       },
       {
         heading: '3. Proprietà intellettuale',
-        body: 'Tutti i contenuti presenti sul Sito, inclusi testi, immagini, grafiche, loghi, marchi, design del packaging, nomi delle collezioni (Leopard, Panther, Candy Rosa, Candy Tiffany, Street, Urban), il sistema delle "ANYMA" e ogni altro elemento creativo, sono di proprietà esclusiva di MAD SOLUTION S.R.L. o dei rispettivi licenzianti e sono protetti dalle leggi italiane, europee e internazionali in materia di proprietà intellettuale. È vietata qualsiasi riproduzione, distribuzione, trasmissione, modifica o utilizzo dei contenuti del Sito senza autorizzazione scritta del Titolare.',
+        body: 'Tutti i contenuti presenti sul Sito, inclusi testi, immagini, grafiche, loghi, marchi, design del packaging, nomi delle collezioni (Leopard, Panther, Candy Rosa, Candy Tiffany, Street, Urban), il sistema delle "ANYMA" e ogni altro elemento creativo, sono di proprietà esclusiva di ANYMA BEAUTY S.R.L. o dei rispettivi licenzianti e sono protetti dalle leggi italiane, europee e internazionali in materia di proprietà intellettuale. È vietata qualsiasi riproduzione, distribuzione, trasmissione, modifica o utilizzo dei contenuti del Sito senza autorizzazione scritta del Titolare.',
       },
       {
         heading: '4. Utilizzo consentito',
@@ -67,7 +67,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       },
       {
         heading: '2. Venditore',
-        body: 'Il venditore è MAD SOLUTION S.R.L., con sede legale in [DA COMPLETARE], P.IVA [DA COMPLETARE], e-mail: info@anyma-beauty.com, PEC: [DA COMPLETARE].',
+        body: 'Il venditore è ANYMA BEAUTY S.R.L., con sede legale in [DA COMPLETARE], P.IVA [DA COMPLETARE], e-mail: info@anyma-beauty.com, PEC: [DA COMPLETARE].',
       },
       {
         heading: '3. Prodotti',
@@ -250,7 +250,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
     sections: [
       {
         heading: 'Il nostro impegno',
-        body: 'MAD SOLUTION S.R.L. si impegna a rendere il sito anyma-beauty.com accessibile a tutti gli utenti, incluse le persone con disabilità, in conformità alla Direttiva UE 2016/2102 sull\'accessibilità dei siti web e alla Legge 4/2004 (Legge Stanca) e successive modifiche (D.Lgs. 106/2018).',
+        body: 'ANYMA BEAUTY S.R.L. si impegna a rendere il sito anyma-beauty.com accessibile a tutti gli utenti, incluse le persone con disabilità, in conformità alla Direttiva UE 2016/2102 sull\'accessibilità dei siti web e alla Legge 4/2004 (Legge Stanca) e successive modifiche (D.Lgs. 106/2018).',
       },
       {
         heading: 'Standard di riferimento',
