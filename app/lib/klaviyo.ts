@@ -74,6 +74,9 @@ export interface CartItem {
   quantity: number;
   productHandle: string;
   color?: string;
+  anima?: string;
+  image: string;
+  url: string;
 }
 
 async function createPreorderEvent(
@@ -107,6 +110,9 @@ async function createPreorderEvent(
               quantity: i.quantity,
               handle: i.productHandle,
               color: i.color,
+              anima: i.anima,
+              image: i.image,
+              url: i.url,
             })),
             item_count: items.reduce((sum, i) => sum + i.quantity, 0),
             source: 'prelaunch_website',
