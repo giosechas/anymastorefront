@@ -44,11 +44,6 @@ const HERO_SLIDES: Array<{kind: 'image' | 'video'; src: string}> = [
 ];
 const HERO_IMAGE_ROTATE_MS = 4000;
 const HERO_TEXT_ROTATE_MS = 8000;
-const HERO_CTA_LABELS = [
-  'Scopri chi sei',
-  'Decidi chi vuoi essere oggi',
-  'Non esiste una sola te',
-];
 
 export const meta: Route.MetaFunction = ({params}) => {
   const code = getLocaleFromParam(params.locale);
@@ -203,6 +198,7 @@ function Hero() {
   }, []);
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const id = setInterval(() => {
       setTextIndex((i) => (i + 1) % heroSlides.length);
     }, HERO_TEXT_ROTATE_MS);
@@ -275,7 +271,7 @@ function Hero() {
           href="#anime"
           className="border border-white bg-white px-8 py-3 text-xs uppercase tracking-[0.2em] text-nero transition-colors hover:border-fuchsia hover:bg-fuchsia hover:text-white"
         >
-          {HERO_CTA_LABELS[textIndex % HERO_CTA_LABELS.length]}
+          {dict.hero.rotatingCta[textIndex % dict.hero.rotatingCta.length]}
         </a>
       </div>
       {HERO_SLIDES.length > 1 && (

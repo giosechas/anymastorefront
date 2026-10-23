@@ -121,7 +121,7 @@ export const TRANSLATIONS = {
     },
     product: {
       addToCart: 'Aggiungi al carrello',
-      soldOut: 'Pre Order',
+      soldOut: 'Voglio essere la prima',
     },
     hero: {
       slides: [
@@ -145,6 +145,11 @@ export const TRANSLATIONS = {
       ],
       discoverAnyme: 'Scopri le tue ANYMA',
       shopNow: 'Tu sai chi sei',
+      rotatingCta: [
+        'Voglio subito',
+        'Voglio essere la prima',
+        'Non voglio aspettare',
+      ],
     },
     animaGrid: {
       le6Anyme: 'Le ANYMA',
@@ -381,15 +386,15 @@ export const TRANSLATIONS = {
       filterAvailability: 'Disponibilità',
       filterSort: 'Ordina per',
       availableNow: 'Disponibile ora',
-      comingSoon: 'Pre Order',
+      comingSoon: 'Voglio essere la prima',
       sortRecommended: 'Consigliati',
       sortPriceAsc: 'Prezzo crescente',
       sortPriceDesc: 'Prezzo decrescente',
       sortNewest: 'Novità',
     },
     preorder: {
-      ctaButton: 'Prenota in anteprima',
-      panelTitle: 'Prenota in anteprima',
+      ctaButton: 'Voglio essere la prima',
+      panelTitle: 'Voglio essere la prima',
       googleButton: 'Continua con Google',
       orDivider: 'oppure',
       nameLabel: 'Nome (opzionale)',
@@ -536,7 +541,7 @@ export const TRANSLATIONS = {
     },
     product: {
       addToCart: 'Add to cart',
-      soldOut: 'Pre Order',
+      soldOut: 'I want to be first',
     },
     hero: {
       slides: [
@@ -560,6 +565,11 @@ export const TRANSLATIONS = {
       ],
       discoverAnyme: 'Discover your ANYMA',
       shopNow: 'You know who you are',
+      rotatingCta: [
+        'I want it now',
+        'I want to be first',
+        "I don't want to wait",
+      ],
     },
     animaGrid: {
       le6Anyme: 'The ANYMA',
@@ -796,15 +806,15 @@ export const TRANSLATIONS = {
       filterAvailability: 'Availability',
       filterSort: 'Sort by',
       availableNow: 'Available now',
-      comingSoon: 'Pre Order',
+      comingSoon: 'I want to be first',
       sortRecommended: 'Recommended',
       sortPriceAsc: 'Price: low to high',
       sortPriceDesc: 'Price: high to low',
       sortNewest: 'Newest',
     },
     preorder: {
-      ctaButton: 'Reserve early access',
-      panelTitle: 'Reserve early access',
+      ctaButton: 'I want to be first',
+      panelTitle: 'I want to be first',
       googleButton: 'Continue with Google',
       orDivider: 'or',
       nameLabel: 'Name (optional)',
@@ -951,7 +961,7 @@ export const TRANSLATIONS = {
     },
     product: {
       addToCart: 'Añadir al carrito',
-      soldOut: 'Pre Order',
+      soldOut: 'Quiero ser la primera',
     },
     hero: {
       slides: [
@@ -975,6 +985,11 @@ export const TRANSLATIONS = {
       ],
       discoverAnyme: 'Descubre tus ANYMA',
       shopNow: 'Tú sabes quién eres',
+      rotatingCta: [
+        'Lo quiero ya',
+        'Quiero ser la primera',
+        'No quiero esperar',
+      ],
     },
     animaGrid: {
       le6Anyme: 'Las ANYMA',
@@ -1211,15 +1226,15 @@ export const TRANSLATIONS = {
       filterAvailability: 'Disponibilidad',
       filterSort: 'Ordenar por',
       availableNow: 'Disponible',
-      comingSoon: 'Pre Order',
+      comingSoon: 'Quiero ser la primera',
       sortRecommended: 'Recomendados',
       sortPriceAsc: 'Precio: menor a mayor',
       sortPriceDesc: 'Precio: mayor a menor',
       sortNewest: 'Novedades',
     },
     preorder: {
-      ctaButton: 'Reserva en anticipación',
-      panelTitle: 'Reserva en anticipación',
+      ctaButton: 'Quiero ser la primera',
+      panelTitle: 'Quiero ser la primera',
       googleButton: 'Continuar con Google',
       orDivider: 'o',
       nameLabel: 'Nombre (opcional)',
