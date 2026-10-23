@@ -125,7 +125,7 @@ export const TRANSLATIONS = {
     },
     hero: {
       slides: [
-        'Che donna ti senti oggi?',
+        'Scegli la donna che vuoi essere oggi',
         'Non esiste una sola te',
         'Reveal your soul!',
         'La bellezza non è coerenza, è verità',
@@ -532,7 +532,7 @@ export const TRANSLATIONS = {
     },
     hero: {
       slides: [
-        'Which woman do you feel like today?',
+        'Choose the woman you want to be today',
         'There is no single you',
         'Reveal your soul!',
         'Beauty is not consistency, it is truth',
@@ -939,7 +939,7 @@ export const TRANSLATIONS = {
     },
     hero: {
       slides: [
-        '¿Qué mujer te sientes hoy?',
+        'Elige la mujer que quieres ser hoy',
         'No existe una sola tú',
         'Reveal your soul!',
         'La belleza no es coherencia, es verdad',
