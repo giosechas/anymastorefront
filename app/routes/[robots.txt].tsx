@@ -54,6 +54,9 @@ Crawl-delay: 1
  */
 function generalDisallowRules({sitemapUrl}: {sitemapUrl?: string}) {
   return `Disallow: /cart
+Disallow: /checkout
+Disallow: /*/checkout
+Disallow: /api/
 Disallow: /account
 Disallow: /collections/*sort_by*
 Disallow: /*/collections/*sort_by*

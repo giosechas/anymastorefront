@@ -5,17 +5,19 @@ import {useLocale, useT} from '~/lib/i18n';
 import {useAside} from './Aside';
 import type {RootLoader} from '~/root';
 
+interface GoogleGsi {
+  initialize(config: {
+    client_id: string;
+    callback: (response: {credential: string}) => void;
+  }): void;
+  renderButton(
+    element: HTMLElement,
+    config: Record<string, unknown>,
+  ): void;
+}
+
 declare global {
-  namespace google.accounts.id {
-    function initialize(config: {
-      client_id: string;
-      callback: (response: {credential: string}) => void;
-    }): void;
-    function renderButton(
-      element: HTMLElement,
-      config: Record<string, unknown>,
-    ): void;
-  }
+  var google: {accounts: {id: GoogleGsi}} | undefined;
 }
 
 type PanelState = 'form' | 'submitting' | 'confirmed';
@@ -60,6 +62,8 @@ export function PreorderPanel({
 
   const [state, setState] = useState<PanelState>('form');
   const [error, setError] = useState<string | null>(null);
+  const [consent, setConsent] = useState(false);
+  const consentRef = useRef(false);
   const googleBtnRef = useRef<HTMLDivElement>(null);
   const confirmRef = useRef<HTMLHeadingElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -115,7 +119,11 @@ export function PreorderPanel({
       google.accounts.id.initialize({
         client_id: googleClientId!,
         callback: (response) => {
-          submit({googleIdToken: response.credential, marketingConsent: false});
+          if (!consentRef.current) {
+            setError(t('preorder.consentRequired'));
+            return;
+          }
+          void submit({googleIdToken: response.credential, marketingConsent: true});
         },
       });
       if (container) {
@@ -140,7 +148,7 @@ export function PreorderPanel({
     script.async = true;
     script.onload = initGsi;
     document.head.appendChild(script);
-  }, [state, googleClientId, code, submit]);
+  }, [state, googleClientId, code, submit, t]);
 
   if (state === 'confirmed') {
     return (
@@ -216,11 +224,15 @@ export function PreorderPanel({
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          if (!consent) {
+            setError(t('preorder.consentRequired'));
+            return;
+          }
           const fd = new FormData(e.currentTarget);
-          submit({
+          void submit({
             name: (fd.get('name') as string) || undefined,
             email: fd.get('email') as string,
-            marketingConsent: fd.get('consent') === 'on',
+            marketingConsent: true,
           });
         }}
         aria-describedby="preorder-desc"
@@ -254,6 +266,11 @@ export function PreorderPanel({
           <input
             type="checkbox"
             name="consent"
+            checked={consent}
+            onChange={(e) => {
+              setConsent(e.target.checked);
+              consentRef.current = e.target.checked;
+            }}
             className="mt-0.5 h-4 w-4 shrink-0 rounded border-nero/15 accent-gold"
           />
           <span className="leading-relaxed">

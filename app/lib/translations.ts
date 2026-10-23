@@ -402,6 +402,7 @@ export const TRANSLATIONS = {
       confirmBody: 'Ti scriveremo prima di tutti.',
       cartNote: 'Stiamo preparando il primo lotto. Prenota per essere tra le prime.',
       errorRetry: 'Qualcosa non ha funzionato. Riprova.',
+      consentRequired: 'Per procedere, accetta di ricevere le nostre comunicazioni.',
       submitting: 'Prenotazione in corso…',
     },
     prossimamente: {
@@ -815,6 +816,7 @@ export const TRANSLATIONS = {
       confirmBody: "We'll write to you before everyone.",
       cartNote: "We're preparing the first batch. Reserve to be among the first.",
       errorRetry: 'Something went wrong. Please try again.',
+      consentRequired: 'Please agree to receive our updates to continue.',
       submitting: 'Reserving…',
     },
     prossimamente: {
@@ -1228,6 +1230,7 @@ export const TRANSLATIONS = {
       confirmBody: 'Te escribiremos antes que a nadie.',
       cartNote: 'Estamos preparando el primer lote. Reserva para ser de las primeras.',
       errorRetry: 'Algo salió mal. Inténtalo de nuevo.',
+      consentRequired: 'Para continuar, acepta recibir nuestras comunicaciones.',
       submitting: 'Reservando…',
     },
     prossimamente: {

@@ -12,5 +12,6 @@ declare global {
     KLAVIYO_PRIVATE_API_KEY?: string;
     KLAVIYO_LIST_ID?: string;
     GOOGLE_CLIENT_ID?: string;
+    PRELAUNCH_MODE?: string;
   }
 }

@@ -37,8 +37,11 @@ export async function action({request, context}: {request: Request; context: {en
   }
 
   if (body.honeypot) {
-    console.error('[preorder] honeypot triggered', {ip});
     return data({success: true});
+  }
+
+  if (!body.marketingConsent) {
+    return data({success: false, error: 'consent_required'}, {status: 400});
   }
 
   let email: string;
@@ -52,10 +55,13 @@ export async function action({request, context}: {request: Request; context: {en
     }
     try {
       const verified = await verifyGoogleIdToken(body.googleIdToken, clientId);
+      if (!verified.emailVerified) {
+        return data({success: false, error: 'bad_request'}, {status: 400});
+      }
       email = verified.email;
       name = name || verified.name;
     } catch (err) {
-      console.error('[preorder] Google token verification failed', err);
+      console.error('[preorder] Google token verification failed');
       return data({success: false, error: 'retry'}, {status: 400});
     }
   } else {
@@ -74,17 +80,9 @@ export async function action({request, context}: {request: Request; context: {en
   }
 
   try {
-    await processPreorder(
-      apiKey,
-      listId,
-      email,
-      name,
-      body.marketingConsent,
-      body.cart,
-    );
+    await processPreorder(apiKey, listId, email, name, true, body.cart);
   } catch (err) {
     console.error('[preorder] Klaviyo processing failed', {
-      email,
       error: err instanceof Error ? err.message : err,
     });
     return data({success: false, error: 'retry'}, {status: 500});

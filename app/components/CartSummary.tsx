@@ -1,7 +1,8 @@
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import type {CartLayout} from '~/components/CartMain';
 import {CartForm, Money, type OptimisticCart} from '@shopify/hydrogen';
-import {HIDE_PRICES, PRELAUNCH_MODE} from '~/lib/config';
+import {HIDE_PRICES} from '~/lib/config';
+import {usePrelaunchMode} from '~/root';
 import {useEffect, useId, useRef, useState} from 'react';
 import {useFetcher} from 'react-router';
 import {useT} from '~/lib/i18n';
@@ -15,6 +16,7 @@ type CartSummaryProps = {
 
 export function CartSummary({cart, layout}: CartSummaryProps) {
   const t = useT();
+  const prelaunchMode = usePrelaunchMode();
   const summaryId = useId();
   const discountsHeadingId = useId();
   const discountCodeInputId = useId();
@@ -36,7 +38,7 @@ export function CartSummary({cart, layout}: CartSummaryProps) {
         {t('cart.totals')}
       </h4>
 
-      {PRELAUNCH_MODE ? (
+      {prelaunchMode ? (
         <p className="py-3 text-center text-xs leading-relaxed text-nero/60">
           {t('preorder.cartNote')}
         </p>
@@ -71,18 +73,18 @@ export function CartSummary({cart, layout}: CartSummaryProps) {
         </>
       )}
 
-      <CartCheckoutActions checkoutUrl={cart?.checkoutUrl} />
+      <CartCheckoutActions checkoutUrl={cart?.checkoutUrl} prelaunchMode={prelaunchMode} />
 
-      {!PRELAUNCH_MODE && <CartTrustElements />}
+      {!prelaunchMode && <CartTrustElements />}
     </div>
   );
 }
 
-function CartCheckoutActions({checkoutUrl}: {checkoutUrl?: string}) {
+function CartCheckoutActions({checkoutUrl, prelaunchMode}: {checkoutUrl?: string; prelaunchMode: boolean}) {
   const t = useT();
   const {open} = useAside();
 
-  if (PRELAUNCH_MODE) {
+  if (prelaunchMode) {
     return (
       <button
         type="button"

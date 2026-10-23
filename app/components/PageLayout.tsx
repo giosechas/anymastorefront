@@ -16,7 +16,7 @@ import {CartMain} from '~/components/CartMain';
 import {PreorderPanel} from '~/components/PreorderPanel';
 import {CookieBanner} from '~/components/CookieBanner';
 import {useLocale, useT} from '~/lib/i18n';
-import {PRELAUNCH_MODE} from '~/lib/config';
+import {usePrelaunchMode} from '~/root';
 
 interface PageLayoutProps {
   cart: Promise<CartApiQueryFragment | null>;
@@ -35,10 +35,12 @@ export function PageLayout({
   isLoggedIn,
   publicStoreDomain,
 }: PageLayoutProps) {
+  const prelaunchMode = usePrelaunchMode();
+
   return (
     <Aside.Provider>
       <CartAside cart={cart} />
-      {PRELAUNCH_MODE && <PreorderAside cart={cart} />}
+      {prelaunchMode && <PreorderAside cart={cart} />}
       <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} />
       {header && (
         <Header

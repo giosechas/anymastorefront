@@ -1,6 +1,6 @@
 import {redirect} from 'react-router';
 import type {Route} from './+types/($locale).cart.$lines';
-import {PRELAUNCH_MODE} from '~/lib/config';
+import {isPrelaunchMode} from '~/lib/config';
 import {getLocaleFromParam, localizePath} from '~/lib/locale';
 
 /**
@@ -59,7 +59,7 @@ export async function loader({request, context, params}: Route.LoaderArgs) {
   // Update cart id in cookie
   const headers = cart.setCartId(cartResult.id);
 
-  if (PRELAUNCH_MODE) {
+  if (isPrelaunchMode(context.env)) {
     return redirect(
       localizePath('/cart', getLocaleFromParam(params.locale)),
       {headers},
