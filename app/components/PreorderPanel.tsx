@@ -3,6 +3,8 @@ import {useRouteLoaderData} from 'react-router';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {useLocale, useT} from '~/lib/i18n';
 import {useAside} from './Aside';
+import {findAnimaByTag} from '~/lib/animas';
+import {emailImageUrl} from '~/lib/imageTransform';
 import type {RootLoader} from '~/root';
 
 interface GoogleGsi {
@@ -22,12 +24,17 @@ declare global {
 
 type PanelState = 'form' | 'submitting' | 'confirmed';
 
+const SITE_ORIGIN = 'https://anyma-beauty.com';
+
 interface SerializedCartItem {
   title: string;
   variantTitle: string;
   quantity: number;
   productHandle: string;
   color?: string;
+  anima?: string;
+  image: string;
+  url: string;
 }
 
 function serializeCart(
@@ -39,12 +46,18 @@ function serializeCart(
     const colorOption = merch.selectedOptions?.find(
       (o) => o.name.toLowerCase() === 'color' || o.name.toLowerCase() === 'colore',
     );
+    const anima = findAnimaByTag(merch.product.tags);
+    const rawImageUrl =
+      merch.image?.url || merch.product.featuredImage?.url || '';
     return {
       title: merch.product.title,
       variantTitle: merch.title,
       quantity: line.quantity,
       productHandle: merch.product.handle,
       color: colorOption?.value,
+      anima: anima?.name,
+      image: emailImageUrl(rawImageUrl),
+      url: `${SITE_ORIGIN}/products/${merch.product.handle}`,
     };
   });
 }

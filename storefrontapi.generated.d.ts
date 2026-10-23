@@ -34,7 +34,11 @@ export type CartLineFragment = Pick<
     product: Pick<
       StorefrontAPI.Product,
       'handle' | 'title' | 'id' | 'vendor' | 'productType' | 'tags'
-    >;
+    > & {
+      featuredImage?: StorefrontAPI.Maybe<
+        Pick<StorefrontAPI.Image, 'url' | 'altText'>
+      >;
+    };
     selectedOptions: Array<
       Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
     >;
@@ -70,7 +74,11 @@ export type CartLineComponentFragment = Pick<
     product: Pick<
       StorefrontAPI.Product,
       'handle' | 'title' | 'id' | 'vendor' | 'productType' | 'tags'
-    >;
+    > & {
+      featuredImage?: StorefrontAPI.Maybe<
+        Pick<StorefrontAPI.Image, 'url' | 'altText'>
+      >;
+    };
     selectedOptions: Array<
       Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
     >;
@@ -168,7 +176,11 @@ export type CartApiQueryFragment = Pick<
             product: Pick<
               StorefrontAPI.Product,
               'handle' | 'title' | 'id' | 'vendor' | 'productType' | 'tags'
-            >;
+            > & {
+              featuredImage?: StorefrontAPI.Maybe<
+                Pick<StorefrontAPI.Image, 'url' | 'altText'>
+              >;
+            };
             selectedOptions: Array<
               Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
             >;
@@ -206,7 +218,11 @@ export type CartApiQueryFragment = Pick<
             product: Pick<
               StorefrontAPI.Product,
               'handle' | 'title' | 'id' | 'vendor' | 'productType' | 'tags'
-            >;
+            > & {
+              featuredImage?: StorefrontAPI.Maybe<
+                Pick<StorefrontAPI.Image, 'url' | 'altText'>
+              >;
+            };
             selectedOptions: Array<
               Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
             >;
@@ -244,7 +260,11 @@ export type CartApiQueryFragment = Pick<
                 product: Pick<
                   StorefrontAPI.Product,
                   'handle' | 'title' | 'id' | 'vendor' | 'productType' | 'tags'
-                >;
+                > & {
+                  featuredImage?: StorefrontAPI.Maybe<
+                    Pick<StorefrontAPI.Image, 'url' | 'altText'>
+                  >;
+                };
                 selectedOptions: Array<
                   Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
                 >;
