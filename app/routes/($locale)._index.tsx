@@ -265,18 +265,18 @@ function Hero() {
         })}
       </div>
       <div className="mt-10 flex flex-wrap items-center justify-start gap-4">
-        <a
-          href="#anime"
-          className="border border-gold bg-gold px-8 py-3 text-xs uppercase tracking-[0.2em] text-nero transition-colors hover:bg-white hover:border-white"
-        >
-          {HERO_CTA_LABELS[textIndex % HERO_CTA_LABELS.length]}
-        </a>
         <Link
           to={href('/collections/all')}
-          className="border border-white bg-white px-8 py-3 text-xs uppercase tracking-[0.2em] text-nero transition-colors hover:border-fuchsia hover:bg-fuchsia hover:text-white"
+          className="border border-gold bg-gold px-8 py-3 text-xs uppercase tracking-[0.2em] text-nero transition-colors hover:bg-white hover:border-white"
         >
           {t('hero.shopNow')}
         </Link>
+        <a
+          href="#anime"
+          className="border border-white bg-white px-8 py-3 text-xs uppercase tracking-[0.2em] text-nero transition-colors hover:border-fuchsia hover:bg-fuchsia hover:text-white"
+        >
+          {HERO_CTA_LABELS[textIndex % HERO_CTA_LABELS.length]}
+        </a>
       </div>
       {HERO_SLIDES.length > 1 && (
         <div className="absolute bottom-8 right-6 flex items-center gap-3">
