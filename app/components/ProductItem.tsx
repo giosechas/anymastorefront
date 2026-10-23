@@ -16,7 +16,7 @@ import {getMascaraModelPhoto} from '~/lib/mascaraModelPhoto';
 import {getLipstickModelPhotos} from '~/lib/lipstickModelPhoto';
 import {getGlossModelPhotos} from '~/lib/glossModelPhoto';
 import {getColorTag, getCatalogTitle} from '~/lib/productCopy';
-import {useLocale, useT} from '~/lib/i18n';
+import {useLocale, useT, useDict} from '~/lib/i18n';
 import {HIDE_PRICES} from '~/lib/config';
 
 const IMAGE_ROTATE_MS = 3000;
@@ -36,17 +36,23 @@ const MASCARA_EYE_ORIGIN: Record<string, string> = {
 export function ProductItem({
   product,
   loading,
+  labelTick,
+  cardIndex,
 }: {
   product:
     | CollectionItemFragment
     | ProductItemFragment
     | RecommendedProductFragment;
   loading?: 'eager' | 'lazy';
+  labelTick?: number;
+  cardIndex?: number;
 }) {
   const variantUrl = useVariantUrl(product.handle);
   const {open} = useAside();
   const {code} = useLocale();
   const t = useT();
+  const dict = useDict();
+  const rotatingLabels = dict.hero.rotatingCta;
   // Only the product's open/closed shots for now — skip swatch smears,
   // video thumbnails, etc. until more categorized photography exists.
   const gallery = 'images' in product ? product.images.nodes.slice(0, 2) : [];
@@ -190,9 +196,30 @@ export function ProductItem({
         </h4>
         <small className="text-[10px] text-nero/60 no-underline transition-colors group-hover:text-gold">
           {HIDE_PRICES ? (
-            <span className="uppercase tracking-[0.08em] text-fuchsia">
-              {t('product.soldOut')}
-            </span>
+            labelTick != null && cardIndex != null ? (
+              <span
+                className="inline-grid uppercase tracking-[0.08em] text-fuchsia"
+                aria-label={t('product.soldOut')}
+              >
+                {rotatingLabels.map((label, i) => (
+                  <span
+                    key={i}
+                    aria-hidden="true"
+                    className={`col-start-1 row-start-1 transition-opacity duration-500 ${
+                      i === (cardIndex + labelTick) % rotatingLabels.length
+                        ? 'opacity-100'
+                        : 'opacity-0'
+                    }`}
+                  >
+                    {label}
+                  </span>
+                ))}
+              </span>
+            ) : (
+              <span className="uppercase tracking-[0.08em] text-fuchsia">
+                {t('product.soldOut')}
+              </span>
+            )
           ) : (
             <Money data={product.priceRange.minVariantPrice} />
           )}

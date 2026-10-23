@@ -8,18 +8,60 @@ import type {
 
 const AUTOSCROLL_MS = 2000;
 const RESUME_DELAY_MS = 4000;
+const LABEL_ROTATE_MS = 4000;
 
 type CarouselProduct =
   | CollectionItemFragment
   | ProductItemFragment
   | RecommendedProductFragment;
 
+function useRotatingLabelTick(enabled?: boolean): number {
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    if (!enabled) return;
+
+    const offset = Math.floor(Math.random() * 3);
+    setTick(offset);
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let intervalId: ReturnType<typeof setInterval>;
+
+    const start = () => {
+      intervalId = setInterval(() => setTick((t) => t + 1), LABEL_ROTATE_MS);
+    };
+
+    const onVisibility = () => {
+      clearInterval(intervalId);
+      if (!document.hidden) start();
+    };
+
+    start();
+    document.addEventListener('visibilitychange', onVisibility);
+
+    return () => {
+      clearInterval(intervalId);
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
+  }, [enabled]);
+
+  return tick;
+}
+
 /** Auto-scrolling horizontal product row, shared by the homepage's
  * "featured products" section and the PDP's "you might also like" section. */
-export function ProductCarousel({products}: {products: CarouselProduct[]}) {
+export function ProductCarousel({
+  products,
+  rotateLabels,
+}: {
+  products: CarouselProduct[];
+  rotateLabels?: boolean;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const resumeTimeout = useRef<ReturnType<typeof setTimeout>>();
   const [paused, setPaused] = useState(false);
+  const labelTick = useRotatingLabelTick(rotateLabels);
 
   useEffect(() => {
     const el = ref.current;
@@ -96,7 +138,11 @@ export function ProductCarousel({products}: {products: CarouselProduct[]}) {
             key={`${product.id}-${i}`}
             className="w-[65%] shrink-0 sm:w-[36%] lg:w-[29%]"
           >
-            <ProductItem product={product} />
+            <ProductItem
+              product={product}
+              labelTick={rotateLabels ? labelTick : undefined}
+              cardIndex={rotateLabels ? i % products.length : undefined}
+            />
           </div>
         ))}
       </div>
