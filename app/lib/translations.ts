@@ -133,7 +133,7 @@ export const TRANSLATIONS = {
       discoverAnyme: 'Scopri le tue ANYMA',
       shopNow: 'Tu sai chi sei',
       rotatingCta: [
-        'Voglio subito',
+        'Lo voglio subito',
         'Voglio essere la prima',
         'Non voglio aspettare',
       ],
