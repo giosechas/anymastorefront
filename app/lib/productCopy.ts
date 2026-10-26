@@ -49,7 +49,7 @@ export const COLOR_SWATCH_HEX: Record<string, string> = {
   PINK: '#FF8FC0',
   YELLOW: '#F4C542',
   BLACK: '#1A1A1A',
-  LILLA: '#B9A3D9',
+  LILLA: '#7B8CDE',
   // Announced, no live product yet (see getComingSoonColors in skuData.ts).
   CHOCOLATE: '#5C3A21',
 };
@@ -178,7 +178,7 @@ const SEO_DESCRIPTIONS: Record<LocaleCode, Record<string, Record<string, string>
     },
     'Mascara/Eyeliner': {
       BLACK: 'Mascara Super Black per ciglia intense e definite. Formula italiana e applicatore di precisione, dal pre-lancio ANYMA.',
-      LILLA: 'Mascara Pervinca per uno sguardo inaspettato. Un lilla delicato che gioca con la luce, formula italiana.',
+      LILLA: 'Mascara Pervinca per uno sguardo inaspettato. Un blu-viola delicato che gioca con la luce, formula italiana.',
     },
   },
   EN: {
@@ -194,7 +194,7 @@ const SEO_DESCRIPTIONS: Record<LocaleCode, Record<string, Record<string, string>
     },
     'Mascara/Eyeliner': {
       BLACK: 'Super Black Mascara for intense, defined lashes. Italian formula and precision applicator, from the ANYMA pre-launch.',
-      LILLA: 'Pervinca Mascara for an unexpected gaze. A delicate lilac that plays with light, Italian formula.',
+      LILLA: 'Pervinca Mascara for an unexpected gaze. A delicate blue-violet that plays with light, Italian formula.',
     },
   },
   ES: {
@@ -210,7 +210,7 @@ const SEO_DESCRIPTIONS: Record<LocaleCode, Record<string, Record<string, string>
     },
     'Mascara/Eyeliner': {
       BLACK: 'Máscara Super Black para pestañas intensas y definidas. Fórmula italiana y aplicador de precisión, del pre-lanzamiento ANYMA.',
-      LILLA: 'Máscara Pervinca para una mirada inesperada. Un lila delicado que juega con la luz, fórmula italiana.',
+      LILLA: 'Máscara Pervinca para una mirada inesperada. Un azul-violeta delicado que juega con la luz, fórmula italiana.',
     },
   },
 };
