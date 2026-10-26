@@ -414,7 +414,6 @@ export default function Product() {
               <ColorSwatchRow
                 siblings={siblings}
                 currentHandle={product.handle}
-                currentColorTag={colorTag}
                 anima={anima}
                 href={href}
                 t={t}
@@ -576,22 +575,16 @@ export default function Product() {
 function ColorSwatchRow({
   siblings,
   currentHandle,
-  currentColorTag,
   anima,
   href,
   t,
 }: {
   siblings: {title: string; handle: string; tags: string[]}[];
   currentHandle: string;
-  currentColorTag: string | undefined;
   anima: AnimaDefinition | undefined;
   href: (path: string) => string;
   t: ReturnType<typeof useT>;
 }) {
-  const [hoveredColor, setHoveredColor] = useState<string | null>(null);
-  const displayColor = hoveredColor ?? currentColorTag;
-  const displayLabel = displayColor ? getColorLabel(displayColor) : '';
-
   return (
     <div className="mt-8">
       <p className="mb-2 text-xs uppercase tracking-[0.15em] text-nero/60">
@@ -607,29 +600,30 @@ function ColorSwatchRow({
               key={sibling.handle}
               to={href(`/products/${sibling.handle}`)}
               aria-label={label}
-              title={label}
               aria-current={isCurrent || undefined}
-              className={`h-8 w-8 rounded-full border-2 transition-transform hover:scale-110 ${
-                isCurrent
-                  ? 'border-nero'
-                  : 'border-transparent hover:border-nero/30'
+              className={`flex flex-col items-center gap-1 ${
+                isCurrent ? 'pointer-events-none' : ''
               }`}
-              style={{
-                backgroundColor: siblingColor
-                  ? COLOR_SWATCH_HEX[siblingColor]
-                  : '#ccc',
-              }}
-              onMouseEnter={() => siblingColor && setHoveredColor(siblingColor)}
-              onMouseLeave={() => setHoveredColor(null)}
-              onFocus={() => siblingColor && setHoveredColor(siblingColor)}
-              onBlur={() => setHoveredColor(null)}
-            />
+            >
+              <span
+                className={`h-8 w-8 rounded-full border-2 transition-transform hover:scale-110 ${
+                  isCurrent
+                    ? 'border-nero'
+                    : 'border-transparent hover:border-nero/30'
+                }`}
+                style={{
+                  backgroundColor: siblingColor
+                    ? COLOR_SWATCH_HEX[siblingColor]
+                    : '#ccc',
+                }}
+              />
+              <span className="text-[9px] uppercase tracking-[0.12em] text-nero/60">
+                {label}
+              </span>
+            </Link>
           );
         })}
       </div>
-      <p className="mt-1.5 min-h-[1lh] text-[9px] uppercase tracking-[0.12em] text-nero/60">
-        {displayLabel}
-      </p>
     </div>
   );
 }
