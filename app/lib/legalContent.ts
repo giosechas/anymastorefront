@@ -24,7 +24,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
     sections: [
       {
         heading: '1. Titolarità del sito',
-        body: 'Il sito web anyma-beauty.com (di seguito "Sito") è di proprietà e gestito da ANYMA BEAUTY S.R.L., con sede legale in [DA COMPLETARE], P.IVA [DA COMPLETARE], iscritta al Registro delle Imprese di Milano al n. [DA COMPLETARE] (di seguito "Titolare").',
+        body: 'Il sito web anyma-beauty.com (di seguito "Sito") è di proprietà e gestito da ANYMA BEAUTY S.R.L., con sede legale in Via Michelangelo Buonarroti 1/O, 24050 Palosco (BG), P.IVA [DA COMPLETARE], iscritta al Registro delle Imprese di Milano al n. [DA COMPLETARE] (di seguito "Titolare").',
       },
       {
         heading: '2. Ambito di applicazione',
@@ -67,7 +67,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       },
       {
         heading: '2. Venditore',
-        body: 'Il venditore è ANYMA BEAUTY S.R.L., con sede legale in [DA COMPLETARE], P.IVA [DA COMPLETARE], e-mail: info@anyma-beauty.com, PEC: [DA COMPLETARE].',
+        body: 'Il venditore è ANYMA BEAUTY S.R.L., con sede legale in Via Michelangelo Buonarroti 1/O, 24050 Palosco (BG), P.IVA [DA COMPLETARE], e-mail: info@anyma-beauty.com, PEC: [DA COMPLETARE].',
       },
       {
         heading: '3. Prodotti',
@@ -168,7 +168,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
     sections: [
       {
         heading: '1. Titolare del trattamento',
-        body: 'Il Titolare del trattamento dei dati personali è ANYMA BEAUTY S.R.L., con sede legale in [DA COMPLETARE], P.IVA [DA COMPLETARE], e-mail: info@anyma-beauty.com, PEC: [DA COMPLETARE].',
+        body: 'Il Titolare del trattamento dei dati personali è ANYMA BEAUTY S.R.L., con sede legale in Via Michelangelo Buonarroti 1/O, 24050 Palosco (BG), P.IVA [DA COMPLETARE], e-mail: info@anyma-beauty.com, PEC: [DA COMPLETARE].',
       },
       {
         heading: '2. Dati raccolti',
@@ -211,7 +211,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
     sections: [
       {
         heading: 'Ai sensi degli artt. 13 e 14 del Regolamento UE 2016/679 (GDPR)',
-        body: 'Identità del Titolare: ANYMA BEAUTY S.R.L., con sede legale in [DA COMPLETARE], P.IVA [DA COMPLETARE]. Contatto: info@anyma-beauty.com. Il Titolare non ha nominato un DPO (Responsabile della Protezione dei Dati) in quanto non rientra nei casi previsti dall\'art. 37 del GDPR.',
+        body: 'Identità del Titolare: ANYMA BEAUTY S.R.L., con sede legale in Via Michelangelo Buonarroti 1/O, 24050 Palosco (BG), P.IVA [DA COMPLETARE]. Contatto: info@anyma-beauty.com. Il Titolare non ha nominato un DPO (Responsabile della Protezione dei Dati) in quanto non rientra nei casi previsti dall\'art. 37 del GDPR.',
       },
       {
         heading: 'Se acquisti un prodotto',
