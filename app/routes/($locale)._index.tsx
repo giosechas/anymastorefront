@@ -253,7 +253,7 @@ function Hero() {
                 i === textIndex ? 'opacity-100 duration-[1200ms]' : 'pointer-events-none opacity-0 duration-[800ms]'
               }`}
             >
-              <Tag className="font-display text-balance text-[18px] uppercase leading-[1.05] tracking-[0.04em] text-fuchsia [text-shadow:0_2px_10px_rgba(0,0,0,0.35)] sm:text-[30px] md:text-[42px]">
+              <Tag className="font-display text-balance text-[18px] leading-[1.05] tracking-[0.04em] text-fuchsia [text-shadow:0_2px_10px_rgba(0,0,0,0.35)] sm:text-[30px] md:text-[42px]">
                 {slide}
               </Tag>
             </div>
@@ -263,15 +263,15 @@ function Hero() {
       <div className="mt-10 flex flex-wrap items-center justify-start gap-4">
         <Link
           to={href('/collections/all')}
-          className="border border-gold bg-gold px-8 py-3 text-xs uppercase tracking-[0.2em] text-nero transition-colors hover:bg-white hover:border-white"
+          className="border border-gold bg-gold px-8 py-3 text-xs uppercase tracking-[0.2em] text-white transition-colors hover:bg-white hover:border-white hover:text-nero"
         >
           {t('hero.shopNow')}
         </Link>
         <a
           href="#anime"
-          className="border border-white bg-white px-8 py-3 text-xs uppercase tracking-[0.2em] text-nero transition-colors hover:border-fuchsia hover:bg-fuchsia hover:text-white"
+          className="border border-white bg-white px-8 py-3 text-xs uppercase tracking-[0.2em] text-fuchsia transition-colors hover:border-fuchsia hover:bg-fuchsia hover:text-white"
         >
-          {dict.hero.rotatingCta[textIndex % dict.hero.rotatingCta.length]}
+          {t('hero.discoverAnyme')}
         </a>
       </div>
       {HERO_SLIDES.length > 1 && (
