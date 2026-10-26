@@ -411,35 +411,14 @@ export default function Product() {
             <PdpDetailTabs tabs={pdpTabs} />
 
             {siblings.length > 1 && (
-              <div className="mt-8">
-                <p className="mb-2 text-xs uppercase tracking-[0.15em] text-nero/60">
-                  {t('pdp.altriColori', anima?.name ?? '')}
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  {siblings.map((sibling) => {
-                    const siblingColor = getColorTag(sibling.tags);
-                    const isCurrent = sibling.handle === product.handle;
-                    return (
-                      <Link
-                        key={sibling.handle}
-                        to={href(`/products/${sibling.handle}`)}
-                        aria-label={sibling.title}
-                        aria-current={isCurrent}
-                        className={`h-8 w-8 rounded-full border-2 transition-transform hover:scale-110 ${
-                          isCurrent
-                            ? 'border-nero'
-                            : 'border-transparent hover:border-nero/30'
-                        }`}
-                        style={{
-                          backgroundColor: siblingColor
-                            ? COLOR_SWATCH_HEX[siblingColor]
-                            : '#ccc',
-                        }}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
+              <ColorSwatchRow
+                siblings={siblings}
+                currentHandle={product.handle}
+                currentColorTag={colorTag}
+                anima={anima}
+                href={href}
+                t={t}
+              />
             )}
           </div>
 
@@ -590,6 +569,67 @@ export default function Product() {
           ],
         }}
       />
+    </div>
+  );
+}
+
+function ColorSwatchRow({
+  siblings,
+  currentHandle,
+  currentColorTag,
+  anima,
+  href,
+  t,
+}: {
+  siblings: {title: string; handle: string; tags: string[]}[];
+  currentHandle: string;
+  currentColorTag: string | undefined;
+  anima: AnimaDefinition | undefined;
+  href: (path: string) => string;
+  t: ReturnType<typeof useT>;
+}) {
+  const [hoveredColor, setHoveredColor] = useState<string | null>(null);
+  const displayColor = hoveredColor ?? currentColorTag;
+  const displayLabel = displayColor ? getColorLabel(displayColor) : '';
+
+  return (
+    <div className="mt-8">
+      <p className="mb-2 text-xs uppercase tracking-[0.15em] text-nero/60">
+        {t('pdp.altriColori', anima?.name ?? '')}
+      </p>
+      <div className="flex flex-wrap gap-3">
+        {siblings.map((sibling) => {
+          const siblingColor = getColorTag(sibling.tags);
+          const isCurrent = sibling.handle === currentHandle;
+          const label = siblingColor ? getColorLabel(siblingColor) : sibling.title;
+          return (
+            <Link
+              key={sibling.handle}
+              to={href(`/products/${sibling.handle}`)}
+              aria-label={label}
+              title={label}
+              aria-current={isCurrent || undefined}
+              className={`h-8 w-8 rounded-full border-2 transition-transform hover:scale-110 ${
+                isCurrent
+                  ? 'border-nero'
+                  : 'border-transparent hover:border-nero/30'
+              }`}
+              style={{
+                backgroundColor: siblingColor
+                  ? COLOR_SWATCH_HEX[siblingColor]
+                  : '#ccc',
+              }}
+              onMouseEnter={() => siblingColor && setHoveredColor(siblingColor)}
+              onMouseLeave={() => setHoveredColor(null)}
+              onFocus={() => siblingColor && setHoveredColor(siblingColor)}
+              onBlur={() => setHoveredColor(null)}
+            />
+          );
+        })}
+      </div>
+      <p className="mt-1.5 min-h-[1lh] text-[9px] uppercase tracking-[0.12em] text-nero/60">
+        {displayLabel}
+      </p>
     </div>
   );
 }
