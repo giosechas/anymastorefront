@@ -125,12 +125,13 @@ export const TRANSLATIONS = {
     },
     hero: {
       slides: [
-        'Scegli la donna che vuoi essere oggi',
-        'Non esiste una sola te',
-        'Reveal your soul!',
-        'La bellezza non è coerenza, è verità',
+        'CHE DONNA ti senti oggi?',
+        'NON ESISTE UNA SOLA TE',
+        'NON è SOLO TRUCCO, è IL tuO MOMENTO.',
+        'REVEAL YOUR SOUL!',
+        'LA BELLEZZA NON è COERENZA è VERITà',
       ],
-      discoverAnyme: 'Scopri le tue ANYMA',
+      discoverAnyme: 'Scopri chi sei',
       shopNow: 'Tu sai chi sei',
       rotatingCta: [
         'Lo voglio subito',
@@ -139,7 +140,7 @@ export const TRANSLATIONS = {
       ],
     },
     animaGrid: {
-      le6Anyme: 'Le ANYMA',
+      le6Anyme: 'Che donna ti senti oggi?',
       scegliLaTuaAnyma: 'Scegli la tua Anyma',
       subtitle:
         'Ogni Anyma ha la sua estetica. Il pack che scegli non è un contenitore: è un simbolo.',
@@ -532,12 +533,13 @@ export const TRANSLATIONS = {
     },
     hero: {
       slides: [
-        'Choose the woman you want to be today',
-        'There is no single you',
-        'Reveal your soul!',
-        'Beauty is not consistency, it is truth',
+        'WHAT WOMAN do you feel like today?',
+        'THERE IS NO SINGLE YOU',
+        "IT'S NOT JUST MAKEUP, it's YOUR MOMENT.",
+        'REVEAL YOUR SOUL!',
+        'BEAUTY IS NOT CONSISTENCY, it is TRUTH',
       ],
-      discoverAnyme: 'Discover your ANYMA',
+      discoverAnyme: 'Discover who you are',
       shopNow: 'You know who you are',
       rotatingCta: [
         'I want it now',
@@ -546,7 +548,7 @@ export const TRANSLATIONS = {
       ],
     },
     animaGrid: {
-      le6Anyme: 'The ANYMA',
+      le6Anyme: 'What woman do you feel like today?',
       scegliLaTuaAnyma: 'Choose your Anyma',
       subtitle:
         "Every Anyma has its own aesthetic. The pack you choose isn't a container: it's a symbol.",
@@ -939,12 +941,13 @@ export const TRANSLATIONS = {
     },
     hero: {
       slides: [
-        'Elige la mujer que quieres ser hoy',
-        'No existe una sola tú',
-        'Reveal your soul!',
-        'La belleza no es coherencia, es verdad',
+        'QUÉ MUJER te sientes hoy?',
+        'NO EXISTE UNA SOLA TÚ',
+        'NO es SOLO MAQUILLAJE, es TU MOMENTO.',
+        'REVEAL YOUR SOUL!',
+        'LA BELLEZA NO es COHERENCIA, es VERDAD',
       ],
-      discoverAnyme: 'Descubre tus ANYMA',
+      discoverAnyme: 'Descubre quién eres',
       shopNow: 'Tú sabes quién eres',
       rotatingCta: [
         'Lo quiero ya',
@@ -953,7 +956,7 @@ export const TRANSLATIONS = {
       ],
     },
     animaGrid: {
-      le6Anyme: 'Las ANYMA',
+      le6Anyme: '¿Qué mujer te sientes hoy?',
       scegliLaTuaAnyma: 'Elige tu Anyma',
       subtitle:
         'Cada Anyma tiene su propia estética. El pack que eliges no es un envase: es un símbolo.',
