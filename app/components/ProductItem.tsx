@@ -38,6 +38,7 @@ export function ProductItem({
   loading,
   labelTick,
   cardIndex,
+  isActive,
 }: {
   product:
     | CollectionItemFragment
@@ -46,6 +47,7 @@ export function ProductItem({
   loading?: 'eager' | 'lazy';
   labelTick?: number;
   cardIndex?: number;
+  isActive?: boolean;
 }) {
   const variantUrl = useVariantUrl(product.handle);
   const {open} = useAside();
@@ -118,9 +120,14 @@ export function ProductItem({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [images.length, initialDelay]);
 
+  const activeLabel =
+    labelTick != null && cardIndex != null
+      ? rotatingLabels[(cardIndex + labelTick) % rotatingLabels.length]
+      : rotatingLabels[0];
+
   return (
     <div
-      className="group relative"
+      className={`group relative ${isActive ? 'is-active' : ''}`}
       onMouseEnter={
         colorModelPhotos.length > 1 ? pickNextColorPhoto : undefined
       }
@@ -191,43 +198,52 @@ export function ProductItem({
             )}
           </div>
         </div>
-        <h4 className="mt-3 text-[10px] uppercase tracking-[0.05em] text-nero no-underline transition-colors group-hover:text-gold">
+        <h4 className="mt-3 text-[10px] uppercase tracking-[0.05em] text-nero/70 no-underline transition-all duration-300 group-hover:text-nero group-[.is-active]:text-nero">
           {displayTitle}
         </h4>
-        <small className="text-[10px] text-nero/60 no-underline transition-colors group-hover:text-gold">
-          {HIDE_PRICES ? (
-            labelTick != null && cardIndex != null ? (
-              <span
-                className="inline-grid uppercase tracking-[0.08em] text-fuchsia"
-                aria-label={t('product.soldOut')}
-              >
-                {rotatingLabels.map((label, i) => (
-                  <span
-                    key={i}
-                    aria-hidden="true"
-                    className={`col-start-1 row-start-1 transition-opacity duration-500 ${
-                      i === (cardIndex + labelTick) % rotatingLabels.length
-                        ? 'opacity-100'
-                        : 'opacity-0'
-                    }`}
-                  >
-                    {label}
-                  </span>
-                ))}
-              </span>
-            ) : (
-              <span className="uppercase tracking-[0.08em] text-fuchsia">
-                {t('product.soldOut')}
-              </span>
-            )
-          ) : (
-            <Money data={product.priceRange.minVariantPrice} />
-          )}
-        </small>
       </Link>
+      {HIDE_PRICES ? (
+        labelTick != null && cardIndex != null && variant ? (
+          <AddToCartButton
+            onClick={() => open('cart')}
+            lines={[{merchandiseId: variant.id, quantity: 1, selectedVariant: variant}]}
+            className="mt-2 flex h-9 w-full items-center justify-center border border-nero bg-transparent text-[10px] uppercase tracking-[0.12em] text-nero transition-colors duration-200 hover:bg-nero hover:text-paper group-[.is-active]:bg-nero group-[.is-active]:text-paper"
+          >
+            <span className="inline-grid">
+              {rotatingLabels.map((label, i) => (
+                <span
+                  key={i}
+                  aria-hidden={i !== (cardIndex + labelTick) % rotatingLabels.length}
+                  className={`col-start-1 row-start-1 transition-opacity duration-500 ${
+                    i === (cardIndex + labelTick) % rotatingLabels.length
+                      ? 'opacity-100'
+                      : 'opacity-0'
+                  }`}
+                >
+                  {label}
+                </span>
+              ))}
+            </span>
+          </AddToCartButton>
+        ) : (
+          variant && (
+            <AddToCartButton
+              onClick={() => open('cart')}
+              lines={[{merchandiseId: variant.id, quantity: 1, selectedVariant: variant}]}
+              className="mt-2 flex h-9 w-full items-center justify-center border border-nero bg-transparent text-[10px] uppercase tracking-[0.12em] text-nero transition-colors duration-200 hover:bg-nero hover:text-paper"
+            >
+              {t('product.soldOut')}
+            </AddToCartButton>
+          )
+        )
+      ) : (
+        <small className="mt-1 block text-[10px] text-nero/60 no-underline">
+          <Money data={product.priceRange.minVariantPrice} />
+        </small>
+      )}
 
       {variant && (
-        <div className="pointer-events-none absolute inset-0 bottom-[3.25rem] flex items-center justify-center bg-nero/0 opacity-0 transition-all duration-200 group-hover:bg-nero/40 group-hover:opacity-100">
+        <div className="pointer-events-none absolute inset-0 bottom-[4.75rem] flex items-center justify-center bg-nero/0 opacity-0 transition-all duration-200 group-hover:bg-nero/40 group-hover:opacity-100">
           <div className="pointer-events-auto">
             <AddToCartButton
               disabled={!variant.availableForSale && !HIDE_PRICES}
