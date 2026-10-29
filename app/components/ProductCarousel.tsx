@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {ProductItem} from '~/components/ProductItem';
 import type {
   ProductItemFragment,
@@ -49,6 +49,58 @@ function useRotatingLabelTick(enabled?: boolean): number {
   return tick;
 }
 
+function useMobileActiveCard(
+  containerRef: React.RefObject<HTMLDivElement | null>,
+  itemCount: number,
+): number {
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const ratioMap = useRef(new Map<Element, number>());
+
+  const updateActive = useCallback(() => {
+    let bestEntry: Element | null = null;
+    let bestRatio = 0;
+    ratioMap.current.forEach((ratio, el) => {
+      if (ratio > bestRatio) {
+        bestRatio = ratio;
+        bestEntry = el;
+      }
+    });
+    if (bestEntry && bestRatio >= 0.5) {
+      const idx = Number((bestEntry as HTMLElement).dataset.cardIndex ?? -1);
+      setActiveIndex(idx);
+    } else {
+      setActiveIndex(-1);
+    }
+  }, []);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || itemCount === 0) return;
+
+    if (window.matchMedia('(pointer: fine)').matches) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          ratioMap.current.set(entry.target, entry.intersectionRatio);
+        });
+        updateActive();
+      },
+      {
+        root: container,
+        threshold: [0, 0.3, 0.5, 0.6, 0.8, 1],
+      },
+    );
+
+    const cards = container.querySelectorAll('[data-card-index]');
+    cards.forEach((card) => observer.observe(card));
+
+    return () => observer.disconnect();
+  }, [containerRef, itemCount, updateActive]);
+
+  return activeIndex;
+}
+
 /** Auto-scrolling horizontal product row, shared by the homepage's
  * "featured products" section and the PDP's "you might also like" section. */
 export function ProductCarousel({
@@ -62,6 +114,7 @@ export function ProductCarousel({
   const resumeTimeout = useRef<ReturnType<typeof setTimeout>>();
   const [paused, setPaused] = useState(false);
   const labelTick = useRotatingLabelTick(rotateLabels);
+  const mobileActiveIndex = useMobileActiveCard(ref, products.length);
 
   useEffect(() => {
     const el = ref.current;
@@ -136,12 +189,14 @@ export function ProductCarousel({
         {[...products, ...products].map((product, i) => (
           <div
             key={`${product.id}-${i}`}
+            data-card-index={i % products.length}
             className="w-[65%] shrink-0 sm:w-[36%] lg:w-[29%]"
           >
             <ProductItem
               product={product}
               labelTick={rotateLabels ? labelTick : undefined}
               cardIndex={rotateLabels ? i % products.length : undefined}
+              isActive={mobileActiveIndex === i % products.length}
             />
           </div>
         ))}

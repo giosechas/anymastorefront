@@ -302,12 +302,12 @@ function AnimeGrid() {
   return (
     <section id="anime" className="mx-auto max-w-6xl px-6 py-12 sm:py-28">
       <div className="mb-8 text-center sm:mb-12">
-        <p className="mb-3 text-xs uppercase tracking-[0.4em] text-gold">
+        <h2 className="font-display text-balance uppercase leading-[1.05] tracking-[0.03em] text-fuchsia [font-size:clamp(1.375rem,5vw,3.875rem)]">
           {t('animaGrid.le6Anyme')}
-        </p>
-        <h2 className="font-display text-2xl uppercase tracking-[0.03em] text-nero sm:text-4xl">
-          {t('animaGrid.scegliLaTuaAnyma')}
         </h2>
+        <p className="mt-3 text-[20px] uppercase tracking-[0.22em] text-gold sm:text-[21px]">
+          {t('animaGrid.scegliLaTuaAnyma')}
+        </p>
         <p className="mx-auto mt-4 max-w-md text-sm text-nero/70 sm:max-w-none sm:text-base sm:whitespace-nowrap">
           {t('animaGrid.subtitle')}
         </p>
