@@ -1,5 +1,5 @@
 import {Await, Link} from 'react-router';
-import {Suspense} from 'react';
+import {Component, Suspense} from 'react';
 import type {
   CartApiQueryFragment,
   FooterQuery,
@@ -65,15 +65,52 @@ function CartAside({cart}: {cart: PageLayoutProps['cart']}) {
   const t = useT();
   return (
     <Aside type="cart" heading={t('account.cartHeading')}>
-      <Suspense fallback={<p>{t('account.loadingCart')}</p>}>
-        <Await resolve={cart}>
-          {(cart) => {
-            return <CartMain cart={cart} layout="aside" />;
-          }}
-        </Await>
-      </Suspense>
+      <CartErrorBoundary>
+        <Suspense fallback={<p>{t('account.loadingCart')}</p>}>
+          <Await resolve={cart}>
+            {(cart) => {
+              return <CartMain cart={cart} layout="aside" />;
+            }}
+          </Await>
+        </Suspense>
+      </CartErrorBoundary>
     </Aside>
   );
+}
+
+class CartErrorBoundary extends Component<
+  {children: React.ReactNode},
+  {error: Error | null}
+> {
+  state: {error: Error | null} = {error: null};
+
+  static getDerivedStateFromError(error: Error) {
+    return {error};
+  }
+
+  componentDidCatch(error: Error) {
+    console.warn('[CartErrorBoundary]', error.message);
+  }
+
+  render() {
+    if (this.state.error) {
+      return (
+        <div className="px-6 py-10 text-center">
+          <p className="text-sm text-nero/70">
+            Qualcosa non ha funzionato. Riprova.
+          </p>
+          <button
+            type="button"
+            onClick={() => this.setState({error: null})}
+            className="mt-4 border border-nero px-5 py-2 text-xs uppercase tracking-[0.12em] text-nero transition-colors hover:bg-nero hover:text-paper"
+          >
+            Riprova
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
 }
 
 function PreorderAside({cart}: {cart: PageLayoutProps['cart']}) {

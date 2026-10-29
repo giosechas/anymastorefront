@@ -23,21 +23,21 @@ export function CartLineItem({
   childrenMap: LineItemChildrenMap;
 }) {
   const {id, merchandise} = line;
-  const {product, title, image, selectedOptions} = merchandise;
-  const lineItemUrl = useVariantUrl(product.handle, selectedOptions);
+  const {product, title, image, selectedOptions = []} = merchandise;
+  const lineItemUrl = useVariantUrl(product?.handle ?? '', selectedOptions);
   const {close} = useAside();
   const {code} = useLocale();
   const t = useT();
   const lineItemChildren = childrenMap[id];
   const childrenLabelId = `cart-line-children-${id}`;
-  const colorTag = 'tags' in product ? getColorTag(product.tags) : undefined;
-  const anima = 'tags' in product ? findAnimaByTag(product.tags) : undefined;
+  const colorTag = product && 'tags' in product ? getColorTag(product.tags) : undefined;
+  const anima = product && 'tags' in product ? findAnimaByTag(product.tags) : undefined;
   const displayTitle =
-    'productType' in product && product.productType
+    product && 'productType' in product && product.productType
       ? getCatalogTitle(product.productType, colorTag, anima?.name, code)
-      : product.title;
+      : product?.title ?? title;
 
-  const colorLabel = selectedOptions.find(
+  const colorLabel = selectedOptions?.find(
     (o) => o.name === 'Color' || o.name === 'Colore',
   );
 
