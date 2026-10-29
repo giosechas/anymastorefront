@@ -952,6 +952,10 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
       nodes {
         id
         availableForSale
+        selectedOptions {
+          name
+          value
+        }
       }
     }
   }

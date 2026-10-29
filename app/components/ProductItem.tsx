@@ -62,7 +62,13 @@ export function ProductItem({
   const [activeIndex, setActiveIndex] = useState(0);
   const [initialDelay] = useState(() => Math.random() * IMAGE_ROTATE_MS);
   const image = images[activeIndex] ?? product.featuredImage;
-  const variant = product.variants?.nodes?.[0];
+  const rawVariant = product.variants?.nodes?.[0];
+  const variant = rawVariant
+    ? {
+        ...rawVariant,
+        product: {handle: product.handle, title: product.title},
+      }
+    : undefined;
   const anima =
     'tags' in product ? findAnimaByTag(product.tags) : undefined;
   const mascaraModelPhoto =
