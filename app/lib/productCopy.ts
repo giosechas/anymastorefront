@@ -42,10 +42,10 @@ export function getCommunityTagline(
 }
 
 export const COLOR_SWATCH_HEX: Record<string, string> = {
-  NUDE: '#C9A488',
+  NUDE: '#C08E80',
   ROSSO: '#B3212E',
-  VIOLA: '#5B2A6E',
-  CHERRY: '#7A1F2B',
+  VIOLA: '#6B2FA0',
+  CHERRY: '#C2285A',
   PINK: '#FF8FC0',
   YELLOW: '#F4C542',
   BLACK: '#1A1A1A',
