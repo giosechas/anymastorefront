@@ -277,7 +277,7 @@ export default function Product() {
   ];
   const pdpTabs = rawPdpTabs.filter((tab): tab is PdpTab => tab !== null);
   const displayTitle = getComposedTitle(product.productType, colorTag, code);
-  const video = getProductVideo(product.productType, anima?.handle);
+  const video = getProductVideo(product.productType, anima?.handle, colorTag);
   const mascaraModelPhoto = getMascaraModelPhoto(
     product.productType,
     anima?.handle,
