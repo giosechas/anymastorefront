@@ -37,9 +37,9 @@ export function CartLineItem({
       ? getCatalogTitle(product.productType, colorTag, anima?.name, code)
       : product?.title ?? title;
 
-  const colorLabel = selectedOptions?.find(
-    (o) => o.name === 'Color' || o.name === 'Colore',
-  );
+  const colorLabelText = colorTag
+    ? getColorLabel(colorTag, code)
+    : undefined;
 
   const imgSize = layout === 'aside' ? 80 : 100;
 
@@ -82,9 +82,9 @@ export function CartLineItem({
                 {displayTitle}
               </p>
             </Link>
-            {colorLabel && (
+            {colorLabelText && (
               <p className="mt-0.5 text-xs text-nero/50">
-                {getColorLabel(colorLabel.value, code)}
+                {colorLabelText}
               </p>
             )}
           </div>
@@ -124,7 +124,8 @@ export function CartLineItem({
 function CartLineQuantity({line}: {line: CartLine}) {
   const t = useT();
   if (!line || typeof line?.quantity === 'undefined') return null;
-  const {id: lineId, quantity, isOptimistic} = line;
+  const {id: lineId, isOptimistic} = line;
+  const quantity = Math.max(1, line.quantity);
   const prevQuantity = Number(Math.max(0, quantity - 1).toFixed(0));
   const nextQuantity = Number((quantity + 1).toFixed(0));
 

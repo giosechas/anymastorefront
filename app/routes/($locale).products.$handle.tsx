@@ -17,7 +17,7 @@ import {ScrollReveal} from '~/components/ScrollReveal';
 import {ProductVideos} from '~/components/ProductVideos';
 import {WishlistHeart} from '~/components/WishlistHeart';
 import {ProductCarousel} from '~/components/ProductCarousel';
-import {redirectIfHandleIsLocalized} from '~/lib/redirect';
+import {redirectIfHandleIsLocalized, redirectOldProductHandle} from '~/lib/redirect';
 import {
   ACTIVE_ANIMAS,
   findAnimaByCollectionHandle,
@@ -120,6 +120,8 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
   if (!handle) {
     throw new Error('Expected product handle to be defined');
   }
+
+  redirectOldProductHandle(request, handle);
 
   const [{product}] = await Promise.all([
     storefront.query(PRODUCT_QUERY, {

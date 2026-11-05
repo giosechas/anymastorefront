@@ -66,7 +66,12 @@ export function ProductItem({
   const variant = rawVariant
     ? {
         ...rawVariant,
-        product: {handle: product.handle, title: product.title},
+        product: {
+          handle: product.handle,
+          title: product.title,
+          ...('tags' in product ? {tags: product.tags} : {}),
+          ...('productType' in product ? {productType: product.productType} : {}),
+        },
       }
     : undefined;
   const anima =

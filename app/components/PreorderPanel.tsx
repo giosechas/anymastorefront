@@ -4,6 +4,7 @@ import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {useLocale, useT} from '~/lib/i18n';
 import {useAside} from './Aside';
 import {findAnimaByTag} from '~/lib/animas';
+import {getColorTag, getColorLabel} from '~/lib/productCopy';
 import {emailImageUrl} from '~/lib/imageTransform';
 import type {RootLoader} from '~/root';
 
@@ -43,18 +44,16 @@ function serializeCart(
   if (!cart?.lines?.nodes) return [];
   return cart.lines.nodes.map((line) => {
     const merch = line.merchandise;
-    const colorOption = merch.selectedOptions?.find(
-      (o) => o.name.toLowerCase() === 'color' || o.name.toLowerCase() === 'colore',
-    );
+    const colorTag = getColorTag(merch.product.tags ?? []);
     const anima = findAnimaByTag(merch.product.tags);
     const rawImageUrl =
       merch.image?.url || merch.product.featuredImage?.url || '';
     return {
       title: merch.product.title,
       variantTitle: merch.title,
-      quantity: line.quantity,
+      quantity: Math.max(1, line.quantity),
       productHandle: merch.product.handle,
-      color: colorOption?.value,
+      color: colorTag ? getColorLabel(colorTag) : undefined,
       anima: anima?.name,
       image: emailImageUrl(rawImageUrl),
       url: `${SITE_ORIGIN}/products/${merch.product.handle}`,
