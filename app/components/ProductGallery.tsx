@@ -65,7 +65,7 @@ export function ProductGallery({
     return () => el.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
-  if (!active) return <div className="aspect-[2/3] bg-nero/5" />;
+  if (!active) return <div className="aspect-[3/4] bg-nero/5" />;
 
   const canZoom = active.kind !== 'video';
   const t = useT();
@@ -106,7 +106,7 @@ export function ProductGallery({
         {slides.map((slide, i) => (
           <div
             key={slide.id}
-            className="aspect-[2/3] w-full flex-none snap-start bg-nero/5"
+            className="aspect-[3/4] w-full flex-none snap-start overflow-hidden bg-nero/5"
           >
             <SlideContent slide={slide} />
           </div>
@@ -115,17 +115,9 @@ export function ProductGallery({
 
       {/* Desktop: single active slide with zoom + arrows */}
       <div
-        className={`relative hidden w-full overflow-hidden bg-nero/5 sm:block ${
+        className={`relative hidden w-full overflow-hidden bg-nero/5 sm:block aspect-[3/4] ${
           canZoom ? (isZooming ? 'cursor-zoom-out' : 'cursor-zoom-in') : ''
         }`}
-        style={{
-          aspectRatio:
-            active.kind === 'image' &&
-            active.image.width &&
-            active.image.height
-              ? `${active.image.width} / ${active.image.height}`
-              : '2 / 3',
-        }}
         onClick={handleClick}
         onMouseMove={canZoom && isZooming ? updateZoomOrigin : undefined}
       >
@@ -138,7 +130,7 @@ export function ProductGallery({
             muted
             playsInline
             loop
-            className="h-full w-full object-contain"
+            className="h-full w-full object-cover"
           />
         ) : active.kind === 'staticImage' ? (
           <img
@@ -155,8 +147,10 @@ export function ProductGallery({
           <Image
             data={active.image}
             key={active.id}
+            aspectRatio="3/4"
+            crop="center"
             sizes="(min-width: 45em) 50vw, 100vw"
-            className="h-full w-full object-contain transition-transform duration-300 ease-out"
+            className="h-full w-full object-cover transition-transform duration-300 ease-out"
             style={{
               transform: isZooming ? 'scale(2)' : 'scale(1)',
               transformOrigin: zoomOrigin,
@@ -223,7 +217,7 @@ function SlideContent({slide}: {slide: Slide}) {
         muted
         playsInline
         loop
-        className="h-full w-full object-contain"
+        className="h-full w-full object-cover"
       />
     );
   }
@@ -239,8 +233,10 @@ function SlideContent({slide}: {slide: Slide}) {
   return (
     <Image
       data={slide.image}
+      aspectRatio="3/4"
+      crop="center"
       sizes="100vw"
-      className="h-full w-full object-contain"
+      className="h-full w-full object-cover"
     />
   );
 }
