@@ -36,6 +36,20 @@ const GLOSS_VIDEO_COLORS: Record<string, Record<string, VideoEntry>> = {
       poster: '/videos/gloss-cherry/posters/candy-rosa.jpg',
     },
   },
+  CHOCOLATE: {
+    leopard: {
+      src: '/videos/gloss/leopard-chocolate.mp4',
+      poster: '/videos/gloss/posters/leopard-chocolate.jpg',
+    },
+    street: {
+      src: '/videos/gloss/street-chocolate.mp4',
+      poster: '/videos/gloss/posters/street-chocolate.jpg',
+    },
+    'candy-rosa': {
+      src: '/videos/gloss/candy-rosa-chocolate.mp4',
+      poster: '/videos/gloss/posters/candy-rosa-chocolate.jpg',
+    },
+  },
 };
 
 /** anima.handle is "anima-<slug>"; video files are named "<prefix>-<slug>.mp4". */

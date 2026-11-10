@@ -51,7 +51,7 @@ export const COLOR_SWATCH_HEX: Record<string, string> = {
   BLACK: '#1A1A1A',
   LILLA: '#7B8CDE',
   // Announced, no live product yet (see getComingSoonColors in skuData.ts).
-  CHOCOLATE: '#5C3A21',
+  CHOCOLATE: '#7B4033',
 };
 
 const KNOWN_COLORS = Object.keys(COLOR_SWATCH_HEX);

@@ -47,6 +47,7 @@ const TAG_TO_SKU_COLOR: Record<string, string> = {
   NUDE: 'NUDE',
   CHERRY: 'CHERRY',
   PINK: 'PINK',
+  CHOCOLATE: 'CHOCOLATE',
 };
 
 /** Shopify's `productType` -> this dataset's `category`, exposed for
