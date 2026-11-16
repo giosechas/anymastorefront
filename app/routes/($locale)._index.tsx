@@ -35,8 +35,6 @@ const PHILOSOPHY_ROTATE_MS = 4000;
 // crossfades through whatever is in this array.
 const FOUNDERS_IMAGES = [founderImage1];
 const FOUNDERS_ROTATE_MS = 6000;
-// Placeholder until real signups are wired in.
-const FOUNDERS_REGISTERED = 247;
 const FOUNDERS_TOTAL = 800;
 
 const HERO_SLIDES: Array<{kind: 'image' | 'video'; src: string}> = [
@@ -45,17 +43,30 @@ const HERO_SLIDES: Array<{kind: 'image' | 'video'; src: string}> = [
 const HERO_IMAGE_ROTATE_MS = 4000;
 const HERO_TEXT_ROTATE_MS = 8000;
 
+const OG_IMAGE = 'https://anyma-beauty.com/og-home.jpg';
+
 export const meta: Route.MetaFunction = ({params}) => {
   const code = getLocaleFromParam(params.locale);
+  const title = TRANSLATIONS[code].meta.homeTitle;
+  const description = TRANSLATIONS[code].meta.homeDescription;
+  const origin = 'https://anyma-beauty.com';
+  const prefix = params.locale ? `/${params.locale}` : '';
+  const url = `${origin}${prefix || '/'}`;
+
   return [
-    {title: TRANSLATIONS[code].meta.homeTitle},
-    {
-      name: 'description',
-      content: TRANSLATIONS[code].meta.homeDescription,
-    },
-    {
-      'script:ld+json': getOrganizationJsonLd(),
-    },
+    {title},
+    {name: 'description', content: description},
+    {property: 'og:title', content: title},
+    {property: 'og:description', content: description},
+    {property: 'og:url', content: url},
+    {property: 'og:type', content: 'website'},
+    {property: 'og:image', content: OG_IMAGE},
+    {property: 'og:site_name', content: 'Anyma Beauty'},
+    {name: 'twitter:card', content: 'summary_large_image'},
+    {name: 'twitter:title', content: title},
+    {name: 'twitter:description', content: description},
+    {name: 'twitter:image', content: OG_IMAGE},
+    {'script:ld+json': getOrganizationJsonLd()},
   ];
 };
 
@@ -835,11 +846,22 @@ function FoundersSection() {
 function FoundersCounter() {
   const t = useT();
   const ref = useRef<HTMLDivElement>(null);
-  const [count, setCount] = useState(0);
+  const [displayCount, setDisplayCount] = useState(0);
+  const [realCount, setRealCount] = useState<number | null>(null);
   const [visible, setVisible] = useState(false);
-  const pct = Math.round((FOUNDERS_REGISTERED / FOUNDERS_TOTAL) * 100);
 
   useEffect(() => {
+    fetch('/api/preorder')
+      .then((r) => r.json())
+      .then((d) => d as {count: number | null})
+      .then((d) => {
+        if (typeof d.count === 'number') setRealCount(d.count);
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (realCount === null || realCount < 100) return;
     const el = ref.current;
     if (!el) return;
     const observer = new IntersectionObserver(
@@ -851,7 +873,7 @@ function FoundersCounter() {
         const start = performance.now();
         const tick = (now: number) => {
           const progress = Math.min(1, (now - start) / duration);
-          setCount(Math.round(progress * FOUNDERS_REGISTERED));
+          setDisplayCount(Math.round(progress * realCount));
           if (progress < 1) requestAnimationFrame(tick);
         };
         requestAnimationFrame(tick);
@@ -860,12 +882,16 @@ function FoundersCounter() {
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [realCount]);
+
+  if (realCount === null || realCount < 100) return null;
+
+  const pct = Math.round((realCount / FOUNDERS_TOTAL) * 100);
 
   return (
     <div ref={ref}>
       <p className="flex items-baseline gap-2">
-        <span className="font-display text-3xl text-fuchsia">{count}</span>
+        <span className="font-display text-3xl text-fuchsia">{displayCount}</span>
         <span className="text-xs uppercase tracking-[0.15em] text-paper/70">
           {t('founders.countOf', FOUNDERS_TOTAL)}
         </span>

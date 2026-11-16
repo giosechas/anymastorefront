@@ -15,27 +15,41 @@ export const meta: Route.MetaFunction = ({data, params}) => {
     ? findAnimaByCollectionHandle(data.collection.handle)
     : undefined;
   const title = anima ? `Anyma ${anima.name}` : (data?.collection.title ?? '');
+  const fullTitle = `Anyma Beauty | ${title}`;
+  const description = anima && data?.collection.description
+    ? data.collection.description.slice(0, 155)
+    : undefined;
+  const origin = 'https://anyma-beauty.com';
+  const prefix = params.locale ? `/${params.locale}` : '';
+  const canonical = data?.collection.handle
+    ? `${origin}${prefix}/collections/${data.collection.handle}`
+    : undefined;
+  const ogImage = data?.collection.image?.url;
+
   const tags: ReturnType<Route.MetaFunction> = [
-    {title: `Anyma Beauty | ${title}`},
+    {title: fullTitle},
   ];
   if (anima?.comingSoon) {
     tags.push({name: 'robots', content: 'noindex, nofollow'});
   }
-  if (anima && data?.collection.description) {
-    tags.push({
-      name: 'description',
-      content: data.collection.description.slice(0, 155),
-    });
+  if (description) {
+    tags.push({name: 'description', content: description});
   }
-  const origin = 'https://anyma-beauty.com';
-  const prefix = params.locale ? `/${params.locale}` : '';
-  if (data?.collection.handle) {
-    tags.push({
-      tagName: 'link',
-      rel: 'canonical',
-      href: `${origin}${prefix}/collections/${data.collection.handle}`,
-    });
+  if (canonical) {
+    tags.push({tagName: 'link', rel: 'canonical', href: canonical});
   }
+  tags.push(
+    {property: 'og:title', content: fullTitle},
+    ...(description ? [{property: 'og:description', content: description}] : []),
+    ...(canonical ? [{property: 'og:url', content: canonical}] : []),
+    {property: 'og:type', content: 'website'},
+    ...(ogImage ? [{property: 'og:image', content: ogImage}] : []),
+    {property: 'og:site_name', content: 'Anyma Beauty'},
+    {name: 'twitter:card', content: 'summary_large_image'},
+    {name: 'twitter:title', content: fullTitle},
+    ...(description ? [{name: 'twitter:description', content: description}] : []),
+    ...(ogImage ? [{name: 'twitter:image', content: ogImage}] : []),
+  );
   return tags;
 };
 
@@ -262,6 +276,9 @@ const COLLECTION_QUERY = `#graphql
       handle
       title
       description
+      image {
+        url
+      }
       products(
         first: $first,
         last: $last,

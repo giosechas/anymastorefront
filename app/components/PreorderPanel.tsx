@@ -6,6 +6,7 @@ import {useAside} from './Aside';
 import {findAnimaByTag} from '~/lib/animas';
 import {getColorTag, getColorLabel} from '~/lib/productCopy';
 import {emailImageUrl} from '~/lib/imageTransform';
+import {trackMetaPreorder} from './CookieBanner';
 import type {RootLoader} from '~/root';
 
 interface GoogleGsi {
@@ -107,6 +108,10 @@ export function PreorderPanel({
         });
         const data = (await res.json()) as {success: boolean};
         if (data.success) {
+          trackMetaPreorder({
+            content_name: 'Preorder',
+            num_items: cart?.lines?.nodes?.length ?? 0,
+          });
           setState('confirmed');
         } else {
           setError(t('preorder.errorRetry'));

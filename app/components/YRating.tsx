@@ -15,23 +15,7 @@ export function YRating({
 }) {
   const t = useT();
   if (count === 0) {
-    return (
-      <div className="flex items-center gap-3">
-        <div className="flex gap-1" aria-hidden="true">
-          {Array.from({length: 5}).map((_, i) => (
-            <img
-              key={i}
-              src={sealPositive}
-              alt=""
-              className="h-4 w-auto opacity-20"
-            />
-          ))}
-        </div>
-        <span className="text-xs uppercase tracking-[0.15em] text-nero/50">
-          {t('rating.noReviewsYet')}
-        </span>
-      </div>
-    );
+    return null;
   }
 
   return (

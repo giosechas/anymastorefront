@@ -1,4 +1,4 @@
-import {Suspense, useState} from 'react';
+import {Suspense, useEffect, useState} from 'react';
 import {Link, useLoaderData, Await} from 'react-router';
 import type {Route} from './+types/($locale).products.$handle';
 import {
@@ -59,6 +59,7 @@ import {getGlossModelPhotos, getGlossModelVideos} from '~/lib/glossModelPhoto';
 import {getMascaraModelPhoto} from '~/lib/mascaraModelPhoto';
 import {getMascaraModelVideos} from '~/lib/mascaraModelVideo';
 import {getLipstickHeroVideo} from '~/lib/lipstickHeroVideo';
+import {trackMetaViewContent} from '~/components/CookieBanner';
 
 export const meta: Route.MetaFunction = ({data, params, location}) => {
   if (!data) return [{title: 'Anyma Beauty'}];
@@ -94,10 +95,22 @@ export const meta: Route.MetaFunction = ({data, params, location}) => {
     data.product.handle,
   );
 
+  const ogImage = data.product.featuredImage?.url;
+
   return [
     {title},
     {name: 'description', content: description},
     {tagName: 'link', rel: 'canonical', href: canonical},
+    {property: 'og:title', content: title},
+    {property: 'og:description', content: description},
+    {property: 'og:url', content: canonical},
+    {property: 'og:type', content: 'product'},
+    ...(ogImage ? [{property: 'og:image', content: ogImage}] : []),
+    {property: 'og:site_name', content: 'Anyma Beauty'},
+    {name: 'twitter:card', content: 'summary_large_image'},
+    {name: 'twitter:title', content: title},
+    {name: 'twitter:description', content: description},
+    ...(ogImage ? [{name: 'twitter:image', content: ogImage}] : []),
     {'script:ld+json': breadcrumbs},
   ];
 };
@@ -234,6 +247,14 @@ export default function Product() {
   );
 
   useSelectedOptionInUrlParam(selectedVariant.selectedOptions);
+
+  useEffect(() => {
+    trackMetaViewContent({
+      content_name: product.title,
+      content_ids: [product.id],
+      content_type: 'product',
+    });
+  }, [product.id, product.title]);
 
   const productOptions = getProductOptions({
     ...product,
@@ -730,6 +751,9 @@ const PRODUCT_FRAGMENT = `#graphql
     productType
     encodedVariantExistence
     encodedVariantAvailability
+    featuredImage {
+      url
+    }
     collections(first: 5) {
       nodes {
         handle

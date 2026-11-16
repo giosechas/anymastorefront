@@ -33,12 +33,27 @@ export default async function handleRequest(
             "'unsafe-inline'",
             'https://cdn.shopify.com',
             'https://accounts.google.com/gsi/client',
+            'https://connect.facebook.net',
+            'https://www.googletagmanager.com',
           ],
           connectSrc: [
             "'self'",
             'https://accounts.google.com',
+            'https://www.facebook.com',
+            'https://www.google-analytics.com',
+            'https://www.googletagmanager.com',
+            'https://*.analytics.google.com',
+            'https://*.g.doubleclick.net',
           ],
           frameSrc: ['https://accounts.google.com'],
+          imgSrc: [
+            "'self'",
+            'https://cdn.shopify.com',
+            'https://*.fbcdn.net',
+            'https://*.cdninstagram.com',
+            'https://www.facebook.com',
+            'https://www.googletagmanager.com',
+          ],
         }
       : {}),
   });

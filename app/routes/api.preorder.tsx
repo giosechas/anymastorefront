@@ -3,6 +3,58 @@ import {checkRateLimit} from '~/lib/rateLimit';
 import {verifyGoogleIdToken} from '~/lib/googleAuth';
 import {processPreorder, type CartItem} from '~/lib/klaviyo';
 
+let cachedCount: {value: number; ts: number} | null = null;
+const CACHE_TTL = 10 * 60 * 1000;
+
+export async function loader({context}: {context: {env: Env}}) {
+  const apiKey = context.env.KLAVIYO_PRIVATE_API_KEY;
+  const listId = context.env.KLAVIYO_LIST_ID;
+
+  if (!apiKey || !listId) {
+    return data({count: null}, {headers: {'Cache-Control': 'no-store'}});
+  }
+
+  if (cachedCount && Date.now() - cachedCount.ts < CACHE_TTL) {
+    return data(
+      {count: cachedCount.value},
+      {headers: {'Cache-Control': 'public, max-age=600'}},
+    );
+  }
+
+  try {
+    const res = await fetch(
+      `https://a.klaviyo.com/api/lists/${listId}?additional-fields[list]=profile_count`,
+      {
+        headers: {
+          Authorization: `Klaviyo-API-Key ${apiKey}`,
+          'Content-Type': 'application/vnd.api+json',
+          revision: '2024-10-15',
+        },
+      },
+    );
+
+    if (!res.ok) {
+      return data({count: null}, {headers: {'Cache-Control': 'no-store'}});
+    }
+
+    const json = (await res.json()) as {
+      data: {attributes: {profile_count?: number}};
+    };
+    const count = json.data.attributes.profile_count ?? null;
+
+    if (count !== null) {
+      cachedCount = {value: count, ts: Date.now()};
+    }
+
+    return data(
+      {count},
+      {headers: {'Cache-Control': 'public, max-age=600'}},
+    );
+  } catch {
+    return data({count: null}, {headers: {'Cache-Control': 'no-store'}});
+  }
+}
+
 export async function action({request, context}: {request: Request; context: {env: Env}}) {
   if (request.method !== 'POST') {
     return data({success: false, error: 'method'}, {status: 405});
