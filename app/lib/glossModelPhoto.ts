@@ -1,6 +1,7 @@
 const COLOR_SLUG: Record<string, string> = {
   PINK: 'pink',
   YELLOW: 'yellow',
+  CHOCOLATE: 'chocolate',
 };
 
 /** Only lip gloss products get "worn on lips" model photos — 4 per color,
