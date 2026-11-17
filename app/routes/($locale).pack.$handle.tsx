@@ -185,15 +185,10 @@ export default function Pack() {
               </span>{' '}
               {trittico.packaging}
             </p>
-            <p className="mt-3 text-xs uppercase tracking-[0.1em] text-fuchsia">
-              {t('pack.scarcity')}
-            </p>
           </>
         )}
         <ul className="mt-4 space-y-1.5 text-xs text-nero/70">
           <li>{t('pack.bullet1')}</li>
-          <li>{t('pack.bullet2')}</li>
-          <li>{t('pack.bullet3')}</li>
         </ul>
       </div>
 

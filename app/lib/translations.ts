@@ -10,7 +10,7 @@ export const TRANSLATIONS = {
       cercaPerProdotto: 'Cerca per prodotto',
       rossetti: 'Rossetti',
       lipGloss: 'Lip Gloss',
-      mascaraEyeliner: 'Mascara & Eyeliner',
+      mascaraEyeliner: 'Mascara',
       laNostraStoria: 'La nostra storia',
       chiudiMenu: 'Chiudi menu',
       apriMenu: 'Apri menu',
@@ -105,8 +105,9 @@ export const TRANSLATIONS = {
       backToPolicies: '← Torna alle Policy',
     },
     communityVideos: {
-      title: 'La community lo indossa',
-      more: 'Altri video della community arrivano presto, segui',
+      title: 'Il rituale ANYMA',
+      aiBadge: 'Video creato con IA',
+      more: 'Altri video arrivano presto, segui',
       onTikTok: 'su TikTok.',
     },
     rating: {
@@ -134,9 +135,8 @@ export const TRANSLATIONS = {
       discoverAnyme: 'Scopri chi sei',
       shopNow: 'Tu sai chi sei',
       rotatingCta: [
-        'Lo voglio subito',
+        'Scegli i tuoi prodotti',
         'Voglio essere la prima',
-        'Non voglio aspettare',
       ],
     },
     animaGrid: {
@@ -162,7 +162,7 @@ export const TRANSLATIONS = {
       postiLimitati: 'Posti limitati',
       title: 'Diventa Anyma Prima',
       subtitle:
-        'Spedizione a vita, tessera numerata, 15% di benvenuto: solo per le prime 800 ANYMA.',
+        'Ti scriveremo con tutti i dettagli prima del lancio. Vantaggi riservati alle Anime Prime.',
       countOf: (total: number) => `su ${total} ANYMA già dentro`,
       thanks: 'Grazie, ti faremo sapere quando si apre il tuo posto.',
       emailPlaceholder: 'La tua email',
@@ -391,7 +391,7 @@ export const TRANSLATIONS = {
       emailPlaceholder: 'La tua email',
       consentLabel: 'Voglio ricevere in anteprima novità, accessi riservati e vantaggi dedicati',
       privacyLink: 'Privacy Policy',
-      submitButton: 'Conferma la mia prenotazione',
+      submitButton: 'Riserva il tuo posto — nessun pagamento adesso',
       confirmTitle: 'Sei nella lista.',
       confirmBody: 'Ti scriveremo prima di tutti.',
       cartNote: 'Stiamo preparando il primo lotto. Prenota per essere tra le prime.',
@@ -418,7 +418,7 @@ export const TRANSLATIONS = {
       cercaPerProdotto: 'Search by product',
       rossetti: 'Lipsticks',
       lipGloss: 'Lip Gloss',
-      mascaraEyeliner: 'Mascara & Eyeliner',
+      mascaraEyeliner: 'Mascara',
       laNostraStoria: 'Our story',
       chiudiMenu: 'Close menu',
       apriMenu: 'Open menu',
@@ -513,8 +513,9 @@ export const TRANSLATIONS = {
       backToPolicies: '← Back to Policies',
     },
     communityVideos: {
-      title: 'The community wears it',
-      more: 'More community videos coming soon, follow',
+      title: 'The ANYMA ritual',
+      aiBadge: 'AI-generated video',
+      more: 'More videos coming soon, follow',
       onTikTok: 'on TikTok.',
     },
     rating: {
@@ -542,9 +543,8 @@ export const TRANSLATIONS = {
       discoverAnyme: 'Discover who you are',
       shopNow: 'You know who you are',
       rotatingCta: [
-        'I want it now',
+        'Choose your products',
         'I want to be first',
-        "I don't want to wait",
       ],
     },
     animaGrid: {
@@ -570,7 +570,7 @@ export const TRANSLATIONS = {
       postiLimitati: 'Limited spots',
       title: 'Become Anyma Prima',
       subtitle:
-        'Free shipping for life, a numbered card, 15% welcome discount: only for the first 800 ANYMA.',
+        'We\'ll write to you with all the details before launch. Benefits reserved for ANYMA Prime.',
       countOf: (total: number) => `of ${total} ANYMA already in`,
       thanks: "Thanks — we'll let you know when your spot opens up.",
       emailPlaceholder: 'Your email',
@@ -799,7 +799,7 @@ export const TRANSLATIONS = {
       emailPlaceholder: 'Your email',
       consentLabel: 'I want to receive exclusive news, early access, and dedicated perks',
       privacyLink: 'Privacy Policy',
-      submitButton: 'Confirm my reservation',
+      submitButton: 'Reserve your spot — no payment now',
       confirmTitle: "You're on the list.",
       confirmBody: "We'll write to you before everyone.",
       cartNote: "We're preparing the first batch. Reserve to be among the first.",
@@ -826,7 +826,7 @@ export const TRANSLATIONS = {
       cercaPerProdotto: 'Buscar por producto',
       rossetti: 'Labiales',
       lipGloss: 'Lip Gloss',
-      mascaraEyeliner: 'Máscara & Eyeliner',
+      mascaraEyeliner: 'Máscara',
       laNostraStoria: 'Nuestra historia',
       chiudiMenu: 'Cerrar menú',
       apriMenu: 'Abrir menú',
@@ -921,8 +921,9 @@ export const TRANSLATIONS = {
       backToPolicies: '← Volver a las Policy',
     },
     communityVideos: {
-      title: 'La community lo lleva puesto',
-      more: 'Más videos de la community muy pronto, sigue a',
+      title: 'El ritual ANYMA',
+      aiBadge: 'Video creado con IA',
+      more: 'Más videos muy pronto, sigue a',
       onTikTok: 'en TikTok.',
     },
     rating: {
@@ -950,9 +951,8 @@ export const TRANSLATIONS = {
       discoverAnyme: 'Descubre quién eres',
       shopNow: 'Tú sabes quién eres',
       rotatingCta: [
-        'Lo quiero ya',
+        'Elige tus productos',
         'Quiero ser la primera',
-        'No quiero esperar',
       ],
     },
     animaGrid: {
@@ -978,7 +978,7 @@ export const TRANSLATIONS = {
       postiLimitati: 'Cupos limitados',
       title: 'Conviértete en Anyma Prima',
       subtitle:
-        'Envío de por vida, tarjeta numerada, 15% de bienvenida: solo para las primeras 800 ANYMA.',
+        'Te escribiremos con todos los detalles antes del lanzamiento. Beneficios reservados a las Anime Prime.',
       countOf: (total: number) => `de ${total} ANYMA ya dentro`,
       thanks: 'Gracias, te avisaremos cuando se abra tu cupo.',
       emailPlaceholder: 'Tu email',
@@ -1207,7 +1207,7 @@ export const TRANSLATIONS = {
       emailPlaceholder: 'Tu email',
       consentLabel: 'Quiero recibir novedades, accesos reservados y ventajas dedicadas',
       privacyLink: 'Política de Privacidad',
-      submitButton: 'Confirmar mi reserva',
+      submitButton: 'Reserva tu lugar — sin pago por ahora',
       confirmTitle: 'Estás en la lista.',
       confirmBody: 'Te escribiremos antes que a nadie.',
       cartNote: 'Estamos preparando el primer lote. Reserva para ser de las primeras.',

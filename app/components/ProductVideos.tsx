@@ -22,9 +22,14 @@ export function ProductVideos({
   const clips = videos?.length ? videos : COMMUNITY_CLIPS;
   return (
     <section className="border-t border-nero/10 pt-8">
-      <h2 className="font-display text-lg uppercase tracking-[0.1em] text-nero">
-        {t('communityVideos.title')}
-      </h2>
+      <div className="flex items-center gap-3">
+        <h2 className="font-display text-lg uppercase tracking-[0.1em] text-nero">
+          {t('communityVideos.title')}
+        </h2>
+        <span className="rounded-full border border-nero/15 px-2.5 py-0.5 text-[10px] uppercase tracking-[0.1em] text-nero/50">
+          {t('communityVideos.aiBadge')}
+        </span>
+      </div>
       {tagline && (
         <p className="mt-2 max-w-md text-sm leading-relaxed text-nero/70">
           {tagline}

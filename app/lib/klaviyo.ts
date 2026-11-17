@@ -39,8 +39,7 @@ async function upsertProfile(
   }
 
   if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`Klaviyo upsertProfile failed: ${res.status} ${text}`);
+    throw new Error(`Klaviyo upsertProfile failed: ${res.status}`);
   }
 
   const data = (await res.json()) as {data: {id: string}};
@@ -50,21 +49,47 @@ async function upsertProfile(
 async function subscribeToList(
   apiKey: string,
   listId: string,
-  profileId: string,
+  email: string,
 ): Promise<void> {
   const res = await fetch(
-    `https://a.klaviyo.com/api/lists/${listId}/relationships/profiles/`,
+    'https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/',
     {
       method: 'POST',
       headers: headers(apiKey),
       body: JSON.stringify({
-        data: [{type: 'profile', id: profileId}],
+        data: {
+          type: 'profile-subscription-bulk-create-job',
+          attributes: {
+            custom_source: 'website_prelaunch',
+            profiles: {
+              data: [
+                {
+                  type: 'profile',
+                  attributes: {
+                    email,
+                    subscriptions: {
+                      email: {
+                        marketing: {
+                          consent: 'SUBSCRIBED',
+                        },
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+          },
+          relationships: {
+            list: {
+              data: {type: 'list', id: listId},
+            },
+          },
+        },
       }),
     },
   );
   if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`Klaviyo subscribeToList failed: ${res.status} ${text}`);
+    throw new Error(`Klaviyo subscribeToList failed: ${res.status}`);
   }
 }
 
@@ -122,10 +147,7 @@ async function createPreorderEvent(
     }),
   });
   if (!res.ok) {
-    const text = await res.text();
-    throw new Error(
-      `Klaviyo createPreorderEvent failed: ${res.status} ${text}`,
-    );
+    throw new Error(`Klaviyo createPreorderEvent failed: ${res.status}`);
   }
 }
 
@@ -137,10 +159,10 @@ export async function processPreorder(
   marketingConsent: boolean,
   items: CartItem[],
 ): Promise<void> {
-  const profileId = await upsertProfile(apiKey, email, name);
+  await upsertProfile(apiKey, email, name);
 
   if (marketingConsent) {
-    await subscribeToList(apiKey, listId, profileId);
+    await subscribeToList(apiKey, listId, email);
   }
 
   await createPreorderEvent(apiKey, email, items);

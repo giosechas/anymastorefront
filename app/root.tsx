@@ -193,6 +193,9 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <link rel="stylesheet" href={tailwindCss}></link>
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
+        <meta property="og:site_name" content="Anyma Beauty" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="facebook-domain-verification" content="wi20oq3xxes2c0ix5ulqclt07uyejx" />
         <HreflangLinks />
         <Meta />
         <Links />
@@ -228,27 +231,63 @@ export default function App() {
   );
 }
 
+const ANIME_LINKS = [
+  {name: 'Leopard', path: '/collections/anima-leopard'},
+  {name: 'Candy Rosa', path: '/collections/anima-candy-rosa'},
+  {name: 'Street', path: '/collections/anima-street'},
+];
+
 export function ErrorBoundary() {
   const error = useRouteError();
-  let errorMessage = 'Unknown error';
   let errorStatus = 500;
 
   if (isRouteErrorResponse(error)) {
-    errorMessage = error?.data?.message ?? error.data;
     errorStatus = error.status;
-  } else if (error instanceof Error) {
-    errorMessage = error.message;
+  }
+
+  if (errorStatus === 404) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-paper px-6 text-center">
+        <link rel="canonical" href="https://anyma-beauty.com/" />
+        <p className="text-[10px] uppercase tracking-[0.4em] text-nero/40">404</p>
+        <h1 className="mt-2 font-display text-2xl uppercase tracking-[0.05em] text-nero">
+          Pagina non trovata
+        </h1>
+        <p className="mt-3 max-w-sm text-sm leading-relaxed text-nero/60">
+          La pagina che cerchi non esiste o è stata spostata. Scopri le nostre ANYMA:
+        </p>
+        <nav className="mt-6 flex flex-wrap justify-center gap-3">
+          {ANIME_LINKS.map((a) => (
+            <a
+              key={a.path}
+              href={a.path}
+              className="border border-nero px-5 py-2.5 text-[11px] uppercase tracking-[0.15em] text-nero transition-colors hover:bg-nero hover:text-paper"
+            >
+              Anyma {a.name}
+            </a>
+          ))}
+        </nav>
+        <a
+          href="/"
+          className="mt-8 text-xs uppercase tracking-[0.1em] text-nero/50 underline underline-offset-4 hover:text-nero"
+        >
+          Torna alla home
+        </a>
+      </div>
+    );
   }
 
   return (
-    <div className="route-error">
-      <h1>Oops</h1>
-      <h2>{errorStatus}</h2>
-      {errorMessage && (
-        <fieldset>
-          <pre>{errorMessage}</pre>
-        </fieldset>
-      )}
+    <div className="flex min-h-screen flex-col items-center justify-center bg-paper px-6 text-center">
+      <h1 className="font-display text-2xl uppercase tracking-[0.05em] text-nero">
+        Errore {errorStatus}
+      </h1>
+      <a
+        href="/"
+        className="mt-6 text-xs uppercase tracking-[0.1em] text-nero/50 underline underline-offset-4 hover:text-nero"
+      >
+        Torna alla home
+      </a>
     </div>
   );
 }

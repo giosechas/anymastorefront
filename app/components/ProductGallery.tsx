@@ -100,7 +100,7 @@ export function ProductGallery({
         ref={scrollRef}
         data-gallery-scroll
         className="flex w-full snap-x snap-mandatory overflow-x-auto sm:hidden"
-        style={{scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch'}}
+        style={{scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch', overscrollBehaviorX: 'contain'}}
       >
         <style>{`[data-gallery-scroll]::-webkit-scrollbar{display:none}`}</style>
         {slides.map((slide, i) => (
