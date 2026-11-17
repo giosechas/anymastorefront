@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {Link, useLocation} from 'react-router';
 import {useT} from '~/lib/i18n';
 
@@ -137,7 +137,12 @@ export function CookieBanner() {
     }
   }, []);
 
+  const isFirstRender = useRef(true);
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored === 'accepted') {

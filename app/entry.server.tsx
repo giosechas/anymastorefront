@@ -41,6 +41,7 @@ export default async function handleRequest(
             'https://accounts.google.com',
             'https://www.facebook.com',
             'https://www.google-analytics.com',
+            'https://*.google-analytics.com',
             'https://www.googletagmanager.com',
             'https://*.analytics.google.com',
             'https://*.g.doubleclick.net',
@@ -48,6 +49,7 @@ export default async function handleRequest(
           frameSrc: ['https://accounts.google.com'],
           imgSrc: [
             "'self'",
+            'data:',
             'https://cdn.shopify.com',
             'https://*.fbcdn.net',
             'https://*.cdninstagram.com',

@@ -71,7 +71,6 @@ async function subscribeToList(
                       email: {
                         marketing: {
                           consent: 'SUBSCRIBED',
-                          consented_at: new Date().toISOString(),
                         },
                       },
                     },
