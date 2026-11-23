@@ -11,15 +11,27 @@ const GLOSS_VIDEO_COLORS: Record<string, Record<string, VideoEntry>> = {
       src: '/videos/gloss/leopard-pink.mp4',
       poster: '/videos/gloss/posters/leopard-pink.jpg',
     },
+    street: {
+      src: '/videos/gloss/street-pink.mp4',
+      poster: '/videos/gloss/posters/street-pink.jpg',
+    },
     'candy-rosa': {
       src: '/videos/gloss/candy-rosa-pink.mp4',
       poster: '/videos/gloss/posters/candy-rosa-pink.jpg',
     },
   },
   YELLOW: {
+    leopard: {
+      src: '/videos/gloss/leopard-light-gold.mp4',
+      poster: '/videos/gloss/posters/leopard-light-gold.jpg',
+    },
     street: {
       src: '/videos/gloss/street-light-gold.mp4',
       poster: '/videos/gloss/posters/street-light-gold.jpg',
+    },
+    'candy-rosa': {
+      src: '/videos/gloss/candy-rosa-light-gold.mp4',
+      poster: '/videos/gloss/posters/candy-rosa-light-gold.jpg',
     },
   },
   CHERRY: {
