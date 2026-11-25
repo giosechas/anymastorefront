@@ -448,7 +448,7 @@ export default function Product() {
             <ProductForm
               productOptions={productOptions}
               selectedVariant={selectedVariant}
-              buttonClassName="w-full border border-nero bg-nero px-8 py-4 text-xs uppercase tracking-[0.2em] text-paper transition-colors hover:bg-transparent hover:text-nero disabled:cursor-not-allowed disabled:opacity-40"
+              buttonClassName="w-full border border-fuchsia bg-fuchsia px-8 py-4 text-xs uppercase tracking-[0.2em] text-nero transition-colors hover:bg-transparent hover:text-nero disabled:cursor-not-allowed disabled:opacity-40"
             />
             <YRating />
           </div>
