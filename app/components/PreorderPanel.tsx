@@ -307,7 +307,7 @@ export function PreorderPanel({
 
         <button
           type="submit"
-          className="mt-auto flex w-full items-center justify-center rounded-full bg-nero py-3 text-xs font-medium uppercase tracking-[0.1em] text-paper transition-colors hover:bg-nero/90"
+          className="mt-auto flex w-full items-center justify-center rounded-full bg-fuchsia py-3 text-xs font-medium uppercase tracking-[0.1em] text-nero transition-colors hover:bg-fuchsia/85"
         >
           {t('preorder.submitButton')}
         </button>
