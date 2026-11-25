@@ -6,8 +6,9 @@ import type {
   RecommendedProductFragment,
 } from 'storefrontapi.generated';
 
-const AUTOSCROLL_MS = 2000;
-const RESUME_DELAY_MS = 4000;
+/** Gentle, continuous drift (px per second) instead of a jumpy step every
+ * couple of seconds. Low enough to read the cards while it moves. */
+const AUTOSCROLL_PX_PER_SEC = 26;
 const LABEL_ROTATE_MS = 4000;
 
 type CarouselProduct =
@@ -111,56 +112,78 @@ export function ProductCarousel({
   rotateLabels?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const resumeTimeout = useRef<ReturnType<typeof setTimeout>>();
   const [paused, setPaused] = useState(false);
+  /** Once the visitor scrolls, drags or swipes the row themselves, the
+   * automatic drift stops for good — it should never yank the row out from
+   * under them while they are browsing. */
+  const [takenOver, setTakenOver] = useState(false);
   const labelTick = useRotatingLabelTick(rotateLabels);
   const mobileActiveIndex = useMobileActiveCard(ref, products.length);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    const stop = () => setTakenOver(true);
     const onWheel = (e: WheelEvent) => {
-      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) {
+        // Horizontal wheel/trackpad gesture: the row is being driven by hand.
+        stop();
+        return;
+      }
       const canScrollDown =
         e.deltaY > 0 && el.scrollLeft < el.scrollWidth - el.clientWidth - 1;
       const canScrollUp = e.deltaY < 0 && el.scrollLeft > 0;
       if (canScrollDown || canScrollUp) {
         e.preventDefault();
+        stop();
         el.scrollLeft += e.deltaY;
       }
     };
     el.addEventListener('wheel', onWheel, {passive: false});
-    return () => el.removeEventListener('wheel', onWheel);
+    el.addEventListener('touchstart', stop, {passive: true});
+    el.addEventListener('pointerdown', stop, {passive: true});
+    el.addEventListener('keydown', stop);
+    return () => {
+      el.removeEventListener('wheel', onWheel);
+      el.removeEventListener('touchstart', stop);
+      el.removeEventListener('pointerdown', stop);
+      el.removeEventListener('keydown', stop);
+    };
   }, []);
 
   useEffect(() => {
-    if (paused) return;
-    const id = setInterval(() => {
-      const el = ref.current;
-      if (!el) return;
+    if (paused || takenOver) return;
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let frame = 0;
+    let previous = performance.now();
+
+    const step = (now: number) => {
+      // Cap the delta so a backgrounded tab doesn't resume with a big jump.
+      const elapsed = Math.min(now - previous, 100);
+      previous = now;
       // The list is rendered twice back to back — once we've scrolled past
       // one full copy, snap back by exactly that width (instant, and
       // invisible since the content repeats) so it never visibly "resets".
       const setWidth = el.scrollWidth / 2;
-      if (el.scrollLeft >= setWidth) {
+      if (setWidth > 0 && el.scrollLeft >= setWidth) {
         el.scrollLeft -= setWidth;
       }
-      el.scrollBy({left: 220, behavior: 'smooth'});
-    }, AUTOSCROLL_MS);
-    return () => clearInterval(id);
-  }, [paused]);
+      el.scrollLeft += (AUTOSCROLL_PX_PER_SEC * elapsed) / 1000;
+      frame = requestAnimationFrame(step);
+    };
 
-  const pauseThenResume = () => {
-    setPaused(true);
-    if (resumeTimeout.current) clearTimeout(resumeTimeout.current);
-    resumeTimeout.current = setTimeout(() => setPaused(false), RESUME_DELAY_MS);
-  };
+    frame = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(frame);
+  }, [paused, takenOver]);
 
   const scrollByPage = (direction: 1 | -1) => {
     const el = ref.current;
     if (!el) return;
+    setTakenOver(true);
     el.scrollBy({left: direction * el.clientWidth * 0.7, behavior: 'smooth'});
-    pauseThenResume();
   };
 
   if (products.length === 0) return null;
