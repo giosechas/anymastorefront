@@ -218,7 +218,7 @@ export function ProductItem({
           <AddToCartButton
             onClick={() => open('cart')}
             lines={[{merchandiseId: variant.id, quantity: 1, selectedVariant: variant}]}
-            className="mt-2 flex h-9 w-full items-center justify-center border border-nero bg-transparent text-[10px] uppercase tracking-[0.12em] text-nero transition-colors duration-200 hover:bg-nero hover:text-paper group-[.is-active]:bg-nero group-[.is-active]:text-paper"
+            className="mt-2 flex h-9 w-full items-center justify-center border border-fuchsia bg-fuchsia text-[10px] uppercase tracking-[0.12em] text-white transition-colors duration-200 hover:border-gold hover:bg-gold hover:text-nero active:border-gold active:bg-gold active:text-nero group-[.is-active]:border-gold group-[.is-active]:bg-gold group-[.is-active]:text-nero"
           >
             <span className="inline-grid">
               {rotatingLabels.map((label, i) => (
@@ -241,7 +241,7 @@ export function ProductItem({
             <AddToCartButton
               onClick={() => open('cart')}
               lines={[{merchandiseId: variant.id, quantity: 1, selectedVariant: variant}]}
-              className="mt-2 flex h-9 w-full items-center justify-center border border-nero bg-transparent text-[10px] uppercase tracking-[0.12em] text-nero transition-colors duration-200 hover:bg-nero hover:text-paper"
+              className="mt-2 flex h-9 w-full items-center justify-center border border-fuchsia bg-fuchsia text-[10px] uppercase tracking-[0.12em] text-white transition-colors duration-200 hover:border-gold hover:bg-gold hover:text-nero active:border-gold active:bg-gold active:text-nero"
             >
               {t('product.soldOut')}
             </AddToCartButton>
